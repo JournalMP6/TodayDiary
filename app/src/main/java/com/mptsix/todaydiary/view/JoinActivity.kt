@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mp6.R
-import com.example.mp6.databinding.ActivityJoinBinding
+import com.mptsix.todaydiary.R
+import com.mptsix.todaydiary.databinding.ActivityJoinBinding
 
 class JoinActivity : AppCompatActivity() {
     lateinit var binding: ActivityJoinBinding

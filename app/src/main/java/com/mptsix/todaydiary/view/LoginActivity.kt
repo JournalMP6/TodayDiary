@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mp6.databinding.ActivityLoginBinding
+import com.mptsix.todaydiary.databinding.ActivityLoginBinding
 
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding

@@ -1,25 +1,44 @@
 package com.mptsix.todaydiary.model
 
-import com.google.gson.GsonBuilder
+import com.mptsix.todaydiary.data.request.LoginRequest
+import com.mptsix.todaydiary.data.request.UserRegisterRequest
+import com.mptsix.todaydiary.data.response.LoginResponse
+import com.mptsix.todaydiary.data.response.UserRegisterResponse
+import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object ServerRepository {
-    private var instance:Retrofit ?= null
-    private val gson = GsonBuilder().setLenient().create()
-    private const val URL = "http://www.naver.com"
+    private var instance: ServerAPI? = null
+    private val serverApi: ServerAPI get() = instance!!
+    private const val URL = "http://192.168.0.46:8080"
 
-    public fun getInstance():Retrofit{
-        if(instance == null) {
+    init {
+        getInstance()
+    }
+
+    private fun getInstance() {
+        if (instance == null) {
             instance = Retrofit.Builder()
                 .baseUrl(URL)
                 .addConverterFactory(GsonConverterFactory.create())
-                .build()
+                .build().create(ServerAPI::class.java)
         }
-        return instance!!
     }
 
-//    private fun initApiInterface():ServerAPI{
-//        return retroFit.create()
-//    }
+    fun loginRequest(loginRequest: LoginRequest): LoginResponse {
+        val callObject: Call<LoginResponse> = serverApi.login(loginRequest)
+
+        return runCatching {
+            callObject.execute().body()!!
+        }.getOrThrow()
+    }
+
+    fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse {
+        val registerApi: Call<UserRegisterResponse> = serverApi.registerUser(userRegisterRequest)
+
+        return runCatching {
+            registerApi.execute().body()!!
+        }.getOrThrow()
+    }
 }

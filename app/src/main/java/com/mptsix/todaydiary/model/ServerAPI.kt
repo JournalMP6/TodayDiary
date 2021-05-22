@@ -1,16 +1,17 @@
 package com.mptsix.todaydiary.model
 
+import com.mptsix.todaydiary.data.request.LoginRequest
+import com.mptsix.todaydiary.data.request.UserRegisterRequest
+import com.mptsix.todaydiary.data.response.LoginResponse
+import com.mptsix.todaydiary.data.response.UserRegisterResponse
 import retrofit2.Call
-import retrofit2.http.Field
-import retrofit2.http.FormUrlEncoded
+import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface ServerAPI {
-    @FormUrlEncoded
     @POST("/api/v1/login")
-    fun login(@Field("loginRequest") loginRequest: LoginRequest): Call<LoginResponse>
+    fun login(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @FormUrlEncoded
     @POST("/api/v1/user")
-    fun registerUser(@Field("userRegisterRequest") userRegisterRequest: UserRegisterRequest):Call<UserRegisterResponse>
+    fun registerUser(@Body userRegisterRequest: UserRegisterRequest):Call<UserRegisterResponse>
 }

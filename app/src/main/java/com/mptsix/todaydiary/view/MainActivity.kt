@@ -2,7 +2,7 @@ package com.mptsix.todaydiary.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.example.mp6.databinding.ActivityMainBinding
+import com.mptsix.todaydiary.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
