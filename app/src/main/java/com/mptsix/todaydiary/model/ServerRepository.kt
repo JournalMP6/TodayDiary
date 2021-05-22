@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ServerRepository {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
+    private var userToken: String? = null
     private const val URL = "http://192.168.0.46:8080"
 
     init {
@@ -30,7 +31,9 @@ object ServerRepository {
         val callObject: Call<LoginResponse> = serverApi.login(loginRequest)
 
         return runCatching {
-            callObject.execute().body()!!
+            callObject.execute().body()!!.also {
+                userToken = it.userToken
+            }
         }.getOrThrow()
     }
 
