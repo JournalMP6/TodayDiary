@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name = "passwordQuestion">
+        <item>출생 도시는?</item>
+        <item>출신 초등학교는?</item>
+        <item>비밀 번호를 까먹은 이유는?</item>
+        <item>까먹은 비밀번호는?</item>
+        <item>우리 집의 위치는?</item>
+    </string-array>
+</resources>
