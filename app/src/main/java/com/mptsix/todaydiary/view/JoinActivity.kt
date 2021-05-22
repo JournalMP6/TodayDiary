@@ -1,9 +1,10 @@
-package com.example.mp6
+package com.mptsix.todaydiary.view
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
+import com.example.mp6.R
 import com.example.mp6.databinding.ActivityJoinBinding
 
 class JoinActivity : AppCompatActivity() {
@@ -30,7 +31,10 @@ class JoinActivity : AppCompatActivity() {
 
     fun attachAdapter(){
         val spinner:Spinner = binding.pwdQuestionSpinner
-        val question = ArrayAdapter.createFromResource(this, R.array.passwordQuestion, R.layout.spinner_layout).apply {
+        val question = ArrayAdapter.createFromResource(this,
+            R.array.passwordQuestion,
+            R.layout.spinner_layout
+        ).apply {
             setDropDownViewResource(R.layout.spinner_layout)
         }
 

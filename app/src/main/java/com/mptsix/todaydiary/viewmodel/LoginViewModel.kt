@@ -1,4 +1,4 @@
-package com.mptsix.viewmodel
+package com.mptsix.todaydiary.viewmodel
 
 import android.util.Patterns
 import android.widget.Toast

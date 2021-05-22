@@ -1,4 +1,4 @@
-package com.mptsix.todaydiary
+package com.mptsix.todaydiary.model
 
 import retrofit2.Call
 import retrofit2.http.Field
