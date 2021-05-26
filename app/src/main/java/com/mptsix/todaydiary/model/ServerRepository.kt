@@ -1,6 +1,8 @@
 package com.mptsix.todaydiary.model
 
+import android.content.Context
 import android.net.Uri
+import android.os.FileUtils
 import android.util.Log
 import com.mptsix.todaydiary.data.JournalDto
 import com.mptsix.todaydiary.data.JournalResponse
@@ -16,7 +18,9 @@ import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
+import java.io.FileOutputStream
 import java.io.InputStream
+import java.nio.file.Files
 
 object ServerRepository {
     private var instance: ServerAPI? = null
@@ -66,23 +70,26 @@ object ServerRepository {
         }.getOrThrow()
     }
 
-    fun registerPicture(imgUri :Uri, journalDto: JournalDto) : PictureResponse{
+    fun registerPicture(context: Context, imgUri :Uri, journalDto: JournalDto):PictureResponse {
         val header = HashMap<String, Any?>()
         header.put("X-AUTH-TOKEN", userToken)
         header.put("JOURNAL_DATE", journalDto.journalDate)
 
-        val file = File(imgUri.path)
+        val inputStream : InputStream? = context.contentResolver.openInputStream(imgUri)
 
-        val requestFile = RequestBody.create(MediaType.parse("image/*"), file)
-        val body = MultipartBody.Part.createFormData("file", file.name, requestFile)
+        val file = File.createTempFile(inputStream.hashCode().toString(), ".tmp")
+        file.deleteOnExit()
+
+        Files.copy(inputStream, file.toPath())
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
+        val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
         val registerPictureApi:Call<PictureResponse> = serverApi.registerPicture(header, body)
 
         return kotlin.runCatching {
             registerPictureApi.execute().body()!!
         }.getOrThrow()
-
-
 
     }
 
