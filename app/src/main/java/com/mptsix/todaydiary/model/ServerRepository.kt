@@ -3,8 +3,10 @@ package com.mptsix.todaydiary.model
 import android.content.Context
 import android.net.Uri
 import com.mptsix.todaydiary.data.request.JournalDto
+import com.mptsix.todaydiary.data.request.JournalRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
+import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.data.response.LoginResponse
 import com.mptsix.todaydiary.data.response.UserRegisterResponse
@@ -23,7 +25,7 @@ object ServerRepository {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.25.40:8080"
+    private const val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -76,8 +78,8 @@ object ServerRepository {
         registerPictureApi.execute().body()!!
     }
 
-    fun getJournal() :List<JournalDto>{
-        val requestJournalApi: Call<List<JournalDto>> = serverApi.getJournal(getTokenHeader())
+    fun getJournal(journalDate: Long) : Journal{
+        val requestJournalApi: Call<Journal> = serverApi.getJournal(getTokenHeader(), journalDate)
 
         return kotlin.runCatching {
             requestJournalApi.execute().body()!!

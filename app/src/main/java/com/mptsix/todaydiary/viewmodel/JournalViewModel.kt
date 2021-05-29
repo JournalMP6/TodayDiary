@@ -3,16 +3,19 @@ package com.mptsix.todaydiary.viewmodel
 import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
-import android.provider.MediaStore
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.request.JournalDto
+import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.model.ServerRepository
+import com.mptsix.todaydiary.transition.DisplayTransition
+import com.mptsix.todaydiary.transition.Transition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -21,9 +24,13 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 
-class JournalViewModel :ViewModel(){
+class JournalViewModel: ViewModel(){
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
+    var displayTransition: MutableLiveData<Transition> = MutableLiveData()
+
+    // Used in DiaryFragment
+    var isJournalExistsByTimeStamp: MutableLiveData<Boolean> = MutableLiveData()
 
     fun getMultipartBody(uri: Uri, context:Context, contentResolver: ContentResolver): MultipartBody.Part{
         val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir)
@@ -79,9 +86,38 @@ class JournalViewModel :ViewModel(){
         }
     }
 
-//    fun getPictureInfo(journalDate: Long, multiPartBody:MultipartBody.Part){
-//        lateinit var savePicture : JournalRegisterPicture
-//        savePicture.journalDate = journalDate
-//        savePicture.multiPartBody = multiPartBody
-//    }
+    fun isJournalExists(timeStamp: Long) {
+        viewModelScope.launch {
+            runCatching {
+                withContext(Dispatchers.IO) {
+                    ServerRepository.getJournal(timeStamp)
+                }
+            }.onFailure {
+                Log.e(this::class.java.simpleName, "Error: ${it.stackTraceToString()}")
+                handleJournalNotExists()
+            }.onSuccess {
+                handleJournalExists()
+            }
+        }
+
+    }
+
+    fun requestDiaryPage(timeStamp: Long) {
+        displayTransition.value = Transition(
+            DisplayTransition.REQUEST_DIARY,
+            timeStamp
+        )
+    }
+
+    private suspend fun handleJournalNotExists() {
+        withContext(Dispatchers.Main) {
+            isJournalExistsByTimeStamp.value = false
+        }
+    }
+
+    private suspend fun handleJournalExists() {
+        withContext(Dispatchers.Main) {
+            isJournalExistsByTimeStamp.value = true
+        }
+    }
 }

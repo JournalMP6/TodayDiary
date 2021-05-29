@@ -15,7 +15,7 @@
         android:usesCleartextTraffic="true">
         <activity android:name=".view.EditDiaryActivity"></activity>
         <activity android:name=".view.EditDiaryActivity" />
-        <activity android:name=".view.DiaryActivity" />
+        <activity android:name=".view.fragment.DiaryActivity" />
         <activity android:name=".view.splashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
