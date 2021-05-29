@@ -25,6 +25,8 @@ class MainActivity : AppCompatActivity() {
             getMonth = (month+1).toString()
             getDayOfMonth = dayOfMonth.toString()
 
+            // TODO : Change Date to Long Type
+
             intent = Intent(this, DiaryActivity::class.java)
             startActivity(intent)
             Toast.makeText(applicationContext, getYear + "/" + getMonth + "/" + getDayOfMonth, Toast.LENGTH_SHORT).show()
