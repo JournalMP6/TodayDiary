@@ -80,7 +80,7 @@ object ServerRepository {
 
         val registerPictureApi:Call<PictureResponse> = serverApi.registerPicture(
             getTokenHeader().apply {
-                put("JOURNAL_DATE", journalDto.journalDate)
+                put("JOURNAL-DATE", journalDto.journalDate)
             },
             body
         )
