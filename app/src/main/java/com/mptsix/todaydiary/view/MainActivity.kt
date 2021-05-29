@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity() {
                     val editDiaryFragment: EditDiaryFragment = EditDiaryFragment().apply {
                         arguments = bundle
                     }
-                    commitFragment(editDiaryFragment)
+                    commitFragment(editDiaryFragment, true)
                 }
             }
         }
