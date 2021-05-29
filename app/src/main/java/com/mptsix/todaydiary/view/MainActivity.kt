@@ -1,8 +1,6 @@
 package com.mptsix.todaydiary.view
 
-import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -10,6 +8,7 @@ import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.ActivityMainBinding
 import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.view.fragment.DiaryFragment
+import com.mptsix.todaydiary.view.fragment.EditDiaryFragment
 import com.mptsix.todaydiary.view.fragment.MainFragment
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
@@ -37,6 +36,14 @@ class MainActivity : AppCompatActivity() {
                         arguments = bundle
                     }
                     commitFragment(diaryFragment)
+                }
+
+                DisplayTransition.REQUEST_EDIT -> {
+                    val bundle: Bundle = Bundle().apply {putLong("timeStamp", it.data as Long)}
+                    val editDiaryFragment: EditDiaryFragment = EditDiaryFragment().apply {
+                        arguments = bundle
+                    }
+                    commitFragment(editDiaryFragment)
                 }
             }
         }

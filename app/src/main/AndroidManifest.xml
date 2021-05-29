@@ -13,8 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.EditDiaryActivity"></activity>
-        <activity android:name=".view.EditDiaryActivity" />
+        <activity android:name=".view.fragment.EditDiaryActivity"></activity>
+        <activity android:name=".view.fragment.EditDiaryActivity" />
         <activity android:name=".view.fragment.DiaryActivity" />
         <activity android:name=".view.splashActivity">
             <intent-filter>

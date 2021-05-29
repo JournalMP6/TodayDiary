@@ -109,6 +109,13 @@ class JournalViewModel: ViewModel(){
         )
     }
 
+    fun requestEditPage(timeStamp: Long){
+        displayTransition.value = Transition(
+            DisplayTransition.REQUEST_EDIT,
+            timeStamp
+        )
+    }
+
     private suspend fun handleJournalNotExists() {
         withContext(Dispatchers.Main) {
             isJournalExistsByTimeStamp.value = false

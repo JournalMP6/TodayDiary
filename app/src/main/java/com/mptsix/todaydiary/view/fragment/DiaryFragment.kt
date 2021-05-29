@@ -46,8 +46,10 @@ class DiaryFragment : Fragment() {
 
     private fun init() {
         fragmentDiaryBinding.addDiary.setOnClickListener {
+            journalViewModel.requestEditPage(journalTimeStamp!!)
         }
         fragmentDiaryBinding.modifyBtn.setOnClickListener {
+            journalViewModel.requestEditPage(journalTimeStamp!!)
         }
     }
 
