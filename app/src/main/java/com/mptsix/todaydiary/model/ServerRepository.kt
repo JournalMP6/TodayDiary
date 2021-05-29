@@ -60,10 +60,7 @@ object ServerRepository {
     }
 
     fun registerJournal(journalDto: JournalDto) : JournalResponse{
-        val header = HashMap<String, Any?>()
-        header.put("X-AUTH-TOKEN", userToken)
-
-        val registerJournalApi:Call<JournalResponse> = serverApi.registerJournal(header, journalDto)
+        val registerJournalApi:Call<JournalResponse> = serverApi.registerJournal(getTokenHeader(), journalDto)
 
         return kotlin.runCatching {
             registerJournalApi.execute().body()!!
@@ -71,10 +68,6 @@ object ServerRepository {
     }
 
     fun registerPicture(context: Context, imgUri :Uri, journalDto: JournalDto):PictureResponse {
-        val header = HashMap<String, Any?>()
-        header.put("X-AUTH-TOKEN", userToken)
-        header.put("JOURNAL_DATE", journalDto.journalDate)
-
         val inputStream : InputStream? = context.contentResolver.openInputStream(imgUri)
 
         val file = File.createTempFile(inputStream.hashCode().toString(), ".tmp")
@@ -85,7 +78,12 @@ object ServerRepository {
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file)
         val body = MultipartBody.Part.createFormData("image", file.name, requestFile)
 
-        val registerPictureApi:Call<PictureResponse> = serverApi.registerPicture(header, body)
+        val registerPictureApi:Call<PictureResponse> = serverApi.registerPicture(
+            getTokenHeader().apply {
+                put("JOURNAL_DATE", journalDto.journalDate)
+            },
+            body
+        )
 
         return kotlin.runCatching {
             registerPictureApi.execute().body()!!
@@ -94,13 +92,14 @@ object ServerRepository {
     }
 
     fun getJournal() :List<JournalDto>{
-        val header = HashMap<String, Any?>()
-        header.put("X-AUTH-TOKEN", userToken)
-
-        val requestJournalApi: Call<List<JournalDto>> = serverApi.getJournal(header)
+        val requestJournalApi: Call<List<JournalDto>> = serverApi.getJournal(getTokenHeader())
 
         return kotlin.runCatching {
             requestJournalApi.execute().body()!!
         }.getOrThrow()
+    }
+
+    private fun getTokenHeader(): HashMap<String, Any?> = HashMap<String, Any?>().apply {
+        put("X-AUTH-TOKEN", userToken)
     }
 }
