@@ -4,12 +4,66 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="horizontal"
     tools:context=".view.DiaryActivity">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="diary"
-        android:gravity="center"/>
+        android:id="@+id/diaryBody"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="22dp"
+        android:layout_marginEnd="22dp"
+        android:layout_marginBottom="293dp"
+        android:lineSpacingExtra="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_marginBottom="37dp"
+        android:fontFamily="@font/fontstyle"
+        android:text="Diary"
+        android:textColor="@color/black"
+        android:textSize="35dp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/diaryBody"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/addDiary"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="8dp"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/diaryBody"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.128"
+        app:srcCompat="@drawable/add" />
+
+    <Button
+        android:id="@+id/modifyBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="20dp"
+        android:layout_marginBottom="43dp"
+        android:background="#00FF0000"
+        android:fontFamily="@font/fontstyle"
+        android:text="MODIFY"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/addDiary"
+        app:layout_constraintVertical_bias="0.98" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
     private fun init() {
         binding.calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
             getYear = year.toString()
-            getMonth = month.toString()
+            getMonth = (month+1).toString()
             getDayOfMonth = dayOfMonth.toString()
 
             intent = Intent(this, DiaryActivity::class.java)
