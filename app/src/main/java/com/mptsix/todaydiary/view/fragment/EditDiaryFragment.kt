@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,9 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
+import com.mptsix.todaydiary.view.ImagePickActivity
+import com.mptsix.todaydiary.view.MapActivity
 
 class EditDiaryFragment : Fragment() {
     private var _fragmentEditDiaryBinding: FragmentEditDiaryBinding? = null
@@ -32,7 +36,10 @@ class EditDiaryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         attachAdapter()
+        init()
+        //getLocation()
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -40,14 +47,63 @@ class EditDiaryFragment : Fragment() {
         _fragmentEditDiaryBinding = null
     }
 
-    private fun attachAdapter(){
-        val spinner: Spinner = fragmentEditDiaryBinding.categorySpinner
-        val category = ArrayAdapter.createFromResource(requireContext(),
+    private fun init() {
+        lateinit var intent: Intent
+        lateinit var journalLocation: String
+        var journalCategory =
+            fragmentEditDiaryBinding.categorySpinner.selectedItem.toString() // diary category
+        var journalWeather =
+            fragmentEditDiaryBinding.weatherSpinner.selectedItem.toString() // diary weather
+        fragmentEditDiaryBinding.getLocationBtn.setOnClickListener {
+            intent = Intent(activity, MapActivity::class.java)
+            startActivityForResult(intent,0)
+        }// 버튼 클릭 시 MapActivity 호출
+        fragmentEditDiaryBinding.getImageBtn.setOnClickListener {
+            intent = Intent(activity, ImagePickActivity::class.java)
+            startActivityForResult(intent, 1)
+        }// 버튼 클릭 시 ImageActivity 호출
+        fragmentEditDiaryBinding.submitBtn.setOnClickListener {
+
+        }
+
+    }
+
+    private fun attachAdapter() {
+        val categorySpinner: Spinner = fragmentEditDiaryBinding.categorySpinner
+        val category = ArrayAdapter.createFromResource(
+            requireContext(),
             R.array.category,
             R.layout.spinner_layout
         ).apply {
             setDropDownViewResource(R.layout.spinner_layout)
         }
-        spinner.adapter = category
+        val weatherSpinner: Spinner = fragmentEditDiaryBinding.weatherSpinner
+        val weather = ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.weather,
+            R.layout.spinner_layout
+        ).apply {
+            setDropDownViewResource(R.layout.spinner_layout)
+        }
+        categorySpinner.adapter = category
+        weatherSpinner.adapter = weather
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == 0){
+            if(resultCode == 0){
+                Toast.makeText(activity, data.toString(),Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(activity, "fail",Toast.LENGTH_SHORT).show()
+            }
+        }else if(requestCode == 1){
+            if(resultCode == 0){
+
+            }else{
+                Toast.makeText(activity, "fail",Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }

@@ -82,8 +82,10 @@
     <EditText
         android:id="@+id/editText4"
         android:layout_width="295dp"
-        android:layout_height="30dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginBottom="107dp"
+        app:layout_constraintBottom_toTopOf="@+id/getImageBtn"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.741"
         app:layout_constraintStart_toStartOf="parent"
@@ -94,53 +96,61 @@
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="15dp"
         android:fontFamily="@font/fontstyle"
         android:gravity="center"
         android:text="Picture"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/getImageBtn"
         app:layout_constraintHorizontal_bias="0.083"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.258" />
 
-    <RadioGroup
-        android:id="@+id/radioGroup2"
-        android:layout_width="280dp"
-        android:layout_height="50dp"
-        android:orientation="horizontal"
+    <Button
+        android:id="@+id/getLocationBtn"
+        android:layout_width="163dp"
+        android:layout_height="32dp"
+        android:layout_marginStart="4dp"
+        android:background="#00FF0000"
+        android:fontFamily="@font/fontstyle"
+        android:text="Select Location"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="14sp"
+        android:textStyle="italic"
+        app:layout_constraintBaseline_toBaselineOf="@+id/textView6"
+        app:layout_constraintStart_toEndOf="@+id/textView6" />
+
+    <Button
+        android:id="@+id/getImageBtn"
+        android:layout_width="138dp"
+        android:layout_height="32dp"
+        android:background="#00FF0000"
+        android:fontFamily="@font/fontstyle"
+        android:text="Select Image"
+        android:textColor="@android:color/secondary_text_light"
+        android:textSize="14sp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.77"
+        app:layout_constraintHorizontal_bias="0.358"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.33">
+        app:layout_constraintVertical_bias="0.258" />
 
-        <RadioButton
-            android:id="@+id/sunny"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/cloudy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/rainy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-
-        <RadioButton
-            android:id="@+id/snowy"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1" />
-    </RadioGroup>
+    <Spinner
+        android:id="@+id/weatherSpinner"
+        android:layout_width="269dp"
+        android:layout_height="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.788"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.335" />
 
     <Spinner
         android:id="@+id/categorySpinner"

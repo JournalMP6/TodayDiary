@@ -13,4 +13,10 @@
         <item>category3</item>
         <item>category4</item>
     </string-array>
+    <string-array name="weather">
+        <item>Sunny</item>
+        <item>Cloudy</item>
+        <item>Rainy</item>
+        <item>Snowy</item>
+    </string-array>
 </resources>
