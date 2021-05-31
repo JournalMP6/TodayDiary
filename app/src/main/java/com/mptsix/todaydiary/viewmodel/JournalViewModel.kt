@@ -32,9 +32,9 @@ class JournalViewModel: ViewModel(){
     // Used in DiaryFragment
     var isJournalExistsByTimeStamp: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getMultipartBody(uri: Uri, context:Context, contentResolver: ContentResolver): MultipartBody.Part{
+    fun getMultipartBody(uri: Uri, context:Context): MultipartBody.Part{
         val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir)
-        val fileInputStream: InputStream = contentResolver.openInputStream(uri)!!
+        val fileInputStream: InputStream = context.contentResolver.openInputStream(uri)!!
 
         FileOutputStream(file).use { outputStream ->
             var read: Int =-1

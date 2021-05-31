@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,10 +12,15 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.google.android.gms.maps.model.LatLng
+import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.R
+import com.mptsix.todaydiary.data.response.JournalImage
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.MapActivity
+import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import okhttp3.MultipartBody
+import okio.Buffer
+import org.bson.types.Binary
 
 class EditDiaryFragment : Fragment() {
     private var _fragmentEditDiaryBinding: FragmentEditDiaryBinding? = null
@@ -24,6 +28,11 @@ class EditDiaryFragment : Fragment() {
 
     // Diary Target Date
     private var journalTimeStamp: Long? = null
+
+    private val journalViewModel: JournalViewModel by activityViewModels()
+
+    // Data
+    private var journalImage: JournalImage? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -106,6 +115,12 @@ class EditDiaryFragment : Fragment() {
             }
         }else if(requestCode == 1){
             val photoUri:Uri? = data?.data
+            val multipartBody: MultipartBody.Part = journalViewModel.getMultipartBody(photoUri!!, requireContext())
+            val buffer: Buffer = Buffer()
+            multipartBody.body().writeTo(buffer)
+            journalImage = JournalImage(
+                Binary(0x00.toByte(), buffer.readByteArray())
+            )
             Toast.makeText(requireContext(), photoUri.toString(),Toast.LENGTH_SHORT).show()
         }
     }
