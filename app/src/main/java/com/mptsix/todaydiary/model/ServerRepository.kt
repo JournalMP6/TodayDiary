@@ -25,7 +25,8 @@ object ServerRepository {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.25.40:8080"
+//    private const val URL = "http://192.168.25.40:8080"
+    private const val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -58,24 +59,9 @@ object ServerRepository {
         }.getOrThrow()
     }
 
-    fun registerJournal(journalDto: JournalDto) : JournalResponse {
-        val registerJournalApi:Call<JournalResponse> = serverApi.registerJournal(getTokenHeader(), journalDto)
-
-        return kotlin.runCatching {
-            registerJournalApi.execute().body()!!
-        }.getOrThrow()
-    }
-
-    fun registerPicture(body: MultipartBody.Part, journalDto: JournalDto) {
-        val registerPictureApi:Call<ResponseBody> = serverApi.registerPicture(
-            getTokenHeader().apply {
-                put("JOURNAL-DATE", journalDto.journalDate)
-            },
-            body
-        )
-
-        // Register to Server
-        registerPictureApi.execute().body()!!
+    fun registerJournal(journal: Journal): JournalResponse {
+        val registerJournalApi: Call<JournalResponse> = serverApi.registerJournal(getTokenHeader(), journal)
+        return registerJournalApi.execute().body()!!
     }
 
     fun getJournal(journalDate: Long) : Journal{

@@ -12,5 +12,5 @@ data class Journal(
 )
 
 data class JournalImage(
-    var imageFile: Binary? = null
+    var imageFile: String? = null
 )

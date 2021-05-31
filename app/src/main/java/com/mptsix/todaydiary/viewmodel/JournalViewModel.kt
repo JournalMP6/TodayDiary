@@ -32,8 +32,10 @@ class JournalViewModel: ViewModel(){
     // Used in DiaryFragment
     var isJournalExistsByTimeStamp: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun getMultipartBody(uri: Uri, context:Context): MultipartBody.Part{
-        val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir)
+    fun getByteArray(uri: Uri, context: Context): ByteArray {
+        val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir).apply {
+            deleteOnExit()
+        }
         val fileInputStream: InputStream = context.contentResolver.openInputStream(uri)!!
 
         FileOutputStream(file).use { outputStream ->
@@ -43,22 +45,17 @@ class JournalViewModel: ViewModel(){
                 outputStream.write(bytes,0,read)
             }
         }
-        //Request body
-        val requestBody = RequestBody.create(MediaType.parse("image/jpeg"), file)
-        //val requestBody = file.asRequestBody("multipart/form~data".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("uploadFile",file.name,requestBody)
+        return file.readBytes()
     }
 
-    fun registerJournal(journalDto: JournalDto, picture: MultipartBody.Part?){
-        viewModelScope.launch{
+    fun registerJournal(journal: Journal) {
+        viewModelScope.launch {
             lateinit var registerJournal: JournalResponse
-            withContext(Dispatchers.IO){
+            withContext(Dispatchers.IO) {
                 runCatching {
-                    registerJournal = ServerRepository.registerJournal(journalDto) // 글
-                    picture?.let {
-                        ServerRepository.registerPicture(picture, journalDto)
-                    }
+                    registerJournal = ServerRepository.registerJournal(journal)
                 }.onFailure {
+                    Log.e(this::class.java.simpleName, it.stackTraceToString())
                     withContext(Dispatchers.Main) {
                         isJournalSubmit.value = false
                     }

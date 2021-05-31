@@ -21,15 +21,18 @@ interface ServerAPI {
     fun registerUser(@Body userRegisterRequest: UserRegisterRequest):Call<UserRegisterResponse>
 
     @POST("/api/v1/journal")
-    fun registerJournal(@HeaderMap header:HashMap<String, Any?>,
-                        @Body journalDto: JournalDto
-    ): Call<JournalResponse>
+    fun registerJournal(@HeaderMap header:HashMap<String, Any?>, @Body journal: Journal): Call<JournalResponse>
 
-    @Multipart
-    @POST("/api/v1/journal/picture")
-    fun registerPicture(@HeaderMap header: HashMap<String, Any?>,
-                        @Part files: MultipartBody.Part
-    ):Call<ResponseBody>
+//    @POST("/api/v1/journal")
+//    fun registerJournal(@HeaderMap header:HashMap<String, Any?>,
+//                        @Body journalDto: JournalDto
+//    ): Call<JournalResponse>
+//
+//    @Multipart
+//    @POST("/api/v1/journal/picture")
+//    fun registerPicture(@HeaderMap header: HashMap<String, Any?>,
+//                        @Part files: MultipartBody.Part
+//    ):Call<ResponseBody>
 
     @GET("/api/v1/journal/{time}")
     fun getJournal(@HeaderMap header: HashMap<String, Any?>, @Path("time") journalTime: Long): Call<Journal>
