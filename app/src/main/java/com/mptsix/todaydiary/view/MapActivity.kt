@@ -45,7 +45,6 @@ class MapActivity : AppCompatActivity() {
 
     private fun initMapListener() {
         lateinit var location :LatLng
-        val fragment:Fragment = EditDiaryFragment()
         googleMap.setOnMapClickListener {
             googleMap.clear()
             val option = MarkerOptions()
@@ -54,7 +53,6 @@ class MapActivity : AppCompatActivity() {
             googleMap.addMarker(option)
             location = it
             var intent = Intent(location.toString())
-
             //Toast.makeText(this, location.toString(),Toast.LENGTH_SHORT).show() --> 여기까진 잘됨
             setResult(0, intent)
             finish()
