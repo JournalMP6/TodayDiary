@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -98,14 +99,14 @@ class EditDiaryFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == 0){
-            if(resultCode == 0){
-                Toast.makeText(activity, data!!.toString(),Toast.LENGTH_SHORT).show()
+            if(resultCode == Activity.RESULT_OK){
+                Toast.makeText(requireContext(), data!!.toString(),Toast.LENGTH_SHORT).show()
             }else{
-                Toast.makeText(activity, "fail",Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "fail",Toast.LENGTH_SHORT).show()
             }
         }else if(requestCode == 1){
-            var photoUri:Uri? = data?.data
-            Toast.makeText(activity, photoUri.toString(),Toast.LENGTH_SHORT).show()
+            val photoUri:Uri? = data?.data
+            Toast.makeText(requireContext(), photoUri.toString(),Toast.LENGTH_SHORT).show()
         }
     }
 }

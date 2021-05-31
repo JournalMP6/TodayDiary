@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -25,6 +26,11 @@ class MapActivity : AppCompatActivity() {
         binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initMap()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        setResult(Activity.RESULT_CANCELED)
     }
 
     private fun initMap() {
