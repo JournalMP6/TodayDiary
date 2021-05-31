@@ -17,13 +17,15 @@ import com.mptsix.todaydiary.databinding.ActivityMapBinding
 import com.mptsix.todaydiary.view.fragment.EditDiaryFragment
 
 class MapActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMapBinding
+    private val binding: ActivityMapBinding by lazy {
+        ActivityMapBinding.inflate(layoutInflater)
+    }
+
     lateinit var googleMap: GoogleMap
     var loc = LatLng(37.5642135, 127.0016985)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityMapBinding.inflate(layoutInflater)
         setContentView(binding.root)
         initMap()
     }
@@ -35,16 +37,21 @@ class MapActivity : AppCompatActivity() {
 
     private fun initMap() {
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
+
+        // Create Marker Options
+        val option: MarkerOptions = MarkerOptions().apply {
+            position(loc)
+            icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+        }
+
+        // Init Map
         mapFragment.getMapAsync {
-            googleMap = it
-            googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f))
-            googleMap.setMinZoomPreference(6.0f)
-            googleMap.setMaxZoomPreference(18.0f)
-            val option = MarkerOptions()
-            option.position(loc)
-            option.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
-            val mk = googleMap.addMarker(option)
-            mk.showInfoWindow()
+            googleMap = it.apply {
+                animateCamera(CameraUpdateFactory.newLatLngZoom(loc, 16.0f))
+                setMinZoomPreference(6.0f)
+                setMaxZoomPreference(18.0f)
+                addMarker(option)?.showInfoWindow()
+            }
             initMapListener()
         }
     }
@@ -53,12 +60,13 @@ class MapActivity : AppCompatActivity() {
         lateinit var location :LatLng
         googleMap.setOnMapClickListener {
             googleMap.clear()
-            val option = MarkerOptions()
-            option.position(it)
-            option.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            val option = MarkerOptions().apply {
+                position(it)
+                icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN))
+            }
             googleMap.addMarker(option)
             location = it
-            var intent = Intent(location.toString())
+            val intent = Intent(location.toString())
             //Toast.makeText(this, location.toString(),Toast.LENGTH_SHORT).show() --> 여기까진 잘됨
             setResult(0, intent)
             finish()
