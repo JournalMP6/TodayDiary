@@ -1,14 +1,11 @@
 package com.mptsix.todaydiary.model
 
-import com.mptsix.todaydiary.data.request.JournalDto
-import com.mptsix.todaydiary.data.request.JournalRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.data.response.LoginResponse
 import com.mptsix.todaydiary.data.response.UserRegisterResponse
-import okhttp3.MultipartBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -27,5 +24,5 @@ interface ServerAPI {
     fun getJournal(@HeaderMap header: HashMap<String, Any?>, @Path("time") journalTime: Long): Call<Journal>
 
     @PUT("/api/v1/journal")
-    fun editJournal(@HeaderMap header: HashMap<String, Any?>, @Body journalDto: JournalDto): Call<ResponseBody>
+    fun editJournal(@HeaderMap header: HashMap<String, Any?>, @Body journal: Journal): Call<ResponseBody>
 }

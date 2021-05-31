@@ -1,25 +1,15 @@
 package com.mptsix.todaydiary.model
 
-import android.content.Context
-import android.net.Uri
-import com.mptsix.todaydiary.data.request.JournalDto
-import com.mptsix.todaydiary.data.request.JournalRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.data.response.LoginResponse
 import com.mptsix.todaydiary.data.response.UserRegisterResponse
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.File
-import java.io.InputStream
-import java.nio.file.Files
 
 object ServerRepository {
     private var instance: ServerAPI? = null
@@ -72,9 +62,9 @@ object ServerRepository {
         }.getOrThrow()
     }
 
-    fun editJournal(journalDto: JournalDto) {
+    fun editJournal(journal: Journal) {
         val editJournalApi: Call<ResponseBody> =
-            serverApi.editJournal(getTokenHeader(), journalDto)
+            serverApi.editJournal(getTokenHeader(), journal)
 
         editJournalApi.execute()
     }

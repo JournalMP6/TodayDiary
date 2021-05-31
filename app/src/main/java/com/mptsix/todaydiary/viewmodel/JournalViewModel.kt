@@ -1,13 +1,11 @@
 package com.mptsix.todaydiary.viewmodel
 
-import android.content.ContentResolver
 import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.mptsix.todaydiary.data.request.JournalDto
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.model.ServerRepository
@@ -15,11 +13,7 @@ import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.transition.Transition
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
@@ -68,12 +62,12 @@ class JournalViewModel: ViewModel(){
         }
     }
 
-    fun editJournal(journalDto: JournalDto) {
+    fun editJournal(journal: Journal) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
 
                 runCatching {
-                    ServerRepository.editJournal(journalDto)
+                    ServerRepository.editJournal(journal)
                 }.onSuccess {
                     isJournalEdited.value = true
                 }.onFailure {
