@@ -15,7 +15,6 @@ import androidx.fragment.app.Fragment
 import com.google.android.gms.maps.model.LatLng
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
-import com.mptsix.todaydiary.view.ImagePickActivity
 import com.mptsix.todaydiary.view.MapActivity
 
 class EditDiaryFragment : Fragment() {
