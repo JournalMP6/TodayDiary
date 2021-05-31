@@ -56,8 +56,10 @@ class DiaryFragment : Fragment() {
     private fun updateButtonVisibility() {
         if (!isDiaryExists) {
             fragmentDiaryBinding.modifyBtn.visibility = View.GONE
+            fragmentDiaryBinding.addDiary.visibility = View.VISIBLE
         } else {
             fragmentDiaryBinding.addDiary.visibility = View.GONE
+            fragmentDiaryBinding.modifyBtn.visibility = View.VISIBLE
         }
     }
 
@@ -65,6 +67,7 @@ class DiaryFragment : Fragment() {
         journalViewModel.isJournalExistsByTimeStamp.observe(viewLifecycleOwner) {
             Log.e(this::class.java.simpleName, "Journal Exists: $it")
             isDiaryExists = it
+            updateButtonVisibility()
         }
     }
 }
