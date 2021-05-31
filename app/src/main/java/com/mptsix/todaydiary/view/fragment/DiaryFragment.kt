@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
@@ -15,7 +16,7 @@ class DiaryFragment : Fragment() {
     private var journalTimeStamp: Long? = null
 
     // Is Diary Exists?
-    private var isDiaryExists: Boolean = false
+    private var journal: Journal? = null
 
     // For View Binding
     private var _fragmentDiaryBinding: FragmentDiaryBinding? = null
@@ -54,10 +55,11 @@ class DiaryFragment : Fragment() {
     }
 
     private fun updateButtonVisibility() {
-        if (!isDiaryExists) {
+        if (journal == null) {
             fragmentDiaryBinding.modifyBtn.visibility = View.GONE
             fragmentDiaryBinding.addDiary.visibility = View.VISIBLE
         } else {
+            showDiary()
             fragmentDiaryBinding.addDiary.visibility = View.GONE
             fragmentDiaryBinding.modifyBtn.visibility = View.VISIBLE
         }
@@ -65,9 +67,15 @@ class DiaryFragment : Fragment() {
 
     private fun initObserver() {
         journalViewModel.isJournalExistsByTimeStamp.observe(viewLifecycleOwner) {
-            Log.e(this::class.java.simpleName, "Journal Exists: $it")
-            isDiaryExists = it
+            Log.e(this::class.java.simpleName, "Journal Exists: ${(journal != null)}")
+            journal = it
             updateButtonVisibility()
+        }
+    }
+
+    private fun showDiary() {
+        journal?.let {
+            fragmentDiaryBinding.diaryBody.text = it.mainJournalContent
         }
     }
 }

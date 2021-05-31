@@ -82,7 +82,7 @@ class EditDiaryFragment : Fragment() {
         }// 버튼 클릭 시 ImageActivity 호출
         fragmentEditDiaryBinding.submitBtn.setOnClickListener {
             val journal: Journal = Journal(
-                mainJournalContent = fragmentEditDiaryBinding.diaryBody.toString(),
+                mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
                 journalLocation = "Test", // TODO: For now, just set to test
                 journalCategory = journalCategory,
                 journalWeather = journalWeather,

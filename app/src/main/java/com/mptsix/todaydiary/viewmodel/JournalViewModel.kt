@@ -30,7 +30,7 @@ class JournalViewModel: ViewModel(){
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
 
     // Used in DiaryFragment
-    var isJournalExistsByTimeStamp: MutableLiveData<Boolean> = MutableLiveData()
+    var isJournalExistsByTimeStamp: MutableLiveData<Journal> = MutableLiveData()
 
     fun getByteArray(uri: Uri, context: Context): ByteArray {
         val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir).apply {
@@ -85,15 +85,16 @@ class JournalViewModel: ViewModel(){
 
     fun isJournalExists(timeStamp: Long) {
         viewModelScope.launch {
-            runCatching {
+            val journal: Journal? = runCatching {
                 withContext(Dispatchers.IO) {
                     ServerRepository.getJournal(timeStamp)
                 }
             }.onFailure {
                 Log.e(this::class.java.simpleName, "Error: ${it.stackTraceToString()}")
-                handleJournalNotExists()
-            }.onSuccess {
-                handleJournalExists()
+            }.getOrNull()
+
+            withContext(Dispatchers.Main) {
+                isJournalExistsByTimeStamp.value = journal
             }
         }
 
@@ -111,17 +112,5 @@ class JournalViewModel: ViewModel(){
             DisplayTransition.REQUEST_EDIT,
             timeStamp
         )
-    }
-
-    private suspend fun handleJournalNotExists() {
-        withContext(Dispatchers.Main) {
-            isJournalExistsByTimeStamp.value = false
-        }
-    }
-
-    private suspend fun handleJournalExists() {
-        withContext(Dispatchers.Main) {
-            isJournalExistsByTimeStamp.value = true
-        }
     }
 }
