@@ -1,5 +1,7 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import javax.xml.bind.DatatypeConverter
 
 class DiaryFragment : Fragment() {
     // Passed
@@ -56,12 +59,16 @@ class DiaryFragment : Fragment() {
 
     private fun updateButtonVisibility() {
         if (journal == null) {
+            fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.GONE
             fragmentDiaryBinding.modifyBtn.visibility = View.GONE
+            fragmentDiaryBinding.diaryPicture.visibility = View.GONE
             fragmentDiaryBinding.addDiary.visibility = View.VISIBLE
         } else {
-            showDiary()
+            fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.VISIBLE
+            fragmentDiaryBinding.diaryPicture.visibility = View.GONE
             fragmentDiaryBinding.addDiary.visibility = View.GONE
             fragmentDiaryBinding.modifyBtn.visibility = View.VISIBLE
+            showDiary()
         }
     }
 
@@ -75,7 +82,15 @@ class DiaryFragment : Fragment() {
 
     private fun showDiary() {
         journal?.let {
-            fragmentDiaryBinding.diaryBody.text = it.mainJournalContent
+            fragmentDiaryBinding.diaryCategoryView.text = it.journalCategory
+            fragmentDiaryBinding.weatherView.text = it.journalWeather
+            fragmentDiaryBinding.locationView.text = it.journalLocation
+            fragmentDiaryBinding.diaryMainContent.text = it.mainJournalContent
+            if (it.journalImage.imageFile != null) {
+                val decodedArray: ByteArray = DatatypeConverter.parseBase64Binary(it.journalImage.imageFile)
+                val bitmapTmp: Bitmap = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.size)
+                fragmentDiaryBinding.diaryPicture.setImageBitmap(bitmapTmp)
+            }
         }
     }
 }
