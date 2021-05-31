@@ -28,6 +28,7 @@ class EditDiaryFragment : Fragment() {
 
     // Diary Target Date
     private var journalTimeStamp: Long? = null
+    private var journalWriteMode: Boolean = false // true for write, false for edit
 
     private val journalViewModel: JournalViewModel by activityViewModels()
 
@@ -40,7 +41,9 @@ class EditDiaryFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         journalTimeStamp = arguments?.getLong("timeStamp")
+        journalWriteMode = arguments?.getBoolean("modeType") ?: false
         Log.d(this::class.java.simpleName, "Target Time Stamp: $journalTimeStamp")
+        Log.d(this::class.java.simpleName, "Target Mode: $journalWriteMode")
         _fragmentEditDiaryBinding = FragmentEditDiaryBinding.inflate(inflater, container, false)
         return fragmentEditDiaryBinding.root
     }
@@ -52,6 +55,7 @@ class EditDiaryFragment : Fragment() {
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
+        applyMode()
         //getLocation()
     }
 
@@ -60,6 +64,20 @@ class EditDiaryFragment : Fragment() {
         super.onDestroyView()
 
         _fragmentEditDiaryBinding = null
+    }
+
+    private fun applyMode() {
+        if (!journalWriteMode) {
+            journalViewModel.journalCache?.let {
+                fragmentEditDiaryBinding.diaryBody.setText(it.mainJournalContent)
+            }
+        }
+        fragmentEditDiaryBinding.editText4.isEnabled = journalWriteMode
+        fragmentEditDiaryBinding.categorySpinner.isEnabled = journalWriteMode
+        fragmentEditDiaryBinding.getLocationBtn.isEnabled = journalWriteMode
+        fragmentEditDiaryBinding.getImageBtn.isEnabled = journalWriteMode
+        fragmentEditDiaryBinding.weatherSpinner.isEnabled = journalWriteMode
+        fragmentEditDiaryBinding.diaryBody.isEnabled = true
     }
 
     private fun init() {
@@ -81,17 +99,21 @@ class EditDiaryFragment : Fragment() {
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
         }// 버튼 클릭 시 ImageActivity 호출
         fragmentEditDiaryBinding.submitBtn.setOnClickListener {
-            val journal: Journal = Journal(
-                mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
-                journalLocation = "Test", // TODO: For now, just set to test
-                journalCategory = journalCategory,
-                journalWeather = journalWeather,
-                journalDate = journalTimeStamp!!,
-                journalImage = JournalImage(
-                    journalImage?.imageFile
+            val journal: Journal = if (!journalWriteMode) {
+                journalViewModel.journalCache!!.mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString()
+                journalViewModel.journalCache!!
+            } else {
+                Journal(
+                    mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
+                    journalLocation = "Test", // TODO: For now, just set to test
+                    journalCategory = journalCategory,
+                    journalWeather = journalWeather,
+                    journalDate = journalTimeStamp!!,
+                    journalImage = JournalImage(
+                        journalImage?.imageFile
+                    )
                 )
-            )
-
+            }
             journalViewModel.registerJournal(journal)
         }
 

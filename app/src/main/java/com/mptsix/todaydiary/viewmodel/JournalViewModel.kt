@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.model.ServerRepository
@@ -22,6 +23,9 @@ class JournalViewModel: ViewModel(){
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
+
+    // Journal Cache
+    var journalCache: Journal? = null
 
     // Used in DiaryFragment
     var isJournalExistsByTimeStamp: MutableLiveData<Journal> = MutableLiveData()
@@ -101,10 +105,10 @@ class JournalViewModel: ViewModel(){
         )
     }
 
-    fun requestEditPage(timeStamp: Long){
+    fun requestEditPage(diaryWriteMode: DiaryWriteMode){
         displayTransition.value = Transition(
             DisplayTransition.REQUEST_EDIT,
-            timeStamp
+            diaryWriteMode
         )
     }
 }

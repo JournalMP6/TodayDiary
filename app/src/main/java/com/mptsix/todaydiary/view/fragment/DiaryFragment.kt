@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
@@ -50,10 +51,12 @@ class DiaryFragment : Fragment() {
 
     private fun init() {
         fragmentDiaryBinding.addDiary.setOnClickListener {
-            journalViewModel.requestEditPage(journalTimeStamp!!)
+            journalViewModel.journalCache = null
+            journalViewModel.requestEditPage(DiaryWriteMode(journalTimeStamp!!, true))
         }
         fragmentDiaryBinding.modifyBtn.setOnClickListener {
-            journalViewModel.requestEditPage(journalTimeStamp!!)
+            journalViewModel.journalCache = journal
+            journalViewModel.requestEditPage(DiaryWriteMode(journalTimeStamp!!, false))
         }
     }
 

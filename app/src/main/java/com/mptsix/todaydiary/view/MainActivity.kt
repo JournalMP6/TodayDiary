@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.mptsix.todaydiary.R
+import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.databinding.ActivityMainBinding
 import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.view.fragment.DiaryFragment
@@ -40,7 +41,11 @@ class MainActivity : AppCompatActivity() {
                 }
 
                 DisplayTransition.REQUEST_EDIT -> {
-                    val bundle: Bundle = Bundle().apply {putLong("timeStamp", it.data as Long)}
+                    val diaryMode: DiaryWriteMode = it.data as DiaryWriteMode
+                    val bundle: Bundle = Bundle().apply {
+                        putLong("timeStamp", diaryMode.timeStamp)
+                        putBoolean("modeType", diaryMode.modeType)
+                    }
                     val editDiaryFragment: EditDiaryFragment = EditDiaryFragment().apply {
                         arguments = bundle
                     }
