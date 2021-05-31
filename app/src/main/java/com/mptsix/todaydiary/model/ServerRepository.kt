@@ -62,13 +62,6 @@ object ServerRepository {
         }.getOrThrow()
     }
 
-    fun editJournal(journal: Journal) {
-        val editJournalApi: Call<ResponseBody> =
-            serverApi.editJournal(getTokenHeader(), journal)
-
-        editJournalApi.execute()
-    }
-
     private fun getTokenHeader(): HashMap<String, Any?> = HashMap<String, Any?>().apply {
         put("X-AUTH-TOKEN", userToken)
     }

@@ -22,7 +22,4 @@ interface ServerAPI {
 
     @GET("/api/v1/journal/{time}")
     fun getJournal(@HeaderMap header: HashMap<String, Any?>, @Path("time") journalTime: Long): Call<Journal>
-
-    @PUT("/api/v1/journal")
-    fun editJournal(@HeaderMap header: HashMap<String, Any?>, @Body journal: Journal): Call<ResponseBody>
 }

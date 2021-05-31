@@ -66,21 +66,6 @@ class JournalViewModel: ViewModel(){
         }
     }
 
-    fun editJournal(journal: Journal) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-
-                runCatching {
-                    ServerRepository.editJournal(journal)
-                }.onSuccess {
-                    isJournalEdited.value = true
-                }.onFailure {
-                    isJournalEdited.value = false
-                }
-            }
-        }
-    }
-
     fun isJournalExists(timeStamp: Long) {
         viewModelScope.launch {
             val journal: Journal? = runCatching {
