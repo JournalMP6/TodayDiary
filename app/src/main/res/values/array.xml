@@ -8,10 +8,9 @@
         <item>우리 집의 위치는?</item>
     </string-array>
     <string-array name="category">
-        <item>category1</item>
-        <item>category2</item>
-        <item>category3</item>
-        <item>category4</item>
+        <item>THANKS_JOURNAL</item>
+        <item>ACHIEVEMENT_JOURNAL</item>
+        <item>EMOTIONAL_JOURNAL</item>
     </string-array>
     <string-array name="weather">
         <item>Sunny</item>

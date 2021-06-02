@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.response.Journal
+import com.mptsix.todaydiary.data.response.JournalCategory
 import com.mptsix.todaydiary.data.response.JournalImage
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.MapActivity
@@ -83,10 +84,6 @@ class EditDiaryFragment : Fragment() {
     private fun init() {
         lateinit var intent: Intent
         lateinit var journalLocation: String
-        val journalCategory =
-            fragmentEditDiaryBinding.categorySpinner.selectedItem.toString() // diary category
-        val journalWeather =
-            fragmentEditDiaryBinding.weatherSpinner.selectedItem.toString() // diary weather
         fragmentEditDiaryBinding.getLocationBtn.setOnClickListener {
             intent = Intent(activity, MapActivity::class.java)
             startActivityForResult(intent,0)
@@ -103,6 +100,15 @@ class EditDiaryFragment : Fragment() {
                 journalViewModel.journalCache!!.mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString()
                 journalViewModel.journalCache!!
             } else {
+                // Category
+                val journalCategory: JournalCategory = categorySelectionToEnum(
+                    fragmentEditDiaryBinding.categorySpinner.selectedItem.toString()
+                )
+
+                // Diary
+                val journalWeather: String =
+                    fragmentEditDiaryBinding.weatherSpinner.selectedItem.toString()
+
                 Journal(
                     mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
                     journalLocation = "Test", // TODO: For now, just set to test
@@ -138,6 +144,15 @@ class EditDiaryFragment : Fragment() {
         }
         categorySpinner.adapter = category
         weatherSpinner.adapter = weather
+    }
+
+    private fun categorySelectionToEnum(selection: String): JournalCategory {
+        return when (selection) {
+            JournalCategory.ACHIEVEMENT_JOURNAL.name -> JournalCategory.ACHIEVEMENT_JOURNAL
+            JournalCategory.THANKS_JOURNAL.name -> JournalCategory.THANKS_JOURNAL
+            JournalCategory.EMOTIONAL_JOURNAL.name -> JournalCategory.EMOTIONAL_JOURNAL
+            else -> JournalCategory.EMOTIONAL_JOURNAL
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

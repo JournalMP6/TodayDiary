@@ -85,7 +85,7 @@ class DiaryFragment : Fragment() {
 
     private fun showDiary() {
         journal?.let {
-            fragmentDiaryBinding.diaryCategoryView.text = it.journalCategory
+            fragmentDiaryBinding.diaryCategoryView.text = it.journalCategory.name
             fragmentDiaryBinding.weatherView.text = it.journalWeather
             fragmentDiaryBinding.locationView.text = it.journalLocation
             fragmentDiaryBinding.diaryMainContent.text = it.mainJournalContent
