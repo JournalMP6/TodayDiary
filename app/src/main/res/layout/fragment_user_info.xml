@@ -32,7 +32,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:gravity="center"
-                android:textSize="25dp"
+                android:textSize="20dp"
                 android:textColor="@color/black"
                 android:layout_weight="2" />
 
@@ -65,9 +65,8 @@
 
             </LinearLayout>
         </LinearLayout>
-
         <org.eazegraph.lib.charts.PieChart
-            android:id="@+id/piechart"
+            android:id="@+id/pieChart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

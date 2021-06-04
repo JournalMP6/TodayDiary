@@ -12,6 +12,7 @@ import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.view.fragment.DiaryFragment
 import com.mptsix.todaydiary.view.fragment.EditDiaryFragment
 import com.mptsix.todaydiary.view.fragment.MainFragment
+import com.mptsix.todaydiary.view.fragment.UserInfoFragment
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -26,7 +27,8 @@ class MainActivity : AppCompatActivity() {
         initObserver()
 
         // Start with Main Fragment
-        commitFragment(MainFragment())
+        //commitFragment(MainFragment())
+        commitFragment(UserInfoFragment())
     }
 
     private fun initObserver() {
