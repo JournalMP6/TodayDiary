@@ -15,7 +15,7 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
 
             <TextView
@@ -69,18 +69,15 @@
             android:id="@+id/pieChart"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:padding="6dp" />
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="2"/>
+        android:layout_weight="1.5">
+
         <TextView
             android:id="@+id/followBtn"
             android:layout_width="0dp"
@@ -91,6 +88,110 @@
             android:fontFamily="@font/fontstyle"
             android:layout_height="match_parent"
             android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="180dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical">
+
+                <!--View to display the yellow color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFA726" />
+
+                <!--Text view to display R -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fontstyle"
+                    android:textColor="@color/black"
+                    android:paddingLeft="10dp"
+                    android:text="Category1" />
+
+            </LinearLayout>
+
+            <!--Linear layout to display Python-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the green color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#66BB6A"/>
+
+                <!--Text view to display python text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Category2"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fontstyle"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <!--Linear layout to display C++-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the red color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#EF5350"/>
+
+                <!--Text view to display C++ text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fontstyle"
+                    android:textColor="@color/black"
+                    android:text="Category3"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <!--Linear layout to display Java-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the blue color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#29B6F6"/>
+
+                <!--Text view to display Java text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fontstyle"
+                    android:text="Category4"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

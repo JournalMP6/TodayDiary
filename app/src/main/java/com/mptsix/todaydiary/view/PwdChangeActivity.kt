@@ -22,10 +22,10 @@ class PwdChangeActivity : AppCompatActivity() {
     private fun pwdChcek(){
         //if (binding.presentPwd ==) -> 현재 비밀번호와 서버에서 받아온 비밀번호가 일치하는지 확인
 
-        if(binding.changePwd.text != binding.checkPwd.text){// 변경할 비밀번호와 비밀번호 확인이 같은지 확인
-            Toast.makeText(this, "비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
-        }else{
+        if(binding.changePwd.text.toString() == binding.checkPwd.text.toString()){// 변경할 비밀번호와 비밀번호 확인이 같은지 확인
             finish()
+        }else{
+            Toast.makeText(this, "비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
         }
     }
 

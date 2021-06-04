@@ -27,8 +27,7 @@ class MainActivity : AppCompatActivity() {
         initObserver()
 
         // Start with Main Fragment
-        //commitFragment(MainFragment())
-        commitFragment(UserInfoFragment())
+        commitFragment(MainFragment())
     }
 
     private fun initObserver() {

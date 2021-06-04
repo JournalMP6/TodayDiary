@@ -24,9 +24,9 @@
         <EditText
             android:id="@+id/presentPwd"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:fontFamily="@font/fontstyle"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:layout_weight="5"/>
 
     </LinearLayout>
@@ -48,9 +48,9 @@
         <EditText
             android:id="@+id/changePwd"
             android:layout_width="0dp"
-            android:layout_height="50dp"
+            android:layout_height="60dp"
             android:fontFamily="@font/fontstyle"
-            android:textSize="15dp"
+            android:textSize="20dp"
             android:layout_weight="5"/>
 
     </LinearLayout>
@@ -72,8 +72,8 @@
         <EditText
             android:id="@+id/checkPwd"
             android:layout_width="0dp"
-            android:layout_height="50dp"
-            android:textSize="15dp"
+            android:layout_height="60dp"
+            android:textSize="20dp"
             android:fontFamily="@font/fontstyle"
             android:layout_weight="5"/>
 

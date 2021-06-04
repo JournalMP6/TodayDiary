@@ -60,11 +60,11 @@ class UserInfoFragment : Fragment() {
                 }
             }
         }
-    }// 팔로우 버튼을 누르면 follow일 시 followed로 변경, followed일 시 follow로 변경
+    }// 팔로우 버튼을 누르면 follow일 시 followed로 변경, followed일 시 follow로 변경 *****누른 유저와 눌리는 유저의 정보가 있어야함*****
 
     private fun initPieChart(){
         fragmentUserInfoBinding.apply {
-            pieChart.addPieSlice(
+            pieChart.addPieSlice(//_value 값에서 %를 계산해 넣어야함
                 PieModel("Category1", 1.0f, Color.parseColor("#FFA726"))
             )
             pieChart.addPieSlice(
