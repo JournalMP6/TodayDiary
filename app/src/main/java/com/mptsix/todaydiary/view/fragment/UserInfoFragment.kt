@@ -9,10 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.R
-import com.mptsix.todaydiary.databinding.FragmentMainBinding
 import com.mptsix.todaydiary.databinding.FragmentUserInfoBinding
 import com.mptsix.todaydiary.view.PwdChangeActivity
-import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import org.eazegraph.lib.charts.PieChart
 import org.eazegraph.lib.models.PieModel
 
@@ -43,7 +41,7 @@ class UserInfoFragment : Fragment() {
 
         }
     }// 버튼 클릭 시, 서버에서 유저 삭제
-    
+
     private fun changeUserPwd(){
         lateinit var intent: Intent
         fragmentUserInfoBinding.changePwd.setOnClickListener {
