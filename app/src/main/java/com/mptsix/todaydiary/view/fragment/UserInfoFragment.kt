@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,6 +11,7 @@ import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.FragmentMainBinding
 import com.mptsix.todaydiary.databinding.FragmentUserInfoBinding
+import com.mptsix.todaydiary.view.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import org.eazegraph.lib.charts.PieChart
 import org.eazegraph.lib.models.PieModel
@@ -33,18 +35,34 @@ class UserInfoFragment : Fragment() {
         initPieChart()
         changeUserPwd()
         deleteUser()
+        followUser()
     }
 
     private fun deleteUser(){
         fragmentUserInfoBinding.deleteUser.setOnClickListener {
 
         }
-    }
+    }// 버튼 클릭 시, 서버에서 유저 삭제
+    
     private fun changeUserPwd(){
+        lateinit var intent: Intent
         fragmentUserInfoBinding.changePwd.setOnClickListener {
-
+            intent = Intent(activity, PwdChangeActivity::class.java)
+            startActivity(intent)
         }
-    }
+    }//비밀번호 변경 클릭 시, 비밀번호 변경 activity로 화면 전환
+
+    private fun followUser(){
+        fragmentUserInfoBinding.apply {
+            followBtn.setOnClickListener {
+                if(followBtn.text == "Follow"){
+                    followBtn.text = "Followed"
+                }else{
+                    followBtn.text = "Follow"
+                }
+            }
+        }
+    }// 팔로우 버튼을 누르면 follow일 시 followed로 변경, followed일 시 follow로 변경
 
     private fun initPieChart(){
         fragmentUserInfoBinding.apply {
