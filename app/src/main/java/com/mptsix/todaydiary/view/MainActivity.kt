@@ -2,6 +2,7 @@ package com.mptsix.todaydiary.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -62,9 +63,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun commitFragment(targetFragment: Fragment, replace: Boolean = false) {
         supportFragmentManager.beginTransaction().apply {
-            if (replace) addToBackStack(null)
+            //if (replace) addToBackStack(null)
             replace(R.id.mainViewContainer, targetFragment)
+            if(targetFragment != MainFragment()){
+                Log.d("checkBack", supportFragmentManager.backStackEntryCount.toString())
+                addToBackStack(null)
+            }
             commit()
         }
+    }
+
+    override fun onBackPressed() {
+        if(supportFragmentManager.backStackEntryCount  > 1){
+            supportFragmentManager.popBackStack()
+            return
+        }else{
+            finish()
+        }
+        super.onBackPressed()
     }
 }
