@@ -6,5 +6,5 @@ data class Transition(
 )
 
 enum class DisplayTransition {
-    REQUEST_EDIT, REQUEST_ADD, REQUEST_DIARY
+    REQUEST_EDIT, REQUEST_ADD, REQUEST_DIARY, REQUEST_USERINFO
 }

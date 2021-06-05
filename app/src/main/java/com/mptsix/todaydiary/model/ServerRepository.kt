@@ -18,7 +18,7 @@ object ServerRepository {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.25.40:8080"
+    private const val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -75,19 +75,19 @@ object ServerRepository {
         }.getOrThrow()
     }
 
-    fun changePassword(passwordChangeRequest: PasswordChangeRequest):ResponseBody{
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest) {
         val changePasswordApi:Call<ResponseBody> = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
-        return kotlin.runCatching {
-            changePasswordApi.execute().body()!!
+        kotlin.runCatching {
+            changePasswordApi.execute()
         }.getOrThrow()
     }
 
 
-    fun removeUser():ResponseBody {
+    fun removeUser() {
         val removeUserApi: Call<ResponseBody> = serverApi.removeUser(getTokenHeader())
 
-        return kotlin.runCatching {
-            removeUserApi.execute().body()!!
+        kotlin.runCatching {
+            removeUserApi.execute()
         }.getOrThrow()
     }
 }

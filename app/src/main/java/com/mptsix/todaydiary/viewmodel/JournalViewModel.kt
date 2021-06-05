@@ -96,4 +96,10 @@ class JournalViewModel: ViewModel(){
             diaryWriteMode
         )
     }
+
+    fun requestUserInfoPage() {
+        displayTransition.value = Transition(
+            DisplayTransition.REQUEST_USERINFO
+        )
+    }
 }

@@ -1,31 +1,42 @@
 package com.mptsix.todaydiary
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
+import com.mptsix.todaydiary.data.internal.JournalSealed
+import com.mptsix.todaydiary.databinding.RowBinding
 
 class JournalRVAdapter : RecyclerView.Adapter<JournalRVAdapter.ViewHolder>() {
+    var journalList: List<JournalSealed> = listOf()
+        set(value) {
+            Log.d(this::class.java.simpleName, "Setting Journal Sealed")
+            value.forEach {
+                Log.d(this::class.java.simpleName, it.mainContent)
+            }
+            field = value
+            notifyDataSetChanged()
+        }
 
-    //private val profileViewModel: ProfileViewModel by viewModels()
-
-    inner class ViewHolder(journal: View):RecyclerView.ViewHolder(journal){
-        val journalBody : TextView = journal.findViewById(R.id.journalBody)
+    inner class ViewHolder(private val rowBinding: RowBinding):RecyclerView.ViewHolder(rowBinding.root){
+        fun initView(journalSealed: JournalSealed) {
+            Log.d(this::class.java.simpleName, "Inititating view!")
+            rowBinding.journalBody.text = journalSealed.mainContent
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalRVAdapter.ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.row, parent, false)
-        return ViewHolder(view)
+        return ViewHolder(
+            RowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: JournalRVAdapter.ViewHolder, position: Int) {
-        holder.journalBody.text// = 가져온 일기 내용을 삽입
+        holder.initView(journalList[position])
     }
 
-    override fun getItemCount(): Int {
-        return 3
-    //return profileViewModel.sealedData.size
-    }
+    override fun getItemCount(): Int  = journalList.size
 }

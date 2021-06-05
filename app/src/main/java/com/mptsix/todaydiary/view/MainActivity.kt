@@ -53,9 +53,9 @@ class MainActivity : AppCompatActivity() {
                     commitFragment(editDiaryFragment, true)
                 }
 
-                /*DisplayTransition.REQUSET_USERINFO->{
-                    commitFragment(userInfoFragment, true)
-                } -> UserInfoFragment open*/
+                DisplayTransition.REQUEST_USERINFO->{
+                    commitFragment(UserInfoFragment(), true)
+                }
             }
         }
     }

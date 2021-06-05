@@ -36,6 +36,10 @@ class MainFragment: Fragment() {
             val currentTimeStamp: Long = simpleDateFormat.parse("${year}-${month+1}-$dayOfMonth").time
             journalViewModel.requestDiaryPage(currentTimeStamp)
         }
+
+        fragmentMainBinding.userInfoBtn.setOnClickListener {
+            journalViewModel.requestUserInfoPage()
+        }
     }
 
     override fun onDestroyView() {

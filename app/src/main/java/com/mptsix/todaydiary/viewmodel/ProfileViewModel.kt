@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -18,11 +19,11 @@ class ProfileViewModel : ViewModel(){
 
     fun removeUser(){
         viewModelScope.launch {
-            lateinit var userRemoveResponse : ResponseBody
             withContext(Dispatchers.IO){
                 runCatching {
-                    userRemoveResponse = ServerRepository.removeUser()
+                    ServerRepository.removeUser()
                 }.onFailure {
+                    Log.e(this::class.java.simpleName, it.stackTraceToString())
                     withContext(Dispatchers.Main){
                         userRemoveSucceed.value = false
                     }
@@ -37,23 +38,27 @@ class ProfileViewModel : ViewModel(){
 
     fun getSealedData(){
         viewModelScope.launch {
-            lateinit var sealData:UserSealed
-            withContext(Dispatchers.IO){
-                sealData = ServerRepository.getSealedUser()
-            }
-            withContext(Dispatchers.Main){
-                sealedData.value = sealData
+            withContext(Dispatchers.IO) {
+                runCatching {
+                    ServerRepository.getSealedUser()
+                }.onSuccess {
+                    withContext(Dispatchers.Main) {
+                        sealedData.value = it
+                    }
+                }.onFailure {
+                    Log.e(this::class.java.simpleName, it.stackTraceToString())
+                }
             }
         }
     }
 
     fun changePassword(changePasswordRequest: PasswordChangeRequest){
         viewModelScope.launch {
-            lateinit var changePassword : ResponseBody
             withContext(Dispatchers.IO){
                 runCatching {
-                    changePassword = ServerRepository.changePassword(changePasswordRequest)
+                    ServerRepository.changePassword(changePasswordRequest)
                 }.onFailure {
+                    Log.e(this::class.java.simpleName, it.stackTraceToString())
                     withContext(Dispatchers.Main){
                         isPasswordChangeSucceed.value =false
                     }

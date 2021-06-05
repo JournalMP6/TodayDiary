@@ -5,5 +5,4 @@ import com.mptsix.todaydiary.data.internal.JournalCategory
 data class JournalCategoryResponse(
     var category: JournalCategory,
     var count: Int
-
-    )
+)
