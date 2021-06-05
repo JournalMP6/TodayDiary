@@ -24,6 +24,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="2"
                 android:gravity="center"
+                android:fontFamily="@font/fontstyle"
                 android:textColor="@color/black"
                 android:textSize="30dp" />
 
@@ -33,6 +34,7 @@
                 android:layout_height="0dp"
                 android:gravity="center"
                 android:textSize="20dp"
+                android:fontFamily="@font/fontstyle"
                 android:textColor="@color/black"
                 android:layout_weight="2" />
 
@@ -92,7 +94,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:layout_marginLeft="180dp"
+            android:layout_marginLeft="80dp"
             android:orientation="vertical"
             android:gravity="center_vertical"
             >
@@ -115,7 +117,7 @@
                     android:fontFamily="@font/fontstyle"
                     android:textColor="@color/black"
                     android:paddingLeft="10dp"
-                    android:text="Category1" />
+                    android:text="THANKS_JOURNAL" />
 
             </LinearLayout>
 
@@ -136,7 +138,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Category2"
+                    android:text="ACHIEVEMENT_JOURNAL"
                     android:textColor="@color/black"
                     android:fontFamily="@font/fontstyle"
                     android:paddingLeft="10dp"/>
@@ -162,7 +164,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fontstyle"
                     android:textColor="@color/black"
-                    android:text="Category3"
+                    android:text="EMOTIONAL_JOURNAL"
                     android:paddingLeft="10dp"/>
 
             </LinearLayout>
