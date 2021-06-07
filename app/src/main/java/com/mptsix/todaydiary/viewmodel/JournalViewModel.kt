@@ -68,16 +68,20 @@ class JournalViewModel: ViewModel(){
 
     fun isJournalExists(timeStamp: Long) {
         viewModelScope.launch {
-            val journal: Journal? = runCatching {
-                withContext(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                runCatching {
                     ServerRepository.getJournal(timeStamp)
+                }.onSuccess {
+                    Log.d(this::class.java.simpleName, "Found Journal")
+                    withContext(Dispatchers.Main) {
+                        isJournalExistsByTimeStamp.value = it
+                    }
+                }.onFailure {
+                    Log.e(this::class.java.simpleName, it.stackTraceToString())
+                    withContext(Dispatchers.Main) {
+                        isJournalExistsByTimeStamp.value = null
+                    }
                 }
-            }.onFailure {
-                Log.e(this::class.java.simpleName, "Error: ${it.stackTraceToString()}")
-            }.getOrNull()
-
-            withContext(Dispatchers.Main) {
-                isJournalExistsByTimeStamp.value = journal
             }
         }
 

@@ -62,13 +62,15 @@ class DiaryFragment : Fragment() {
 
     private fun updateButtonVisibility() {
         if (journal == null) {
+            Log.d(this::class.java.simpleName, "Found NULL")
             fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.GONE
             fragmentDiaryBinding.modifyBtn.visibility = View.GONE
             fragmentDiaryBinding.diaryPicture.visibility = View.GONE
             fragmentDiaryBinding.addDiary.visibility = View.VISIBLE
         } else {
+            Log.d(this::class.java.simpleName, "Found Journal")
             fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.VISIBLE
-            fragmentDiaryBinding.diaryPicture.visibility = View.GONE
+            fragmentDiaryBinding.diaryPicture.visibility = View.VISIBLE
             fragmentDiaryBinding.addDiary.visibility = View.GONE
             fragmentDiaryBinding.modifyBtn.visibility = View.VISIBLE
             showDiary()
@@ -77,7 +79,7 @@ class DiaryFragment : Fragment() {
 
     private fun initObserver() {
         journalViewModel.isJournalExistsByTimeStamp.observe(viewLifecycleOwner) {
-            Log.e(this::class.java.simpleName, "Journal Exists: ${(journal != null)}")
+            Log.d(this::class.java.simpleName, "Journal Exists: ${(it != null)}")
             journal = it
             updateButtonVisibility()
         }
