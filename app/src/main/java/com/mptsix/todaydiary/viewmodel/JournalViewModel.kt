@@ -31,19 +31,12 @@ class JournalViewModel: ViewModelHelper() {
     var isJournalExistsByTimeStamp: MutableLiveData<Journal> = MutableLiveData()
 
     fun getByteArray(uri: Uri, context: Context): ByteArray {
-        val file: File = File.createTempFile("SOME_RANDOM_IMAGE",null,context.cacheDir).apply {
-            deleteOnExit()
+        val fileInputStream: InputStream = context.contentResolver.openInputStream(uri) ?: run {
+            Log.e(this::class.java.simpleName, "Cannot open input stream. Input Stream returned NULL!")
+            throw IllegalStateException("Cannot open input stream. Input Stream returned NULL!")
         }
-        val fileInputStream: InputStream = context.contentResolver.openInputStream(uri)!!
 
-        FileOutputStream(file).use { outputStream ->
-            var read: Int =-1
-            val bytes = ByteArray(1024)
-            while(fileInputStream.read(bytes).also{read = it} != -1){
-                outputStream.write(bytes,0,read)
-            }
-        }
-        return file.readBytes()
+        return fileInputStream.readBytes()
     }
 
     fun registerJournal(journal: Journal) {
