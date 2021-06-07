@@ -40,6 +40,9 @@ class MainFragment: Fragment() {
         fragmentMainBinding.userInfoBtn.setOnClickListener {
             journalViewModel.requestUserInfoPage()
         }
+        fragmentMainBinding.userSearchBtn.setOnClickListener {
+            journalViewModel.requestUserSearchPage()
+        }
     }
 
     override fun onDestroyView() {

@@ -106,4 +106,10 @@ class JournalViewModel: ViewModel(){
             DisplayTransition.REQUEST_USERINFO
         )
     }
+
+    fun requestUserSearchPage(){
+        displayTransition.value = Transition(
+            DisplayTransition.REQUEST_SEARCH
+        )
+    }
 }

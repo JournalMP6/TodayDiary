@@ -57,7 +57,7 @@
         app:srcCompat="@drawable/person" />
 
     <ImageView
-        android:id="@+id/searchBtn"
+        android:id="@+id/userSearchBtn"
         android:layout_width="37dp"
         android:layout_height="37dp"
         app:layout_constraintBottom_toBottomOf="parent"

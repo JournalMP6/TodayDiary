@@ -10,10 +10,7 @@ import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.databinding.ActivityMainBinding
 import com.mptsix.todaydiary.transition.DisplayTransition
-import com.mptsix.todaydiary.view.fragment.DiaryFragment
-import com.mptsix.todaydiary.view.fragment.EditDiaryFragment
-import com.mptsix.todaydiary.view.fragment.MainFragment
-import com.mptsix.todaydiary.view.fragment.UserInfoFragment
+import com.mptsix.todaydiary.view.fragment.*
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
 class MainActivity : AppCompatActivity() {
@@ -56,6 +53,10 @@ class MainActivity : AppCompatActivity() {
 
                 DisplayTransition.REQUEST_USERINFO->{
                     commitFragment(UserInfoFragment(), true)
+                }
+
+                DisplayTransition.REQUEST_SEARCH->{
+                    commitFragment(UserSearchFragment(), true)
                 }
             }
         }
