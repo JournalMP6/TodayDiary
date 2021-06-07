@@ -165,11 +165,12 @@ class EditDiaryFragment : Fragment() {
                 Toast.makeText(requireContext(), "fail",Toast.LENGTH_SHORT).show()
             }
         }else if(requestCode == 1){
-            val photoUri:Uri? = data?.data
-            journalImage = JournalImage(
-                DatatypeConverter.printBase64Binary(journalViewModel.getByteArray(photoUri!!, requireContext()))
-            )
-            Toast.makeText(requireContext(), photoUri.toString(),Toast.LENGTH_SHORT).show()
+            if (resultCode == Activity.RESULT_OK) {
+                val photoUri:Uri? = data?.data
+                journalImage = JournalImage(
+                    DatatypeConverter.printBase64Binary(journalViewModel.getByteArray(photoUri!!, requireContext()))
+                )
+            }
         }
     }
 }
