@@ -6,5 +6,5 @@ interface ServerRepositoryInterface {
     fun findUserByUserName(userName: String): List<UserFiltered>
     fun followUser(userId: String)
     fun unfollowUser(userId: String)
-    fun getFollowingUser()
+    fun getFollowingUser(): List<UserFiltered>
 }

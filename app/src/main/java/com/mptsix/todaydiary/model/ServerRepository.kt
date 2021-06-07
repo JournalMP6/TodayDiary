@@ -100,7 +100,7 @@ object ServerRepository: ServerRepositoryInterface {
         TODO("Not yet implemented")
     }
 
-    override fun getFollowingUser() {
+    override fun getFollowingUser(): List<UserFiltered> {
         TODO("Not yet implemented")
     }
 }
