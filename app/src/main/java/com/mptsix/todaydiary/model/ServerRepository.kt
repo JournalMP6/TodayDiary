@@ -15,7 +15,7 @@ object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.0.46:8080"
+    private const val URL = "http://192.168.35.112:8080"
 
     init {
         getInstance()
@@ -89,18 +89,34 @@ object ServerRepository: ServerRepositoryInterface {
     }
 
     override fun findUserByUserName(userName: String): List<UserFiltered> {
-        TODO("Not yet implemented")
+        val findUserApi:Call<List<UserFiltered>> = serverApi.findUserByName(getTokenHeader(), userName)
+
+        return kotlin.runCatching {
+            findUserApi.execute().body()!!
+        }.getOrThrow()
     }
 
     override fun followUser(userId: String) {
-        TODO("Not yet implemented")
+        val followUserApi: Call<ResponseBody> = serverApi.followUser(getTokenHeader(), userId)
+
+        kotlin.runCatching {
+            followUserApi.execute()
+        }
     }
 
     override fun unfollowUser(userId: String) {
-        TODO("Not yet implemented")
+        val unfollowApi : Call<ResponseBody> = serverApi.unfollowUser(getTokenHeader(), userId)
+
+        kotlin.runCatching {
+            unfollowApi.execute()
+        }
     }
 
     override fun getFollowingUser(): List<UserFiltered> {
-        TODO("Not yet implemented")
+        val getFollowingApi : Call<List<UserFiltered>> = serverApi.getFollowingUser(getTokenHeader())
+
+        return kotlin.runCatching {
+            getFollowingApi.execute().body()!!
+        }.getOrThrow()
     }
 }
