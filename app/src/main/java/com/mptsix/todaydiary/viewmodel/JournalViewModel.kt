@@ -19,7 +19,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
 
-class JournalViewModel: ViewModel(){
+class JournalViewModel: ViewModelHelper() {
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
@@ -47,44 +47,19 @@ class JournalViewModel: ViewModel(){
     }
 
     fun registerJournal(journal: Journal) {
-        viewModelScope.launch {
-            lateinit var registerJournal: JournalResponse
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    registerJournal = ServerRepository.registerJournal(journal)
-                }.onFailure {
-                    Log.e(this::class.java.simpleName, it.stackTraceToString())
-                    withContext(Dispatchers.Main) {
-                        isJournalSubmit.value = false
-                    }
-                }.onSuccess {
-                    withContext(Dispatchers.Main) {
-                        isJournalSubmit.value = true
-                    }
-                }
-            }
-        }
+        executeServerAndElse(
+            serverCallCore = {ServerRepository.registerJournal(journal)},
+            onSuccess = {isJournalSubmit.value = true},
+            onFailure = {isJournalSubmit.value = false}
+        )
     }
 
     fun isJournalExists(timeStamp: Long) {
-        viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    ServerRepository.getJournal(timeStamp)
-                }.onSuccess {
-                    Log.d(this::class.java.simpleName, "Found Journal")
-                    withContext(Dispatchers.Main) {
-                        isJournalExistsByTimeStamp.value = it
-                    }
-                }.onFailure {
-                    Log.e(this::class.java.simpleName, it.stackTraceToString())
-                    withContext(Dispatchers.Main) {
-                        isJournalExistsByTimeStamp.value = null
-                    }
-                }
-            }
-        }
-
+        executeServerAndElse(
+            serverCallCore = {ServerRepository.getJournal(timeStamp)},
+            onSuccess = {isJournalExistsByTimeStamp.value = it},
+            onFailure = {isJournalExistsByTimeStamp.value = null}
+        )
     }
 
     fun requestDiaryPage(timeStamp: Long) {
