@@ -24,6 +24,7 @@
         android:layout_marginBottom="244dp"
         android:fontFamily="@font/fontstyle"
         android:gravity="center"
+        android:textColor="@color/black"
         android:text="오늘의 기록"
         android:textSize="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
