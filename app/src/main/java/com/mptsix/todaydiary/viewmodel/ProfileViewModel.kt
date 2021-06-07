@@ -19,57 +19,53 @@ class ProfileViewModel : ViewModel(){
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var followingUserList: MutableLiveData<List<UserFiltered>> = MutableLiveData()
 
+    private suspend fun<T> executeServerAndElse(serverCallCore: () -> T, onSuccess: suspend(successValue: T)->Unit, onFailure: suspend(failedThrowable: Throwable)->Unit) {
+        withContext(Dispatchers.IO) {
+            runCatching {
+                serverCallCore()
+            }.onFailure {
+                Log.e(this::class.java.simpleName, "Error communicating with server")
+                Log.e(this::class.java.simpleName, it.stackTraceToString())
+                afterExecute(it, onFailure)
+            }.onSuccess {
+                afterExecute(it, onSuccess)
+            }
+        }
+    }
+
+    private suspend fun<T> afterExecute(successValue: T, afterServerReplyCallback: suspend(successValue: T)->Unit) {
+        withContext(Dispatchers.Main) {
+            afterServerReplyCallback(successValue)
+        }
+    }
+
     fun removeUser(){
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                runCatching {
-                    ServerRepository.removeUser()
-                }.onFailure {
-                    Log.e(this::class.java.simpleName, it.stackTraceToString())
-                    withContext(Dispatchers.Main){
-                        userRemoveSucceed.value = false
-                    }
-                }.onSuccess {
-                    withContext(Dispatchers.Main){
-                        userRemoveSucceed.value = true
-                    }
-                }
-            }
+            executeServerAndElse(
+                serverCallCore = {ServerRepository.removeUser()},
+                onSuccess = {userRemoveSucceed.value = true},
+                onFailure = {userRemoveSucceed.value = false}
+            )
         }
     }
 
     fun getSealedData(){
         viewModelScope.launch {
-            withContext(Dispatchers.IO) {
-                runCatching {
-                    ServerRepository.getSealedUser()
-                }.onSuccess {
-                    withContext(Dispatchers.Main) {
-                        sealedData.value = it
-                    }
-                }.onFailure {
-                    Log.e(this::class.java.simpleName, it.stackTraceToString())
-                }
-            }
+            executeServerAndElse(
+                serverCallCore = {ServerRepository.getSealedUser()},
+                onSuccess = {sealedData.value = it},
+                onFailure = {}
+            )
         }
     }
 
     fun changePassword(changePasswordRequest: PasswordChangeRequest){
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                runCatching {
-                    ServerRepository.changePassword(changePasswordRequest)
-                }.onFailure {
-                    Log.e(this::class.java.simpleName, it.stackTraceToString())
-                    withContext(Dispatchers.Main){
-                        isPasswordChangeSucceed.value =false
-                    }
-                }.onSuccess {
-                    withContext(Dispatchers.Main){
-                        isPasswordChangeSucceed.value =true
-                    }
-                }
-            }
+            executeServerAndElse(
+                serverCallCore = {ServerRepository.changePassword(changePasswordRequest)},
+                onSuccess = {isPasswordChangeSucceed.value =true},
+                onFailure = {isPasswordChangeSucceed.value =false}
+            )
         }
     }
 
