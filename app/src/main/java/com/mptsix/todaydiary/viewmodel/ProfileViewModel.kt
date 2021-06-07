@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
+import com.mptsix.todaydiary.data.response.UserFiltered
 import com.mptsix.todaydiary.model.ServerRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +17,7 @@ class ProfileViewModel : ViewModel(){
     var sealedData : MutableLiveData<UserSealed> = MutableLiveData()
     var isPasswordChangeSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
+    var followingUserList: MutableLiveData<List<UserFiltered>> = MutableLiveData()
 
     fun removeUser(){
         viewModelScope.launch {
@@ -69,5 +71,10 @@ class ProfileViewModel : ViewModel(){
                 }
             }
         }
+    }
+
+    fun getFollowingUser() {
+        // followingUserList
+        ServerRepository.getFollowingUser()
     }
 }

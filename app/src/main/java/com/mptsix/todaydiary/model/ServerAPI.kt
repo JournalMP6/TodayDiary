@@ -4,10 +4,7 @@ import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
-import com.mptsix.todaydiary.data.response.Journal
-import com.mptsix.todaydiary.data.response.JournalResponse
-import com.mptsix.todaydiary.data.response.LoginResponse
-import com.mptsix.todaydiary.data.response.UserRegisterResponse
+import com.mptsix.todaydiary.data.response.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -33,4 +30,16 @@ interface ServerAPI {
 
     @DELETE("/api/v1/user")
     fun removeUser(@HeaderMap header: HashMap<String, Any?>):Call<ResponseBody>
+
+    @GET("/api/v1/user/{name}")
+    fun findUserByName(@HeaderMap header: HashMap<String, Any?>, @Path("name") userName: String): Call<List<UserFiltered>>
+
+    @POST("/api/v1/user/follow/{id}")
+    fun followUser(@HeaderMap header: HashMap<String, Any?>, @Path("id") userId: String): Call<ResponseBody>
+
+    @DELETE("/api/v1/user/follow/{id}")
+    fun unfollowUser(@HeaderMap header: HashMap<String, Any?>, @Path("id") userId: String): Call<ResponseBody>
+
+    @GET("/api/v1/user/follow")
+    fun getFollowingUser(@HeaderMap header: HashMap<String, Any?>): Call<List<UserFiltered>>
 }
