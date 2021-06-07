@@ -1,14 +1,11 @@
-package com.mptsix.todaydiary
+package com.mptsix.todaydiary.view.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
-import androidx.activity.viewModels
 import androidx.recyclerview.widget.RecyclerView
 import com.mptsix.todaydiary.data.internal.JournalSealed
-import com.mptsix.todaydiary.databinding.RowBinding
+import com.mptsix.todaydiary.databinding.DiaryRowBinding
 
 class JournalRVAdapter : RecyclerView.Adapter<JournalRVAdapter.ViewHolder>() {
     var journalList: List<JournalSealed> = listOf()
@@ -21,20 +18,20 @@ class JournalRVAdapter : RecyclerView.Adapter<JournalRVAdapter.ViewHolder>() {
             notifyDataSetChanged()
         }
 
-    inner class ViewHolder(private val rowBinding: RowBinding):RecyclerView.ViewHolder(rowBinding.root){
+    inner class ViewHolder(private val rowBinding: DiaryRowBinding):RecyclerView.ViewHolder(rowBinding.root){
         fun initView(journalSealed: JournalSealed) {
             Log.d(this::class.java.simpleName, "Inititating view!")
             rowBinding.journalBody.text = journalSealed.mainContent
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): JournalRVAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            RowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            DiaryRowBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         )
     }
 
-    override fun onBindViewHolder(holder: JournalRVAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.initView(journalList[position])
     }
 

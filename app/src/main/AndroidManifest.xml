@@ -52,7 +52,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.MainActivity" />
+        <activity android:name=".view.MainActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".view.JoinActivity" />
     </application>
 

@@ -81,9 +81,8 @@
         android:layout_weight="1.5">
 
         <TextView
-            android:id="@+id/followBtn"
+            android:id="@+id/followNum"
             android:layout_width="0dp"
-            android:text="Follow"
             android:gravity="center"
             android:textSize="18dp"
             android:textColor="@color/black"

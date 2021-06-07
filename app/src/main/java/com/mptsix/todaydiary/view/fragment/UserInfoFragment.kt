@@ -11,13 +11,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.mptsix.todaydiary.JournalRVAdapter
-import com.mptsix.todaydiary.R
+import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.data.response.JournalCategoryResponse
 import com.mptsix.todaydiary.databinding.FragmentUserInfoBinding
 import com.mptsix.todaydiary.view.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
-import org.eazegraph.lib.charts.PieChart
 import org.eazegraph.lib.models.PieModel
 
 class UserInfoFragment : Fragment() {
@@ -88,16 +86,12 @@ class UserInfoFragment : Fragment() {
     }//비밀번호 변경 클릭 시, 비밀번호 변경 activity로 화면 전환
 
     private fun followUser(){
-        fragmentUserInfoBinding.apply {
-            followBtn.setOnClickListener {
-                if(followBtn.text == "Follow"){
-                    followBtn.text = "Followed"
-                }else{
-                    followBtn.text = "Follow"
-                }
-            }
+        profileViewModel.getFollowingUser()
+
+        profileViewModel.followingUserList.observe(viewLifecycleOwner){
+            fragmentUserInfoBinding.followNum.text = "Follower: " + it.size.toString()
         }
-    }// 팔로우 버튼을 누르면 follow일 시 followed로 변경, followed일 시 follow로 변경 *****누른 유저와 눌리는 유저의 정보가 있어야함*****
+    }// follower 수를 보여줌
 
     private fun initPieChart(journalCategoryList: List<JournalCategoryResponse>){
         fragmentUserInfoBinding.apply {
