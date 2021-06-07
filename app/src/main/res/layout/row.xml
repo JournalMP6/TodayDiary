@@ -9,6 +9,9 @@
         android:layout_height="50dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
+        android:fontFamily="@font/fontstyle"
+        android:textSize="15dp"
+        android:textColor="@color/black"
         android:layout_marginRight="10dp"
         android:padding="10dp"/>
 
