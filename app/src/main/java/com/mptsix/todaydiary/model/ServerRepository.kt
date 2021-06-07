@@ -6,8 +6,9 @@ import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.*
+import com.mptsix.todaydiary.model.ServerRepositoryHelper.executeServer
+import com.mptsix.todaydiary.model.ServerRepositoryHelper.handle204
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -15,7 +16,7 @@ object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.35.112:8080"
+    private const val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -34,89 +35,57 @@ object ServerRepository: ServerRepositoryInterface {
         put("X-AUTH-TOKEN", userToken)
     }
 
-    fun loginRequest(loginRequest: LoginRequest): LoginResponse {
-        val callObject: Call<LoginResponse> = serverApi.login(loginRequest)
-
-        return runCatching {
-            callObject.execute().body()!!.also {
-                userToken = it.userToken
-            }
-        }.getOrThrow()
+    fun loginRequest(loginRequest: LoginRequest): LoginResponse = executeServer(
+        apiFunction = serverApi.login(loginRequest)
+    ).also {
+        userToken = it.userToken
     }
 
-    fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse {
-        val registerApi: Call<UserRegisterResponse> = serverApi.registerUser(userRegisterRequest)
+    fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse = executeServer(
+        apiFunction = serverApi.registerUser(userRegisterRequest)
+    )
 
-        return runCatching {
-            registerApi.execute().body()!!
-        }.getOrThrow()
+    fun registerJournal(journal: Journal): JournalResponse = executeServer(
+        apiFunction = serverApi.registerJournal(getTokenHeader(), journal)
+    )
+
+    fun getJournal(journalDate: Long) : Journal = executeServer(
+        apiFunction = serverApi.getJournal(getTokenHeader(), journalDate)
+    )
+
+    fun getSealedUser():UserSealed = executeServer(
+        apiFunction = serverApi.getSealedUser(getTokenHeader())
+    )
+
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest) = handle204 {
+        executeServer(
+            apiFunction = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
+        )
     }
 
-    fun registerJournal(journal: Journal): JournalResponse {
-        val registerJournalApi: Call<JournalResponse> = serverApi.registerJournal(getTokenHeader(), journal)
-        return registerJournalApi.execute().body()!!
+    fun removeUser() = handle204 {
+        executeServer(
+            apiFunction = serverApi.removeUser(getTokenHeader())
+        )
     }
 
-    fun getJournal(journalDate: Long) : Journal{
-        val requestJournalApi: Call<Journal> = serverApi.getJournal(getTokenHeader(), journalDate)
+    override fun findUserByUserName(userName: String): List<UserFiltered> = executeServer(
+        apiFunction = serverApi.findUserByName(getTokenHeader(), userName)
+    )
 
-        return kotlin.runCatching {
-            requestJournalApi.execute().body()!!
-        }.getOrThrow()
+    override fun followUser(userId: String) = handle204 {
+        executeServer(
+            apiFunction = serverApi.followUser(getTokenHeader(), userId)
+        )
     }
 
-    fun getSealedUser():UserSealed{
-        val getSealedUserApi:Call<UserSealed> = serverApi.getSealedUser(getTokenHeader())
-        return kotlin.runCatching {
-            getSealedUserApi.execute().body()!!
-        }.getOrThrow()
+    override fun unfollowUser(userId: String) = handle204 {
+        executeServer(
+            apiFunction = serverApi.unfollowUser(getTokenHeader(), userId)
+        )
     }
 
-    fun changePassword(passwordChangeRequest: PasswordChangeRequest) {
-        val changePasswordApi:Call<ResponseBody> = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
-        kotlin.runCatching {
-            changePasswordApi.execute()
-        }.getOrThrow()
-    }
-
-
-    fun removeUser() {
-        val removeUserApi: Call<ResponseBody> = serverApi.removeUser(getTokenHeader())
-
-        kotlin.runCatching {
-            removeUserApi.execute()
-        }.getOrThrow()
-    }
-
-    override fun findUserByUserName(userName: String): List<UserFiltered> {
-        val findUserApi:Call<List<UserFiltered>> = serverApi.findUserByName(getTokenHeader(), userName)
-
-        return kotlin.runCatching {
-            findUserApi.execute().body()!!
-        }.getOrThrow()
-    }
-
-    override fun followUser(userId: String) {
-        val followUserApi: Call<ResponseBody> = serverApi.followUser(getTokenHeader(), userId)
-
-        kotlin.runCatching {
-            followUserApi.execute()
-        }
-    }
-
-    override fun unfollowUser(userId: String) {
-        val unfollowApi : Call<ResponseBody> = serverApi.unfollowUser(getTokenHeader(), userId)
-
-        kotlin.runCatching {
-            unfollowApi.execute()
-        }
-    }
-
-    override fun getFollowingUser(): List<UserFiltered> {
-        val getFollowingApi : Call<List<UserFiltered>> = serverApi.getFollowingUser(getTokenHeader())
-
-        return kotlin.runCatching {
-            getFollowingApi.execute().body()!!
-        }.getOrThrow()
-    }
+    override fun getFollowingUser(): List<UserFiltered> = executeServer(
+        apiFunction = serverApi.getFollowingUser(getTokenHeader())
+    )
 }
