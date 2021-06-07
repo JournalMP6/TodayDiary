@@ -70,7 +70,12 @@ class ProfileViewModel : ViewModel(){
     }
 
     fun getFollowingUser() {
-        // followingUserList
-        ServerRepository.getFollowingUser()
+        viewModelScope.launch {
+            executeServerAndElse(
+                serverCallCore = {ServerRepository.getFollowingUser()},
+                onSuccess = {followingUserList.value = it},
+                onFailure = {}
+            )
+        }
     }
 }
