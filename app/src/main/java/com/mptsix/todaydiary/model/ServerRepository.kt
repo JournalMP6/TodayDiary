@@ -61,12 +61,16 @@ object ServerRepository: ServerRepositoryInterface {
         executeServer(
             apiFunction = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
         )
+    }.apply {
+        userToken = null
     }
 
     fun removeUser() = handle204 {
         executeServer(
             apiFunction = serverApi.removeUser(getTokenHeader())
         )
+    }.also {
+        userToken = null
     }
 
     override fun findUserByUserName(userName: String): List<UserFiltered> = executeServer(
