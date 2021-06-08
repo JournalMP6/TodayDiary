@@ -6,6 +6,9 @@ import androidx.lifecycle.MutableLiveData
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.model.ServerRepository
+import java.io.IOException
+import java.lang.RuntimeException
+import java.net.ConnectException
 
 class LogInViewModel: ViewModelHelper() {
     var loginSuccess = MutableLiveData<Boolean>()
@@ -28,9 +31,14 @@ class LogInViewModel: ViewModelHelper() {
         return (Patterns.EMAIL_ADDRESS.matcher(strId).matches() && strPassword.length>8)
     }
 
-    fun register(userRegisterRequest: UserRegisterRequest) {
+    fun register(
+        userRegisterRequest: UserRegisterRequest,
+        _invalidFailure: () -> Unit,
+        _onFailure: (t:Throwable) -> Unit
+    ) {
         if (!inputValidation(userRegisterRequest.userId, userRegisterRequest.userPassword)) {
             Log.e(this::class.java.simpleName, "Input validation did not succeed.")
+            _invalidFailure()
             registerSuccess.value = false
             return
         }
@@ -39,7 +47,10 @@ class LogInViewModel: ViewModelHelper() {
         executeServerAndElse(
             serverCallCore = {ServerRepository.registerUser(userRegisterRequest)},
             onSuccess = {registerSuccess.value = (it.registeredId == userRegisterRequest.userId)},
-            onFailure = {registerSuccess.value = false}
+            onFailure = {
+                _onFailure(it)
+                registerSuccess.value = false
+            }
         )
     }
 }
