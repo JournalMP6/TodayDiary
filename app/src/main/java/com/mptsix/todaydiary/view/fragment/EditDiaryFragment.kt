@@ -36,6 +36,9 @@ class EditDiaryFragment : Fragment() {
     // Data
     private var journalImage: JournalImage? = null
 
+    // Location
+    private var journalLocation: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -83,7 +86,6 @@ class EditDiaryFragment : Fragment() {
 
     private fun init() {
         lateinit var intent: Intent
-        lateinit var journalLocation: String
         fragmentEditDiaryBinding.getLocationBtn.setOnClickListener {
             intent = Intent(activity, MapActivity::class.java)
             startActivityForResult(intent,0)
@@ -111,7 +113,7 @@ class EditDiaryFragment : Fragment() {
 
                 Journal(
                     mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
-                    journalLocation = "Test", // TODO: For now, just set to test
+                    journalLocation = journalLocation, // TODO: For now, just set to test
                     journalCategory = journalCategory,
                     journalWeather = journalWeather,
                     journalDate = journalTimeStamp!!,
@@ -160,7 +162,7 @@ class EditDiaryFragment : Fragment() {
 
         if(requestCode == 0){
             if(resultCode == Activity.RESULT_OK){
-                Toast.makeText(requireContext(), data!!.toString(),Toast.LENGTH_SHORT).show()
+                journalLocation = data!!.action!!
             }else{
                 Toast.makeText(requireContext(), "fail",Toast.LENGTH_SHORT).show()
             }

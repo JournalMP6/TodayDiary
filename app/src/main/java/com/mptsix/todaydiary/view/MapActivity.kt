@@ -66,7 +66,7 @@ class MapActivity : AppCompatActivity() {
             }
             googleMap.addMarker(option)
             location = it
-            val intent = Intent(location.toString())
+            val intent = Intent("${location.latitude},${location.longitude}")
             //Toast.makeText(this, location.toString(),Toast.LENGTH_SHORT).show() --> 여기까진 잘됨
             setResult(Activity.RESULT_OK, intent)
             finish()
