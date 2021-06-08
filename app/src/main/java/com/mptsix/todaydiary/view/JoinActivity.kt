@@ -1,6 +1,5 @@
 package com.mptsix.todaydiary.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.ArrayAdapter
@@ -41,36 +40,55 @@ class JoinActivity : AppCompatActivity() {
             val userPasswordQuestion: String = binding.pwdQuestionSpinner.selectedItem.toString()
             val userPasswordAnswer: String = binding.inputPwdAnswer.text.toString()
 
-            logInViewModel.register(
-                userRegisterRequest = UserRegisterRequest(
-                    userId = userId,
-                    userPassword = userPassword,
-                    userName = userName,
-                    userDateOfBirth = userDateOfBirth,
-                    userPasswordQuestion = userPasswordQuestion,
-                    userPasswordAnswer = userPasswordAnswer,
-                ),
-                _invalidFailure = {
-                    showDialog("Invalid Error", "아이디 비밀번호 규칙이 지켜지지 않았습니다. \n규칙에 맞게 입력해주세요.\n규칙(아이디:이메일, 비밀번호:8자 이상)")
-                    binding.inputJoinID.text = null
-                    binding.inputJoinPwd.text = null
-                },
-                _onFailure = {
-                    when (it) {
-                        is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                        is RuntimeException -> {
-                            Toast.makeText(this, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
-                            binding.inputJoinID.text=null
-                        }
-                        else -> {
-                            Toast.makeText(this, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
-                            binding.inputJoinID.text = null
+            val userData = listOf<String>(userId, userName, userPassword, userDateOfBirth, userPasswordAnswer, userPasswordQuestion)
+
+            if (checkTextBlank(userData)) {
+                logInViewModel.register(
+                    userRegisterRequest = UserRegisterRequest(
+                        userId = userId,
+                        userPassword = userPassword,
+                        userName = userName,
+                        userDateOfBirth = userDateOfBirth,
+                        userPasswordQuestion = userPasswordQuestion,
+                        userPasswordAnswer = userPasswordAnswer,
+                    ),
+                    _invalidFailure = {
+                        showDialog("Invalid Error", "아이디 비밀번호 규칙이 지켜지지 않았습니다. \n규칙에 맞게 입력해주세요.\n규칙(아이디:이메일, 비밀번호:8자 이상)")
+                        binding.inputJoinID.text = null
+                        binding.inputJoinPwd.text = null
+                    },
+                    _onFailure = {
+                        when (it) {
+                            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                            is RuntimeException -> {
+                                Toast.makeText(this, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                                binding.inputJoinID.text=null
+                            }
+                            else -> {
+                                Toast.makeText(this, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                                binding.inputJoinID.text = null
+                            }
                         }
                     }
-                }
-            )
+                )
+            } else {
+                init()
+            }
         }// 제출 버튼 클릭 시, 담겨져 있는 정보를 변수에 저장하고 현재 activity 종료, ****DB에 저장할 수 있게 변환 필요****
     }
+
+    private fun checkTextBlank(userData : List<String>):Boolean{
+        for(data in userData){
+            if(data.isEmpty()){
+                Log.d("Test",  "Data is empty")
+                Toast.makeText(this, "Data is empty. Please fill it.", Toast.LENGTH_SHORT).show()
+                return false
+            }else{
+                continue
+            }
+        }
+        return true
+    }// 입력한 내용이 비어있는지 확인
 
     private fun showDialog(title:String, message: String){
         val builder: AlertDialog.Builder? = this.let{

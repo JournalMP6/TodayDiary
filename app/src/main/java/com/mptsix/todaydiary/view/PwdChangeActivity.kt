@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
@@ -22,9 +23,13 @@ class PwdChangeActivity : AppCompatActivity() {
 
         profileViewModel.isPasswordChangeSucceed.observe(this) {
             if (it) {
-                Toast.makeText(this, "계정의 비밀번호가 성공적으로 바뀌었습니다.", Toast.LENGTH_SHORT)
+                Toast.makeText(this, "계정의 비밀번호가 성공적으로 바뀌었습니다. 다시 로그인 해주세요.", Toast.LENGTH_SHORT)
                     .show()
-                finish()
+                finishAffinity()
+                intent = Intent(this, LoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(intent)// need to check
             } else {
                 Toast.makeText(this, "비밀번호를 바꾸는 데 실패했습니다.", Toast.LENGTH_SHORT)
                     .show()
