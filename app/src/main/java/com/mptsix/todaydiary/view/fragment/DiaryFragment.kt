@@ -83,13 +83,26 @@ class DiaryFragment : Fragment() {
             journal = it
             updateButtonVisibility()
         }
+
+        journalViewModel.journalLocation.observe(viewLifecycleOwner) {
+            if (it != null) {
+                if (it.results.isEmpty()) {
+                    Log.e(this::class.java.simpleName, "Server Exchange succeed, but formatted address didn't received!")
+                } else {
+                    fragmentDiaryBinding.locationView.text = it.results[0].formatted_address
+                }
+            } else {
+                Log.e(this::class.java.simpleName, "Location responded with NULL!")
+            }
+        }
     }
 
     private fun showDiary() {
         journal?.let {
+            journalViewModel.getLocationFromGeo(it.journalLocation)
             fragmentDiaryBinding.diaryCategoryView.text = it.journalCategory.name
             fragmentDiaryBinding.weatherView.text = it.journalWeather
-            fragmentDiaryBinding.locationView.text = it.journalLocation
+            fragmentDiaryBinding.locationView.text = ""
             fragmentDiaryBinding.diaryMainContent.text = it.mainJournalContent
             if (it.journalImage.imageFile != null) {
                 val decodedArray: ByteArray = DatatypeConverter.parseBase64Binary(it.journalImage.imageFile)

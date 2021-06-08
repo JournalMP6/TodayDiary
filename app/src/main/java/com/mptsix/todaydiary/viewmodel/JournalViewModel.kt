@@ -10,6 +10,8 @@ import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.model.ServerRepository
+import com.mptsix.todaydiary.model.map.MapLocationResponse
+import com.mptsix.todaydiary.model.map.MapRepository
 import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.transition.Transition
 import kotlinx.coroutines.Dispatchers
@@ -23,6 +25,7 @@ class JournalViewModel: ViewModelHelper() {
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
+    var journalLocation: MutableLiveData<MapLocationResponse> = MutableLiveData()
 
     // Journal Cache
     var journalCache: Journal? = null
@@ -52,6 +55,14 @@ class JournalViewModel: ViewModelHelper() {
             serverCallCore = {ServerRepository.getJournal(timeStamp)},
             onSuccess = {isJournalExistsByTimeStamp.value = it},
             onFailure = {isJournalExistsByTimeStamp.value = null}
+        )
+    }
+
+    fun getLocationFromGeo(geoLocation: String) {
+        executeServerAndElse(
+            serverCallCore = {MapRepository.getLocation(geoLocation)},
+            onSuccess = {journalLocation.value = it},
+            onFailure = {}
         )
     }
 
