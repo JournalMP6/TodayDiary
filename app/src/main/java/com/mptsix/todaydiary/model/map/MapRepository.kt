@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.model.map
 
+import com.mptsix.todaydiary.BuildConfig
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -8,7 +9,7 @@ object MapRepository {
     private var instance: MapAPI? = null
     private val mapAPI: MapAPI get() = instance!!
     private const val URL = "https://maps.googleapis.com"
-    private const val API_KEY = "" // TODO: Gradle-FY
+    private val API_KEY = BuildConfig.MAP_GEO_KEY
 
     init {
         getInstance()
