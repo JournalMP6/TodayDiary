@@ -44,15 +44,29 @@ class PwdChangeActivity : AppCompatActivity() {
             Toast.makeText(this, "비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
         }
     }
+    private fun checkTextBlank(presentPwd:String, changePwd:String):Boolean{
+        if(presentPwd.isEmpty() || changePwd.isEmpty()){
+            return false
+        }
+        return true
+    }
 
     private fun submit(){
+        var presentPwd:String = binding.presentPwd.text.toString()
+        var changePwd:String = binding.changePwd.text.toString()
         binding.submitBtn.setOnClickListener {
             pwdChcek() // 버튼을 누르면 비밀번호가 올바르게 입력되었는지 확인
-            profileViewModel.changePassword(
-                PasswordChangeRequest(
-                    binding.changePwd.text.toString()
+            if(checkTextBlank(presentPwd,changePwd)){
+                profileViewModel.changePassword(
+                    PasswordChangeRequest(
+                        changePwd
+                    )
                 )
-            )
+            }else{
+                Toast.makeText(this, "Password is Empty.Try it again.", Toast.LENGTH_SHORT).show()
+                submit()
+            }
+
         }//변경할 비밀번호를 서버로 전송
     }
 }
