@@ -1,6 +1,5 @@
 package com.mptsix.todaydiary.view
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Spinner
@@ -35,18 +34,34 @@ class JoinActivity : AppCompatActivity() {
             val userPasswordQuestion: String = binding.pwdQuestionSpinner.selectedItem.toString()
             val userPasswordAnswer: String = binding.inputPwdAnswer.text.toString()
 
-            logInViewModel.register(
-                UserRegisterRequest(
-                    userId = userId,
-                    userPassword = userPassword,
-                    userName = userName,
-                    userDateOfBirth = userDateOfBirth,
-                    userPasswordQuestion = userPasswordQuestion,
-                    userPasswordAnswer = userPasswordAnswer,
+            var userData = listOf<String>(userId, userName, userPassword, userDateOfBirth, userPasswordAnswer, userPasswordQuestion)
+            if(checkTextBlank(userData)){
+                logInViewModel.register(
+                    UserRegisterRequest(
+                        userId = userId,
+                        userPassword = userPassword,
+                        userName = userName,
+                        userDateOfBirth = userDateOfBirth,
+                        userPasswordQuestion = userPasswordQuestion,
+                        userPasswordAnswer = userPasswordAnswer,
+                    )
                 )
-            )
-        }// 제출 버튼 클릭 시, 담겨져 있는 정보를 변수에 저장하고 현재 activity 종료, ****DB에 저장할 수 있게 변환 필요****
+            }else{
+                init()
+            }//need to check
+        }// 제출 버튼 클릭 시, 담겨져 있는 정보를 변수에 저장하고 현재 activity 종료
     }
+
+    private fun checkTextBlank(userData : List<String>):Boolean{
+        for(data in userData){
+            if(data.isEmpty()){
+                return false
+            }else{
+                continue
+            }
+        }
+        return true
+    }// 입력한 내용이 비어있는지 확인
 
     private fun initObserver() {
         logInViewModel.registerSuccess.observe(this) {

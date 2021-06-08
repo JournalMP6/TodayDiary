@@ -31,7 +31,11 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val userId :String = binding.inputLoginID.text.toString()
             val userPassword :String = binding.inputLoginPwd.text.toString()
-            logInViewModel.login(LoginRequest(userId, userPassword))
+            if(userId.isNotEmpty() && userPassword.isNotEmpty()){
+                logInViewModel.login(LoginRequest(userId, userPassword))
+            }else{
+                init()
+            }// need to check
         }// 로그인 버튼 클릭 시, 담겨져 있는 정보를 가져옴
     }
 
