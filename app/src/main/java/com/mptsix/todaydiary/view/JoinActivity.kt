@@ -16,6 +16,7 @@ import com.mptsix.todaydiary.databinding.ActivityJoinBinding
 import com.mptsix.todaydiary.viewmodel.LogInViewModel
 import java.lang.RuntimeException
 import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 class JoinActivity : AppCompatActivity() {
     lateinit var binding: ActivityJoinBinding
@@ -41,27 +42,30 @@ class JoinActivity : AppCompatActivity() {
             val userPasswordAnswer: String = binding.inputPwdAnswer.text.toString()
 
             logInViewModel.register(
-                UserRegisterRequest(
+                userRegisterRequest = UserRegisterRequest(
                     userId = userId,
                     userPassword = userPassword,
                     userName = userName,
                     userDateOfBirth = userDateOfBirth,
                     userPasswordQuestion = userPasswordQuestion,
                     userPasswordAnswer = userPasswordAnswer,
-                )
-                ,{ ->
-
+                ),
+                _invalidFailure = {
                     showDialog("Invalid Error", "아이디 비밀번호 규칙이 지켜지지 않았습니다. \n규칙에 맞게 입력해주세요.\n규칙(아이디:이메일, 비밀번호:8자 이상)")
                     binding.inputJoinID.text = null
                     binding.inputJoinPwd.text = null
                 },
-                {t:Throwable ->
-                    if(t is ConnectException){
-                        showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                    }
-                    else if(t is RuntimeException){
-                        Toast.makeText(this, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
-                        binding.inputJoinID.text=null
+                _onFailure = {
+                    when (it) {
+                        is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                        is RuntimeException -> {
+                            Toast.makeText(this, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
+                            binding.inputJoinID.text=null
+                        }
+                        else -> {
+                            Toast.makeText(this, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                            binding.inputJoinID.text = null
+                        }
                     }
                 }
             )
