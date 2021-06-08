@@ -68,7 +68,7 @@ class MapActivity : AppCompatActivity() {
             location = it
             val intent = Intent(location.toString())
             //Toast.makeText(this, location.toString(),Toast.LENGTH_SHORT).show() --> 여기까진 잘됨
-            setResult(0, intent)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
