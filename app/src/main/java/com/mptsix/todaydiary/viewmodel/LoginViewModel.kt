@@ -2,35 +2,22 @@ package com.mptsix.todaydiary.viewmodel
 
 import android.util.Log
 import android.util.Patterns
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
-import com.mptsix.todaydiary.data.response.LoginResponse
-import com.mptsix.todaydiary.data.response.UserRegisterResponse
 import com.mptsix.todaydiary.model.ServerRepository
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class LogInViewModel: ViewModel() {
+class LogInViewModel: ViewModelHelper() {
     var loginSuccess = MutableLiveData<Boolean>()
     var registerSuccess = MutableLiveData<Boolean>()
 
     //login과 그 결과에 따른 LiveData에 정보 입력
     fun login(userLoginRequest: LoginRequest){
-        viewModelScope.launch {
-            lateinit var userLoginResponse: LoginResponse
-            withContext(Dispatchers.IO) {
-                userLoginResponse = ServerRepository.loginRequest(userLoginRequest)
-            }
-
-            withContext(Dispatchers.Main) {
-                loginSuccess.value = (userLoginResponse.userToken != "")
-            }
-        }
+        executeServerAndElse(
+            serverCallCore = {ServerRepository.loginRequest(userLoginRequest)},
+            onSuccess = {loginSuccess.value = (it.userToken != "")},
+            onFailure = {loginSuccess.value = false}
+        )
     }
 
     //입력형식 정규식에 부합하는지 확인
@@ -45,16 +32,11 @@ class LogInViewModel: ViewModel() {
             return
         }
 
-        viewModelScope.launch {
-            lateinit var userRegisterResponse: UserRegisterResponse
-            withContext(Dispatchers.IO) {
-                userRegisterResponse = ServerRepository.registerUser(userRegisterRequest)
-            }
-
-            withContext(Dispatchers.Main) {
-                registerSuccess.value = (userRegisterResponse.registeredId == userRegisterRequest.userId)
-            }
-        }
-
+        // Execute/Exchange with server.
+        executeServerAndElse(
+            serverCallCore = {ServerRepository.registerUser(userRegisterRequest)},
+            onSuccess = {registerSuccess.value = (it.registeredId == userRegisterRequest.userId)},
+            onFailure = {registerSuccess.value = false}
+        )
     }
 }
