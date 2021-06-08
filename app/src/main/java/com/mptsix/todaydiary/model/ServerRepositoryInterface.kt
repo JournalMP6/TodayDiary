@@ -1,6 +1,7 @@
 package com.mptsix.todaydiary.model
 
 import com.mptsix.todaydiary.data.response.UserFiltered
+import okhttp3.ResponseBody
 
 interface ServerRepositoryInterface {
     fun findUserByUserName(userName: String): List<UserFiltered>
