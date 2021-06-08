@@ -2,6 +2,7 @@ package com.mptsix.todaydiary.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -34,6 +35,8 @@ class LoginActivity : AppCompatActivity() {
             if(userId.isNotEmpty() && userPassword.isNotEmpty()){
                 logInViewModel.login(LoginRequest(userId, userPassword))
             }else{
+                Log.d("Test",  "Data is empty")
+                Toast.makeText(this, "Data is empty. Please fill it.", Toast.LENGTH_SHORT).show()
                 init()
             }// need to check
         }// 로그인 버튼 클릭 시, 담겨져 있는 정보를 가져옴

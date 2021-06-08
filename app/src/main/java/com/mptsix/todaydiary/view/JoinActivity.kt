@@ -1,6 +1,7 @@
 package com.mptsix.todaydiary.view
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
@@ -55,6 +56,8 @@ class JoinActivity : AppCompatActivity() {
     private fun checkTextBlank(userData : List<String>):Boolean{
         for(data in userData){
             if(data.isEmpty()){
+                Log.d("Test",  "Data is empty")
+                Toast.makeText(this, "Data is empty. Please fill it.", Toast.LENGTH_SHORT).show()
                 return false
             }else{
                 continue
