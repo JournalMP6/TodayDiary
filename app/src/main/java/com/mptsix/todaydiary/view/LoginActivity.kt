@@ -10,6 +10,8 @@ import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.databinding.ActivityLoginBinding
 import com.mptsix.todaydiary.viewmodel.LogInViewModel
+import java.lang.RuntimeException
+import java.net.ConnectException
 
 class LoginActivity : AppCompatActivity() {
     lateinit var binding: ActivityLoginBinding
@@ -33,10 +35,17 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val userId :String = binding.inputLoginID.text.toString()
             val userPassword :String = binding.inputLoginPwd.text.toString()
-            logInViewModel.login(LoginRequest(userId, userPassword), {->
-                binding.inputLoginID.text= null
-                binding.inputLoginPwd.text = null
-                Toast.makeText(this, "아이디 혹은 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+            logInViewModel.login(LoginRequest(userId, userPassword), { t:Throwable->
+
+                if(t is ConnectException){
+                    Toast.makeText(this, "서버가 불안정합니다.\n잠시 후에 다시 시도해주세요.", Toast.LENGTH_SHORT).show()
+                }
+                if(t is RuntimeException){
+                    Toast.makeText(this, "아이디 혹은 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+                    binding.inputLoginID.text= null
+                    binding.inputLoginPwd.text = null
+                }
+
 
             })
         }// 로그인 버튼 클릭 시, 담겨져 있는 정보를 가져옴

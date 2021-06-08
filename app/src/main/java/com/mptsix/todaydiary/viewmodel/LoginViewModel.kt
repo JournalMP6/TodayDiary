@@ -15,12 +15,12 @@ class LogInViewModel: ViewModelHelper() {
     var registerSuccess = MutableLiveData<Boolean>()
 
     //login과 그 결과에 따른 LiveData에 정보 입력
-    fun login(userLoginRequest: LoginRequest, _onFailure:()->Unit){
+    fun login(userLoginRequest: LoginRequest, _onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
             serverCallCore = {ServerRepository.loginRequest(userLoginRequest)},
             onSuccess = {loginSuccess.value = (it.userToken != "")},
             onFailure = {
-                _onFailure()
+                _onFailure(it)
                 loginSuccess.value = false
             }
         )
