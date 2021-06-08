@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.data.response.JournalCategoryResponse
 import com.mptsix.todaydiary.databinding.FragmentUserInfoBinding
+import com.mptsix.todaydiary.view.LoginActivity
 import com.mptsix.todaydiary.view.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import org.eazegraph.lib.models.PieModel
@@ -47,6 +49,12 @@ class UserInfoFragment : Fragment() {
             if (it) {
                 Toast.makeText(requireContext(), "Removing user succeed!", Toast.LENGTH_SHORT)
                     .show()
+                activity?.finishAffinity()
+                var intent = Intent(activity, LoginActivity::class.java).apply {
+                    flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                    addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                }
+                startActivity(intent)
             } else {
                 Toast.makeText(requireContext(), "Error occurred when removing user.", Toast.LENGTH_SHORT)
                     .show()
