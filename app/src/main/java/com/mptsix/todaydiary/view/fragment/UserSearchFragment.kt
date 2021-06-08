@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import com.mptsix.todaydiary.view.adapter.UserRVAdapter
 import com.mptsix.todaydiary.databinding.FragmentUserSearchBinding
 import com.mptsix.todaydiary.viewmodel.UserListViewModel
@@ -14,7 +15,7 @@ class UserSearchFragment : Fragment() {
 
     private var _fragmentUserSearchBinding: FragmentUserSearchBinding? = null
     private val fragmentUserSearchBinding: FragmentUserSearchBinding get() = _fragmentUserSearchBinding!!
-    private val userListViewModel : UserListViewModel by activityViewModels()
+    private val userListViewModel : UserListViewModel by viewModels()
     private var userRVAdapter: UserRVAdapter?= null
 
     inner class getUserId{
