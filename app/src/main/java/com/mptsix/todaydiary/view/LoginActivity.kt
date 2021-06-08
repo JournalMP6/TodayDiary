@@ -2,9 +2,11 @@ package com.mptsix.todaydiary.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.databinding.ActivityLoginBinding
 import com.mptsix.todaydiary.viewmodel.LogInViewModel
@@ -31,16 +33,18 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val userId :String = binding.inputLoginID.text.toString()
             val userPassword :String = binding.inputLoginPwd.text.toString()
-            logInViewModel.login(LoginRequest(userId, userPassword))
+            logInViewModel.login(LoginRequest(userId, userPassword), {->
+                binding.inputLoginID.text= null
+                binding.inputLoginPwd.text = null
+                Toast.makeText(this, "아이디 혹은 비밀번호를 확인해주세요.", Toast.LENGTH_SHORT).show()
+
+            })
         }// 로그인 버튼 클릭 시, 담겨져 있는 정보를 가져옴
     }
 
     private fun initObserver() {
         logInViewModel.loginSuccess.observe(this) {
-            if (!it) {
-                // Login Failed
-                Toast.makeText(applicationContext, "입력한 로그인 정보가 잘못 되었습니다.", Toast.LENGTH_SHORT).show()
-            } else {
+            if(it) {
                 // Login Succeed
                 intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
