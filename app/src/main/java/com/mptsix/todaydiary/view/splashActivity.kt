@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.databinding.ActivitySplashBinding
 
 class splashActivity : AppCompatActivity() {
@@ -12,6 +13,7 @@ class splashActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        LoginSessionRepository.initiateRepository(applicationContext)
         init()
     }
 
