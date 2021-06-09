@@ -34,7 +34,9 @@ class SplashViewModel: ViewModel() {
                         )
                     }.onFailure {
                         Log.e(this::class.java.simpleName, "Failed to login: ${it.stackTraceToString()}")
-                        onCommunicationFailure(it)
+                        withContext(Dispatchers.Main) {
+                            onCommunicationFailure(it)
+                        }
                         setLoginRedirection(true, referenceStartTime)
                     }.onSuccess {
                         setLoginRedirection(false, referenceStartTime)
