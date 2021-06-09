@@ -11,10 +11,7 @@ import com.mptsix.todaydiary.view.adapter.UserRVAdapter
 import com.mptsix.todaydiary.databinding.FragmentUserSearchBinding
 import com.mptsix.todaydiary.viewmodel.UserListViewModel
 
-class UserSearchFragment : Fragment() {
-
-    private var _fragmentUserSearchBinding: FragmentUserSearchBinding? = null
-    private val fragmentUserSearchBinding: FragmentUserSearchBinding get() = _fragmentUserSearchBinding!!
+class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
     private val userListViewModel : UserListViewModel by viewModels()
     private var userRVAdapter: UserRVAdapter?= null
 
@@ -27,34 +24,26 @@ class UserSearchFragment : Fragment() {
             userListViewModel.unfollowUser(userId)
         }
     }
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _fragmentUserSearchBinding = FragmentUserSearchBinding.inflate(inflater, container, false)
-        return fragmentUserSearchBinding.root
+
+    override fun getViewBinding(
+        inflater: LayoutInflater,
+        container: ViewGroup?
+    ): FragmentUserSearchBinding {
+        return FragmentUserSearchBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
+    override fun initView() {
         userRVAdapter =  UserRVAdapter(getUserId())
-        fragmentUserSearchBinding.userRecyclerView.adapter = userRVAdapter
+        binding.userRecyclerView.adapter = userRVAdapter
 
         userListViewModel.userFilteredList.observe(viewLifecycleOwner){
             userRVAdapter?.userList = it
         }
 
 
-        fragmentUserSearchBinding.searchBtn.setOnClickListener {
-            var userName = fragmentUserSearchBinding.searchUserName.text.toString()
+        binding.searchBtn.setOnClickListener {
+            var userName = binding.searchUserName.text.toString()
             userListViewModel.findUserByUserName(userName)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        //뷰모델에서 데이터 삭제해야할 것 같음. 화면 새로 불러와도 데이터가 초기화 안됨
-        _fragmentUserSearchBinding = null
     }
 }
