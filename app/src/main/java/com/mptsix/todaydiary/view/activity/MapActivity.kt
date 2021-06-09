@@ -13,17 +13,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.ActivityMapBinding
 
-class MapActivity : AppCompatActivity() {
-    private val binding: ActivityMapBinding by lazy {
-        ActivityMapBinding.inflate(layoutInflater)
-    }
-
+class MapActivity : SuperActivity<ActivityMapBinding>() {
     lateinit var googleMap: GoogleMap
     var loc = LatLng(37.5642135, 127.0016985)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityMapBinding = ActivityMapBinding.inflate(layoutInflater)
+    override fun initView() {
         initMap()
     }
 

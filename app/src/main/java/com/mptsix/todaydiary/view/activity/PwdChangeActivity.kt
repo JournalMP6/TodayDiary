@@ -9,14 +9,11 @@ import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.databinding.ActivityPwdChangeBinding
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 
-class PwdChangeActivity : AppCompatActivity() {
-    lateinit var binding :ActivityPwdChangeBinding
+class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPwdChangeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityPwdChangeBinding = ActivityPwdChangeBinding.inflate(layoutInflater)
+    override fun initView() {
         submit()
 
         profileViewModel.isPasswordChangeSucceed.observe(this) {

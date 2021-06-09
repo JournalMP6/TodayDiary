@@ -12,15 +12,11 @@ import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.view.fragment.*
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
-class MainActivity : AppCompatActivity() {
-    lateinit var binding: ActivityMainBinding
-
+class MainActivity : SuperActivity<ActivityMainBinding>(){
     private val journalViewModel: JournalViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
+    override fun initView() {
         initObserver()
 
         // Start with Main Fragment

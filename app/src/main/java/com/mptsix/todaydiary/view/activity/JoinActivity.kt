@@ -17,15 +17,11 @@ import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class JoinActivity : AppCompatActivity() {
-    lateinit var binding: ActivityJoinBinding
-
+class JoinActivity : SuperActivity<ActivityJoinBinding>() {
     private val logInViewModel: LogInViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityJoinBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityJoinBinding = ActivityJoinBinding.inflate(layoutInflater)
+    override fun initView() {
         attachAdapter()
         init()
         initObserver()
@@ -124,6 +120,4 @@ class JoinActivity : AppCompatActivity() {
 
         spinner.adapter = question
     }// 스피너의 바뀐 layout으로 설정하는 adapter
-
-
 }

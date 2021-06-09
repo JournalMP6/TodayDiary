@@ -12,13 +12,11 @@ import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class splashActivity : AppCompatActivity() {
-    lateinit var binding: ActivitySplashBinding
+class splashActivity : SuperActivity<ActivitySplashBinding>() {
     private val splashViewModel: SplashViewModel by viewModels()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivitySplashBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+
+    override fun getViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
+    override fun initView() {
         init()
 
         // Splash Activity is the first activity shown to user.

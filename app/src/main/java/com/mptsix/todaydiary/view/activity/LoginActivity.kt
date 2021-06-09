@@ -14,15 +14,11 @@ import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
 
-class LoginActivity : AppCompatActivity() {
-    lateinit var binding: ActivityLoginBinding
-
+class LoginActivity : SuperActivity<ActivityLoginBinding>() {
     private val logInViewModel: LogInViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLoginBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)
+    override fun initView() {
         init()
         initObserver()
     }
