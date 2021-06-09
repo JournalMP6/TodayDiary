@@ -18,7 +18,7 @@ open class ViewModelHelper: ViewModel() {
      *
      * Note: This function handles both viewModelScope and its context. Function callee do not have to use withContext or *.launch
      */
-    protected fun<T> executeServerAndElse(serverCallCore: () -> T, onSuccess: suspend(successValue: T)->Unit, onFailure: suspend(failedThrowable: Throwable)->Unit) {
+    protected fun<T> executeServerAndElse(serverCallCore: suspend() -> T, onSuccess: suspend(successValue: T)->Unit, onFailure: suspend(failedThrowable: Throwable)->Unit) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
                 runCatching {

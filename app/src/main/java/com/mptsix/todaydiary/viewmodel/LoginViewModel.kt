@@ -3,6 +3,8 @@ package com.mptsix.todaydiary.viewmodel
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.model.ServerRepository
@@ -13,6 +15,8 @@ import java.net.ConnectException
 class LogInViewModel: ViewModelHelper() {
     var loginSuccess = MutableLiveData<Boolean>()
     var registerSuccess = MutableLiveData<Boolean>()
+
+    private var loginSession: LoginSessionRepository = LoginSessionRepository.getRepository()
 
     //login과 그 결과에 따른 LiveData에 정보 입력
     fun login(userLoginRequest: LoginRequest, _onFailure:(t:Throwable)->Unit){
@@ -51,6 +55,14 @@ class LogInViewModel: ViewModelHelper() {
                 _onFailure(it)
                 registerSuccess.value = false
             }
+        )
+    }
+
+    fun registerIdToDb(userID: String, userPassword: String) {
+        executeServerAndElse(
+            serverCallCore = {loginSession.addLoginSession(userID, userPassword)},
+            onSuccess = {},
+            onFailure = {}
         )
     }
 }

@@ -36,6 +36,10 @@ class LoginActivity : AppCompatActivity() {
         binding.loginBtn.setOnClickListener {
             val userId :String = binding.inputLoginID.text.toString()
             val userPassword :String = binding.inputLoginPwd.text.toString()
+
+            // Register ID to DB
+            logInViewModel.registerIdToDb(userId, userPassword)
+
             if(userId.isNotEmpty() && userPassword.isNotEmpty()){
                 logInViewModel.login(LoginRequest(userId, userPassword)) { t: Throwable ->
                     when (t) {
