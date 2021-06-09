@@ -71,7 +71,7 @@ class LoginSessionRepository(
     suspend fun getUserSession(): LoginSession {
         val loginSessionList: List<LoginSession> = loginSessionDao.getAllSession()
         if (loginSessionList.size != 1) {
-            Log.e(this::class.java.simpleName, "Login session should be exactly one.")
+            Log.e(this::class.java.simpleName, "Login session should be exactly one, we found ${loginSessionList.size}")
             throw IllegalStateException("Login session should be exactly 1, but we found ${loginSessionList.size}")
         }
 

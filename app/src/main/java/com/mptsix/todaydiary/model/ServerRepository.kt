@@ -8,15 +8,17 @@ import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.*
 import com.mptsix.todaydiary.model.ServerRepositoryHelper.executeServer
 import com.mptsix.todaydiary.model.ServerRepositoryHelper.handle204
+import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 
 object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.25.40:8080"
+    private const val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -24,8 +26,14 @@ object ServerRepository: ServerRepositoryInterface {
 
     private fun getInstance() {
         if (instance == null) {
+            val okHttpClient: OkHttpClient = OkHttpClient.Builder()
+                .connectTimeout(2, TimeUnit.SECONDS)
+                .readTimeout(2, TimeUnit.SECONDS)
+                .writeTimeout(5, TimeUnit.SECONDS)
+                .build()
             instance = Retrofit.Builder()
                 .baseUrl(URL)
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build().create(ServerAPI::class.java)
         }
