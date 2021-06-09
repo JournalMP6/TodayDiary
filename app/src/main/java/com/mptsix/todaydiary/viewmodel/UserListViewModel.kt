@@ -1,6 +1,7 @@
 package com.mptsix.todaydiary.viewmodel
 
 import android.util.Log
+import android.widget.TableRow
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,27 +22,33 @@ class UserListViewModel: ViewModelHelper() {
     // Whether unfollowing specific user is succeed or not
     var isUnFollowSucceed: MutableLiveData<Boolean> = MutableLiveData()
 
-    fun findUserByUserName(userName: String) {
+    fun findUserByUserName(userName: String, _onFailure:(t:Throwable) -> Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.findUserByUserName(userName)},
             onSuccess = {userFilteredList.value = it},
-            onFailure = {}
+            onFailure = { _onFailure(it)}
         )
     }
 
-    fun followUser(userId: String) {
+    fun followUser(userId: String, _onFailure:(t:Throwable) -> Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.followUser(userId)},
             onSuccess = {isFollowSucceed.value = true},
-            onFailure = {isFollowSucceed.value = false}
+            onFailure = {
+                isFollowSucceed.value = false
+                _onFailure(it)
+            }
         )
     }
 
-    fun unfollowUser(userId: String) {
+    fun unfollowUser(userId: String, _onFailure:(t:Throwable) -> Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.unfollowUser(userId)},
             onSuccess = {isUnFollowSucceed.value = true},
-            onFailure = {isUnFollowSucceed.value = false}
+            onFailure = {
+                isUnFollowSucceed.value = false
+                _onFailure(it)
+            }
         )
     }
 }

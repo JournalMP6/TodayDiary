@@ -42,27 +42,33 @@ class JournalViewModel: ViewModelHelper() {
         return fileInputStream.readBytes()
     }
 
-    fun registerJournal(journal: Journal) {
+    fun registerJournal(journal: Journal, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.registerJournal(journal)},
             onSuccess = {isJournalSubmit.value = true},
-            onFailure = {isJournalSubmit.value = false}
+            onFailure = {
+                _onFailure(it)
+                isJournalSubmit.value = false
+            }
         )
     }
 
-    fun isJournalExists(timeStamp: Long) {
+    fun isJournalExists(timeStamp: Long, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.getJournal(timeStamp)},
             onSuccess = {isJournalExistsByTimeStamp.value = it},
-            onFailure = {isJournalExistsByTimeStamp.value = null}
+            onFailure = {
+                isJournalExistsByTimeStamp.value = null
+                _onFailure(it)
+            }
         )
     }
 
-    fun getLocationFromGeo(geoLocation: String) {
+    fun getLocationFromGeo(geoLocation: String, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {MapRepository.getLocation(geoLocation)},
             onSuccess = {journalLocation.value = it},
-            onFailure = {}
+            onFailure = {_onFailure(it)}
         )
     }
 
