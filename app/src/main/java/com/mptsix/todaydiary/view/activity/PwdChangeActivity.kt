@@ -1,12 +1,10 @@
-package com.mptsix.todaydiary.view
+package com.mptsix.todaydiary.view.activity
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.databinding.ActivityPwdChangeBinding
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel

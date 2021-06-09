@@ -1,6 +1,5 @@
-package com.mptsix.todaydiary.view
+package com.mptsix.todaydiary.view.activity
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels

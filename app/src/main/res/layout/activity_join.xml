@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.mptsix.todaydiary.view.JoinActivity">
+    tools:context="com.mptsix.todaydiary.view.activity.JoinActivity">
 
     <TextView
         android:id="@+id/pwdQuestion"

@@ -1,8 +1,7 @@
-package com.mptsix.todaydiary.view
+package com.mptsix.todaydiary.view.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity

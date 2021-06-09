@@ -22,13 +22,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.PwdChangeActivity"></activity>
+        <activity android:name=".view.activity.PwdChangeActivity"></activity>
 
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name=".view.MapActivity" />
+        <activity android:name=".view.activity.MapActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -44,16 +44,16 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".view.splashActivity">
+        <activity android:name=".view.activity.splashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.MainActivity" android:windowSoftInputMode="adjustPan"/>
-        <activity android:name=".view.JoinActivity" />
+        <activity android:name=".view.activity.LoginActivity" />
+        <activity android:name=".view.activity.MainActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".view.activity.JoinActivity" />
     </application>
 
 </manifest>

@@ -3,22 +3,19 @@ package com.mptsix.todaydiary.view.fragment
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalCategory
 import com.mptsix.todaydiary.data.response.JournalImage
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
-import com.mptsix.todaydiary.view.MapActivity
+import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
 import javax.xml.bind.DatatypeConverter
