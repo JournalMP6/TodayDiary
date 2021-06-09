@@ -40,7 +40,7 @@ class ProfileViewModel : ViewModelHelper() {
         )
     }
 
-    fun changePassword(changePasswordRequest: PasswordChangeRequest){
+    fun changePassword(changePasswordRequest: PasswordChangeRequest, _onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
             serverCallCore = {ServerRepository.changePassword(changePasswordRequest)},
             onSuccess = {
@@ -48,7 +48,10 @@ class ProfileViewModel : ViewModelHelper() {
                 loginSessionRepository.removeAllEntries()
                 isPasswordChangeSucceed.value =true
             },
-            onFailure = {isPasswordChangeSucceed.value =false}
+            onFailure = {
+                isPasswordChangeSucceed.value =false
+                _onFailure(it)
+                }
         )
     }
 

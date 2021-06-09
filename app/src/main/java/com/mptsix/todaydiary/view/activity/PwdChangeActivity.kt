@@ -8,6 +8,9 @@ import androidx.activity.viewModels
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.databinding.ActivityPwdChangeBinding
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
+import java.lang.RuntimeException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -25,9 +28,6 @@ class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)// need to check
-            } else {
-                Toast.makeText(this, "비밀번호를 바꾸는 데 실패했습니다.", Toast.LENGTH_SHORT)
-                    .show()
             }
         }
     }
@@ -49,13 +49,14 @@ class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
     private fun submit(){
         var presentPwd:String = binding.presentPwd.text.toString()
         var changePwd:String = binding.changePwd.text.toString()
-        binding.submitBtn.setOnClickListener {
+        binding.submitBtn.setOnClickListener {// error handling
             pwdChcek() // 버튼을 누르면 비밀번호가 올바르게 입력되었는지 확인
             if(checkTextBlank(presentPwd,changePwd)){
                 profileViewModel.changePassword(
-                    PasswordChangeRequest(
-                        changePwd
-                    )
+                    PasswordChangeRequest(changePwd),
+                    _onFailure = {
+                        _onFailure(it)
+                    }
                 )
             }else{
                 Toast.makeText(this, "Password is Empty.Try it again.", Toast.LENGTH_SHORT).show()
@@ -63,5 +64,31 @@ class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
             }
 
         }//변경할 비밀번호를 서버로 전송
+    }
+    // error handling
+    private fun showDialog(title:String, message: String){
+        val builder: AlertDialog.Builder? = this.let{
+            AlertDialog.Builder(this)
+        }
+        builder?.setMessage(message)
+            ?.setTitle(title)
+            ?.setPositiveButton("확인"){
+                    _, _ ->
+            }
+
+        val dialog: AlertDialog?= builder?.create()
+        dialog?.show()
+    }
+
+    private fun _onFailure(t:Throwable):Unit{
+        when(t){
+            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+            is RuntimeException -> {
+                showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
+                // Go back login activity?
+            }
+            else -> Toast.makeText(this, "알 수 없는 에러가 발생했습니다. 메시지: ${t.message}", Toast.LENGTH_SHORT).show()
+
+        }
     }
 }
