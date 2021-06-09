@@ -1,4 +1,4 @@
-package com.mptsix.todaydiary.view
+package com.mptsix.todaydiary.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

@@ -1,9 +1,8 @@
-package com.mptsix.todaydiary.view
+package com.mptsix.todaydiary.view.activity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
-import com.mptsix.todaydiary.databinding.ActivityLockBinding
 import com.mptsix.todaydiary.databinding.ActivityPrimaryLockBinding
 
 class PrimaryLockActivity : AppCompatActivity() {
