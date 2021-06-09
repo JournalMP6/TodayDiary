@@ -42,11 +42,14 @@ class JournalViewModel: ViewModelHelper() {
         return fileInputStream.readBytes()
     }
 
-    fun registerJournal(journal: Journal) {
+    fun registerJournal(journal: Journal, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.registerJournal(journal)},
             onSuccess = {isJournalSubmit.value = true},
-            onFailure = {isJournalSubmit.value = false}
+            onFailure = {
+                _onFailure(it)
+                isJournalSubmit.value = false
+            }
         )
     }
 

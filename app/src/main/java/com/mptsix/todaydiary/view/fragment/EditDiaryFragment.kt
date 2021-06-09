@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalCategory
@@ -17,6 +18,9 @@ import com.mptsix.todaydiary.data.response.JournalImage
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import java.lang.RuntimeException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 import javax.xml.bind.DatatypeConverter
 
@@ -106,7 +110,17 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
                     )
                 )
             }
-            journalViewModel.registerJournal(journal)
+            journalViewModel.registerJournal(journal,
+                _onFailure = {
+                 when(it){
+                     is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                     is RuntimeException -> {}// 발생할 일 존재?
+                     else -> {
+                         Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                     }
+                 }
+
+            })
         }
 
     }
@@ -158,5 +172,18 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
                 )
             }
         }
+    }
+    private fun showDialog(title:String, message: String){
+        val builder: AlertDialog.Builder? = this.let{
+            AlertDialog.Builder(requireContext())
+        }
+        builder?.setMessage(message)
+            ?.setTitle(title)
+            ?.setPositiveButton("확인"){
+                    _, _ ->
+            }
+
+        val dialog: AlertDialog?= builder?.create()
+        dialog?.show()
     }
 }
