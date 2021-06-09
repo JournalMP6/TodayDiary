@@ -2,6 +2,7 @@ package com.mptsix.todaydiary.view.adapter
 
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mptsix.todaydiary.data.response.UserFiltered
@@ -9,6 +10,10 @@ import com.mptsix.todaydiary.databinding.UserRowBinding
 import com.mptsix.todaydiary.view.fragment.UserSearchFragment
 
 class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapter<UserRVAdapter.ViewHolder>() {
+    interface OnItemClickListener{
+        fun OnItemClick(holder: ViewHolder, view: View, position: Int)
+    }
+    var itemClickListener: OnItemClickListener?=null
     var userList: List<UserFiltered> = listOf()
         set(value){
             Log.d(this::class.java.simpleName, "Setting User")
@@ -38,6 +43,13 @@ class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapt
                 }
             }
         }
+        fun showFollowerPage(userFiltered: UserFiltered){
+            rowBinding.root.setOnClickListener {
+                itemClickListener?.OnItemClick(this,it,adapterPosition)
+                link.setFollowerProfile(userFiltered.userId)
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -49,6 +61,7 @@ class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapt
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.initView(userList[position])
         holder.followUser()
+        holder.showFollowerPage(userList[position])
     }
 
     override fun getItemCount(): Int {

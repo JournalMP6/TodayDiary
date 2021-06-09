@@ -100,4 +100,7 @@ object ServerRepository: ServerRepositoryInterface {
     override fun getFollowingUser(): List<UserFiltered> = executeServer(
         apiFunction = serverApi.getFollowingUser(getTokenHeader())
     )
+    fun getSealedUserByUserId(userId: String): UserSealed = executeServer(
+        apiFunction = serverApi.getSealedUserByUserId(getTokenHeader(), userId)
+    )
 }
