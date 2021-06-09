@@ -51,6 +51,19 @@ class LoginSessionRepository(
         )
     }
 
+    suspend fun findLoginSessionByUserId(userId: String): LoginSession {
+        val loginSessionList: List<LoginSession> = loginSessionDao.findLoginSessionByUserId(userId)
+
+        // If nothing exists
+        if (loginSessionList.isEmpty()) {
+            throw NullPointerException("No User list are found!")
+        } else if (loginSessionList.size != 1) {
+            throw IllegalStateException("User list should be exactly one, but we found ${loginSessionList.size}")
+        }
+
+        return loginSessionList[0]
+    }
+
     suspend fun removeAllEntries() {
         loginSessionDao.deleteAllEntries()
     }

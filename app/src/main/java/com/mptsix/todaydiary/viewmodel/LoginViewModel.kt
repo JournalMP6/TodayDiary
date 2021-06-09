@@ -8,6 +8,7 @@ import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.model.ServerRepository
+import kotlinx.coroutines.launch
 import java.io.IOException
 import java.lang.RuntimeException
 import java.net.ConnectException
@@ -59,10 +60,14 @@ class LogInViewModel: ViewModelHelper() {
     }
 
     fun registerIdToDb(userID: String, userPassword: String) {
-        executeServerAndElse(
-            serverCallCore = {loginSession.addLoginSession(userID, userPassword)},
-            onSuccess = {},
-            onFailure = {}
-        )
+        viewModelScope.launch {
+            runCatching {
+                loginSession.findLoginSessionByUserId(userID)
+            }.onSuccess {
+                // Already exists, do not do anything
+            }.onFailure {
+                loginSession.addLoginSession(userID, userPassword)
+            }
+        }
     }
 }

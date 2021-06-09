@@ -9,6 +9,9 @@ interface LoginSessionDao {
     @Query("SELECT * FROM login_session")
     suspend fun getAllSession(): List<LoginSession>
 
+    @Query("SELECT * FROM login_session WHERE userid=:userIdInput")
+    suspend fun findLoginSessionByUserId(userIdInput: String): List<LoginSession>
+
     @Insert
     suspend fun addLoginSession(session: LoginSession)
 
