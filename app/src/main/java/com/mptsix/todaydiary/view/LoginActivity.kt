@@ -63,10 +63,16 @@ class LoginActivity : AppCompatActivity() {
         logInViewModel.loginSuccess.observe(this) {
             if(it) {
                 // Register ID to DB
-                logInViewModel.registerIdToDb(
-                    userID = binding.inputLoginID.text.toString(),
-                    userPassword = binding.inputLoginPwd.text.toString()
-                )
+                if (binding.autoLoginEnable.isChecked) {
+                    Log.d(this::class.java.simpleName, "Autologin is enabled.")
+                    logInViewModel.registerIdToDb(
+                        userID = binding.inputLoginID.text.toString(),
+                        userPassword = binding.inputLoginPwd.text.toString()
+                    )
+                } else {
+                    Log.d(this::class.java.simpleName, "Autologin is disabled.")
+                    logInViewModel.removeAllSession()
+                }
 
                 intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

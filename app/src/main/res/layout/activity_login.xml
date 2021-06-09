@@ -88,8 +88,8 @@
         android:layout_marginEnd="62dp"
         android:width="200dp"
         android:height="45dp"
-        android:textSize="15dp"
         android:inputType="textPassword"
+        android:textSize="15dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/userPwd"
@@ -123,5 +123,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/imageView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/autoLoginEnable"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="7dp"
+        android:text="Enable Auto Login"
+        app:layout_constraintBottom_toTopOf="@+id/inputLoginID"
+        app:layout_constraintEnd_toEndOf="@+id/inputLoginID" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

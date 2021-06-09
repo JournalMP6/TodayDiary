@@ -70,4 +70,10 @@ class LogInViewModel: ViewModelHelper() {
             }
         }
     }
+
+    fun removeAllSession() {
+        viewModelScope.launch {
+            loginSession.removeAllEntries()
+        }
+    }
 }
