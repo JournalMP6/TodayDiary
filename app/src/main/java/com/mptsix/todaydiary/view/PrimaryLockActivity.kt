@@ -6,7 +6,7 @@ import android.widget.Button
 import com.mptsix.todaydiary.databinding.ActivityLockBinding
 import com.mptsix.todaydiary.databinding.ActivityPrimaryLockBinding
 
-class primaryLockActivity : AppCompatActivity() {
+class PrimaryLockActivity : AppCompatActivity() {
     lateinit var binding : ActivityPrimaryLockBinding
     var password:String = ""
 

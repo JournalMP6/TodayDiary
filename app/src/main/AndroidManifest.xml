@@ -22,7 +22,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.primaryLockActivity"></activity>
+        <activity android:name=".view.PrimaryLockActivity"></activity>
         <activity android:name=".primaryLockActivity"></activity>
         <activity android:name=".view.LockActivity" />
         <activity android:name=".view.PwdChangeActivity" />
