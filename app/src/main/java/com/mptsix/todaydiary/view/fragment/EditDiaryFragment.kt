@@ -1,6 +1,7 @@
 package com.mptsix.todaydiary.view.fragment
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
