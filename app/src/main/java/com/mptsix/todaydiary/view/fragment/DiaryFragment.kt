@@ -2,12 +2,10 @@ package com.mptsix.todaydiary.view.fragment
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
@@ -15,33 +13,29 @@ import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import javax.xml.bind.DatatypeConverter
 
-class DiaryFragment : Fragment() {
+class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
     // Passed
     private var journalTimeStamp: Long? = null
 
     // Is Diary Exists?
     private var journal: Journal? = null
 
-    // For View Binding
-    private var _fragmentDiaryBinding: FragmentDiaryBinding? = null
-    private val fragmentDiaryBinding: FragmentDiaryBinding get() = _fragmentDiaryBinding!!
-
     // ViewModel
     private val journalViewModel: JournalViewModel by activityViewModels()
 
-    override fun onCreateView(
+    // onCreateView
+    override fun getViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        container: ViewGroup?
+    ): FragmentDiaryBinding {
         // Get Argument
         journalTimeStamp = arguments?.getLong("timeStamp")
-        _fragmentDiaryBinding = FragmentDiaryBinding.inflate(inflater, container, false)
-        return fragmentDiaryBinding.root
+
+        return FragmentDiaryBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    // onViewCreated
+    override fun initView() {
         updateButtonVisibility()
         initObserver()
         // Check Journal Exists
@@ -50,11 +44,11 @@ class DiaryFragment : Fragment() {
     }
 
     private fun init() {
-        fragmentDiaryBinding.addDiary.setOnClickListener {
+        binding.addDiary.setOnClickListener {
             journalViewModel.journalCache = null
             journalViewModel.requestEditPage(DiaryWriteMode(journalTimeStamp!!, true))
         }
-        fragmentDiaryBinding.modifyBtn.setOnClickListener {
+        binding.modifyBtn.setOnClickListener {
             journalViewModel.journalCache = journal
             journalViewModel.requestEditPage(DiaryWriteMode(journalTimeStamp!!, false))
         }
@@ -63,16 +57,16 @@ class DiaryFragment : Fragment() {
     private fun updateButtonVisibility() {
         if (journal == null) {
             Log.d(this::class.java.simpleName, "Found NULL")
-            fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.GONE
-            fragmentDiaryBinding.modifyBtn.visibility = View.GONE
-            fragmentDiaryBinding.diaryPicture.visibility = View.GONE
-            fragmentDiaryBinding.addDiary.visibility = View.VISIBLE
+            binding.mainDiaryViewLayout.visibility = View.GONE
+            binding.modifyBtn.visibility = View.GONE
+            binding.diaryPicture.visibility = View.GONE
+            binding.addDiary.visibility = View.VISIBLE
         } else {
             Log.d(this::class.java.simpleName, "Found Journal")
-            fragmentDiaryBinding.mainDiaryViewLayout.visibility = View.VISIBLE
-            fragmentDiaryBinding.diaryPicture.visibility = View.VISIBLE
-            fragmentDiaryBinding.addDiary.visibility = View.GONE
-            fragmentDiaryBinding.modifyBtn.visibility = View.VISIBLE
+            binding.mainDiaryViewLayout.visibility = View.VISIBLE
+            binding.diaryPicture.visibility = View.VISIBLE
+            binding.addDiary.visibility = View.GONE
+            binding.modifyBtn.visibility = View.VISIBLE
             showDiary()
         }
     }
@@ -89,7 +83,7 @@ class DiaryFragment : Fragment() {
                 if (it.results.isEmpty()) {
                     Log.e(this::class.java.simpleName, "Server Exchange succeed, but formatted address didn't received!")
                 } else {
-                    fragmentDiaryBinding.locationView.text = it.results[0].formatted_address
+                    binding.locationView.text = it.results[0].formatted_address
                 }
             } else {
                 Log.e(this::class.java.simpleName, "Location responded with NULL!")
@@ -100,14 +94,14 @@ class DiaryFragment : Fragment() {
     private fun showDiary() {
         journal?.let {
             journalViewModel.getLocationFromGeo(it.journalLocation)
-            fragmentDiaryBinding.diaryCategoryView.text = it.journalCategory.name
-            fragmentDiaryBinding.weatherView.text = it.journalWeather
-            fragmentDiaryBinding.locationView.text = ""
-            fragmentDiaryBinding.diaryMainContent.text = it.mainJournalContent
+            binding.diaryCategoryView.text = it.journalCategory.name
+            binding.weatherView.text = it.journalWeather
+            binding.locationView.text = ""
+            binding.diaryMainContent.text = it.mainJournalContent
             if (it.journalImage.imageFile != null) {
                 val decodedArray: ByteArray = DatatypeConverter.parseBase64Binary(it.journalImage.imageFile)
                 val bitmapTmp: Bitmap = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.size)
-                fragmentDiaryBinding.diaryPicture.setImageBitmap(bitmapTmp)
+                binding.diaryPicture.setImageBitmap(bitmapTmp)
             }
         }
     }
