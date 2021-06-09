@@ -53,7 +53,7 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
         attachAdapter()
         init()
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
-            Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
+            if(it) Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
         applyMode()
     }
