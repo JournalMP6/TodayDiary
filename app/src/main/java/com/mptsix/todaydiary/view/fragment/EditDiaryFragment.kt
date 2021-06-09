@@ -114,7 +114,10 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
                 _onFailure = {
                  when(it){
                      is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                     is RuntimeException -> {}// 발생할 일 존재?
+                     is RuntimeException -> {
+                        showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
+                         // Go back login activity?
+                     }
                      else -> {
                          Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
                      }
