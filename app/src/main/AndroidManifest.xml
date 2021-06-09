@@ -22,7 +22,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
+<<<<<<< HEAD
         <activity android:name=".view.activity.PwdChangeActivity"></activity>
+=======
+        <activity android:name=".view.PrimaryLockActivity"></activity>
+        <activity android:name=".primaryLockActivity"></activity>
+        <activity android:name=".view.LockActivity" />
+        <activity android:name=".view.PwdChangeActivity" />
+>>>>>>> 58d362165e49854377b780358db75551b030e120
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -51,9 +58,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".view.activity.LoginActivity" />
         <activity android:name=".view.activity.MainActivity" android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".view.activity.JoinActivity" />
+=======
+        <activity android:name=".view.LoginActivity" />
+        <activity
+            android:name=".view.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".view.JoinActivity" />
+>>>>>>> 58d362165e49854377b780358db75551b030e120
     </application>
 
 </manifest>
