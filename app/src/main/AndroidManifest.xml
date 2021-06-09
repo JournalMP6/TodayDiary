@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.PwdChangeActivity"></activity>
+        <activity android:name=".view.LockActivity"></activity>
+        <activity android:name=".view.PwdChangeActivity" />
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -52,7 +53,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.LoginActivity" />
-        <activity android:name=".view.MainActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity
+            android:name=".view.MainActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity android:name=".view.JoinActivity" />
     </application>
 
