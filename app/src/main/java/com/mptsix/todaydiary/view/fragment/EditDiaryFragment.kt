@@ -23,10 +23,7 @@ import com.mptsix.todaydiary.viewmodel.JournalViewModel
 
 import javax.xml.bind.DatatypeConverter
 
-class EditDiaryFragment : Fragment() {
-    private var _fragmentEditDiaryBinding: FragmentEditDiaryBinding? = null
-    private val fragmentEditDiaryBinding: FragmentEditDiaryBinding get() = _fragmentEditDiaryBinding!!
-
+class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
     // Diary Target Date
     private var journalTimeStamp: Long? = null
     private var journalWriteMode: Boolean = false // true for write, false for edit
@@ -39,80 +36,70 @@ class EditDiaryFragment : Fragment() {
     // Location
     private var journalLocation: String = ""
 
-    override fun onCreateView(
+    override fun getViewBinding(
         inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+        container: ViewGroup?
+    ): FragmentEditDiaryBinding {
         journalTimeStamp = arguments?.getLong("timeStamp")
         journalWriteMode = arguments?.getBoolean("modeType") ?: false
         Log.d(this::class.java.simpleName, "Target Time Stamp: $journalTimeStamp")
         Log.d(this::class.java.simpleName, "Target Mode: $journalWriteMode")
-        _fragmentEditDiaryBinding = FragmentEditDiaryBinding.inflate(inflater, container, false)
-        return fragmentEditDiaryBinding.root
+
+        return FragmentEditDiaryBinding.inflate(inflater, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun initView() {
         attachAdapter()
         init()
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
             Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
         applyMode()
-        //getLocation()
-    }
-
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-
-        _fragmentEditDiaryBinding = null
     }
 
     private fun applyMode() {
         if (!journalWriteMode) {
             journalViewModel.journalCache?.let {
-                fragmentEditDiaryBinding.diaryBody.setText(it.mainJournalContent)
+                binding.diaryBody.setText(it.mainJournalContent)
             }
         }
-        fragmentEditDiaryBinding.editText4.isEnabled = journalWriteMode
-        fragmentEditDiaryBinding.categorySpinner.isEnabled = journalWriteMode
-        fragmentEditDiaryBinding.getLocationBtn.isEnabled = journalWriteMode
-        fragmentEditDiaryBinding.getImageBtn.isEnabled = journalWriteMode
-        fragmentEditDiaryBinding.weatherSpinner.isEnabled = journalWriteMode
-        fragmentEditDiaryBinding.diaryBody.isEnabled = true
+        binding.editText4.isEnabled = journalWriteMode
+        binding.categorySpinner.isEnabled = journalWriteMode
+        binding.getLocationBtn.isEnabled = journalWriteMode
+        binding.getImageBtn.isEnabled = journalWriteMode
+        binding.weatherSpinner.isEnabled = journalWriteMode
+        binding.diaryBody.isEnabled = true
     }
 
     private fun init() {
         lateinit var intent: Intent
-        fragmentEditDiaryBinding.getLocationBtn.setOnClickListener {
+        binding.getLocationBtn.setOnClickListener {
             intent = Intent(activity, MapActivity::class.java)
             startActivityForResult(intent,0)
         }// 버튼 클릭 시 MapActivity 호출
-        fragmentEditDiaryBinding.getImageBtn.setOnClickListener {
+        binding.getImageBtn.setOnClickListener {
             val intent = Intent().apply {
                 type = "image/*"
                 action = Intent.ACTION_GET_CONTENT
             }
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
         }// 버튼 클릭 시 ImageActivity 호출
-        fragmentEditDiaryBinding.submitBtn.setOnClickListener {
+        binding.submitBtn.setOnClickListener {
             val journal: Journal = if (!journalWriteMode) {
-                journalViewModel.journalCache!!.mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString()
+                journalViewModel.journalCache!!.mainJournalContent = binding.diaryBody.text.toString()
                 journalViewModel.journalCache!!
             } else {
                 // Category
                 val journalCategory: JournalCategory = categorySelectionToEnum(
-                    fragmentEditDiaryBinding.categorySpinner.selectedItem.toString()
+                    binding.categorySpinner.selectedItem.toString()
                 )
 
                 // Diary
                 val journalWeather: String =
-                    fragmentEditDiaryBinding.weatherSpinner.selectedItem.toString()
+                    binding.weatherSpinner.selectedItem.toString()
 
                 Journal(
-                    mainJournalContent = fragmentEditDiaryBinding.diaryBody.text.toString(),
+                    mainJournalContent = binding.diaryBody.text.toString(),
                     journalLocation = journalLocation, // TODO: For now, just set to test
                     journalCategory = journalCategory,
                     journalWeather = journalWeather,
@@ -128,7 +115,7 @@ class EditDiaryFragment : Fragment() {
     }
 
     private fun attachAdapter() {
-        val categorySpinner: Spinner = fragmentEditDiaryBinding.categorySpinner
+        val categorySpinner: Spinner = binding.categorySpinner
         val category = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.category,
@@ -136,7 +123,7 @@ class EditDiaryFragment : Fragment() {
         ).apply {
             setDropDownViewResource(R.layout.spinner_layout)
         }
-        val weatherSpinner: Spinner = fragmentEditDiaryBinding.weatherSpinner
+        val weatherSpinner: Spinner = binding.weatherSpinner
         val weather = ArrayAdapter.createFromResource(
             requireContext(),
             R.array.weather,
