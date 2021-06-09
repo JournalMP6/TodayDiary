@@ -3,6 +3,7 @@ package com.mptsix.todaydiary.viewmodel
 import androidx.lifecycle.MutableLiveData
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
+import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.response.UserFiltered
 import com.mptsix.todaydiary.model.ServerRepository
 
@@ -12,10 +13,16 @@ class ProfileViewModel : ViewModelHelper() {
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var followingUserList: MutableLiveData<List<UserFiltered>> = MutableLiveData()
 
+    private val loginSessionRepository: LoginSessionRepository = LoginSessionRepository.getRepository()
+
     fun removeUser(){
         executeServerAndElse(
             serverCallCore = {ServerRepository.removeUser()},
-            onSuccess = {userRemoveSucceed.value = true},
+            onSuccess = {
+                // Clear out all session data first
+                loginSessionRepository.removeAllEntries()
+                userRemoveSucceed.value = true
+            },
             onFailure = {userRemoveSucceed.value = false}
         )
     }
@@ -31,7 +38,11 @@ class ProfileViewModel : ViewModelHelper() {
     fun changePassword(changePasswordRequest: PasswordChangeRequest){
         executeServerAndElse(
             serverCallCore = {ServerRepository.changePassword(changePasswordRequest)},
-            onSuccess = {isPasswordChangeSucceed.value =true},
+            onSuccess = {
+                // Clear out all session data first
+                loginSessionRepository.removeAllEntries()
+                isPasswordChangeSucceed.value =true
+            },
             onFailure = {isPasswordChangeSucceed.value =false}
         )
     }
