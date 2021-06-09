@@ -15,7 +15,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     private val loginSessionRepository: LoginSessionRepository = LoginSessionRepository.getRepository()
 
-    fun removeUser(){
+    fun removeUser(_onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
             serverCallCore = {ServerRepository.removeUser()},
             onSuccess = {
@@ -23,15 +23,20 @@ class ProfileViewModel : ViewModelHelper() {
                 loginSessionRepository.removeAllEntries()
                 userRemoveSucceed.value = true
             },
-            onFailure = {userRemoveSucceed.value = false}
+            onFailure = {
+                userRemoveSucceed.value = false
+                _onFailure(it)
+            }
         )
     }
 
-    fun getSealedData(){
+    fun getSealedData(_onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
             serverCallCore = {ServerRepository.getSealedUser()},
             onSuccess = {sealedData.value = it},
-            onFailure = {}
+            onFailure = {
+                _onFailure(it)
+            }
         )
     }
 

@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.data.response.JournalCategoryResponse
@@ -15,6 +16,9 @@ import com.mptsix.todaydiary.view.activity.LoginActivity
 import com.mptsix.todaydiary.view.activity.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import org.eazegraph.lib.models.PieModel
+import java.lang.RuntimeException
+import java.net.ConnectException
+import java.net.SocketTimeoutException
 
 class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -63,12 +67,17 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
             }
         }
 
-        profileViewModel.getSealedData()
+        profileViewModel.getSealedData(
+            _onFailure = {
+                _onFailure(it)
+            }) // error handling
     }
 
     private fun deleteUser(){
         binding.deleteUser.setOnClickListener {
-            profileViewModel.removeUser()
+            profileViewModel.removeUser(_onFailure = {
+                _onFailure(it)
+            })
         }
     }// 버튼 클릭 시, 서버에서 유저 삭제
 
@@ -103,6 +112,31 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
                     PieModel(journalCategoryList[i].category.name, journalCategoryList[i].count.toFloat(), colorList[i])
                 )
             }
+        }
+    }
+    // error handling
+    private fun showDialog(title:String, message: String){
+        val builder: AlertDialog.Builder? = this.let{
+            AlertDialog.Builder(requireContext())
+        }
+        builder?.setMessage(message)
+            ?.setTitle(title)
+            ?.setPositiveButton("확인"){
+                    _, _ ->
+            }
+
+        val dialog: AlertDialog?= builder?.create()
+        dialog?.show()
+    }
+    private fun _onFailure(t:Throwable):Unit{
+        when(t){
+            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+            is RuntimeException -> {
+                showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
+                // Go back login activity?
+            }
+            else -> Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${t.message}", Toast.LENGTH_SHORT).show()
+
         }
     }
 }
