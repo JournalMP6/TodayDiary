@@ -55,11 +55,11 @@ class ProfileViewModel : ViewModelHelper() {
         )
     }
 
-    fun getFollowingUser() {
+    fun getFollowingUser(_onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.getFollowingUser()},
             onSuccess = {followingUserList.value = it},
-            onFailure = {}
+            onFailure = { _onFailure(it)}
         )
     }
 }

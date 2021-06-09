@@ -90,7 +90,9 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
     }//비밀번호 변경 클릭 시, 비밀번호 변경 activity로 화면 전환
 
     private fun followUser(){
-        profileViewModel.getFollowingUser()
+        profileViewModel.getFollowingUser(_onFailure = {
+            _onFailure(it)
+        })
 
         profileViewModel.followingUserList.observe(viewLifecycleOwner){
             binding.followNum.text = "Follower: " + it.size.toString()
