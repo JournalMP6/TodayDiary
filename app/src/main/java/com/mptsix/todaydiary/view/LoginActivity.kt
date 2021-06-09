@@ -37,9 +37,6 @@ class LoginActivity : AppCompatActivity() {
             val userId :String = binding.inputLoginID.text.toString()
             val userPassword :String = binding.inputLoginPwd.text.toString()
 
-            // Register ID to DB
-            logInViewModel.registerIdToDb(userId, userPassword)
-
             if(userId.isNotEmpty() && userPassword.isNotEmpty()){
                 logInViewModel.login(LoginRequest(userId, userPassword)) { t: Throwable ->
                     when (t) {
@@ -65,7 +62,12 @@ class LoginActivity : AppCompatActivity() {
     private fun initObserver() {
         logInViewModel.loginSuccess.observe(this) {
             if(it) {
-                // Login Succeed
+                // Register ID to DB
+                logInViewModel.registerIdToDb(
+                    userID = binding.inputLoginID.text.toString(),
+                    userPassword = binding.inputLoginPwd.text.toString()
+                )
+
                 intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finish()
