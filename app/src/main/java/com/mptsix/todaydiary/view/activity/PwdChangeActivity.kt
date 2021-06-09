@@ -57,7 +57,7 @@ class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
                 profileViewModel.changePassword(
                     PasswordChangeRequest(changePwd),
                     _onFailure = {
-                        _onFailure(it)
+                        _onFailure(this, it)
                     }
                 )
             }else{
@@ -68,29 +68,5 @@ class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
         }//변경할 비밀번호를 서버로 전송
     }
     // error handling
-    private fun showDialog(title:String, message: String){
-        val builder: AlertDialog.Builder? = this.let{
-            AlertDialog.Builder(this)
-        }
-        builder?.setMessage(message)
-            ?.setTitle(title)
-            ?.setPositiveButton("확인"){
-                    _, _ ->
-            }
 
-        val dialog: AlertDialog?= builder?.create()
-        dialog?.show()
-    }
-
-    private fun _onFailure(t:Throwable):Unit{
-        when(t){
-            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-            is RuntimeException -> {
-                showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
-                // Go back login activity?
-            }
-            else -> Toast.makeText(this, "알 수 없는 에러가 발생했습니다. 메시지: ${t.message}", Toast.LENGTH_SHORT).show()
-
-        }
-    }
 }

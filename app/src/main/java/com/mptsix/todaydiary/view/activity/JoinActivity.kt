@@ -49,13 +49,13 @@ class JoinActivity : SuperActivity<ActivityJoinBinding>() {
                         userPasswordAnswer = userPasswordAnswer,
                     ),
                     _invalidFailure = {
-                        showDialog("Invalid Error", "아이디 비밀번호 규칙이 지켜지지 않았습니다. \n규칙에 맞게 입력해주세요.\n규칙(아이디:이메일, 비밀번호:8자 이상)")
+                        showDialog(this,"Invalid Error", "아이디 비밀번호 규칙이 지켜지지 않았습니다. \n규칙에 맞게 입력해주세요.\n규칙(아이디:이메일, 비밀번호:8자 이상)")
                         binding.inputJoinID.text = null
                         binding.inputJoinPwd.text = null
                     },
                     _onFailure = {
                         when (it) {
-                            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                            is ConnectException, is SocketTimeoutException -> showDialog(this, "Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
                             is RuntimeException -> {
                                 Toast.makeText(this, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
                                 binding.inputJoinID.text=null
@@ -86,19 +86,6 @@ class JoinActivity : SuperActivity<ActivityJoinBinding>() {
         return true
     }// 입력한 내용이 비어있는지 확인
 
-    private fun showDialog(title:String, message: String){
-        val builder: AlertDialog.Builder? = this.let{
-            AlertDialog.Builder(it)
-        }
-        builder?.setMessage(message)
-            ?.setTitle(title)
-            ?.setPositiveButton("확인"){
-                    _, _ ->
-            }
-
-        val dialog:AlertDialog ?= builder?.create()
-        dialog?.show()
-    }
 
     private fun initObserver() {
         logInViewModel.registerSuccess.observe(this) {

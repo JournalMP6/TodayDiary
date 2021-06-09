@@ -26,14 +26,14 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
         fun getFollowUserId(userId : String){
             userListViewModel.followUser(userId,
             _onFailure = {
-                _onFailure(it)
+                _onFailure(requireContext(),it)
             })
         }
 
         fun getUnfollowUserId(userId : String){
             userListViewModel.unfollowUser(userId,
             _onFailure = {
-                _onFailure(it)
+                _onFailure(requireContext(), it)
             })
         }
     }
@@ -59,9 +59,9 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
             userListViewModel.findUserByUserName(userName,
              _onFailure = {
                     when(it){
-                        is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                        is ConnectException, is SocketTimeoutException -> showDialog(requireContext(),"Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
                         is RuntimeException -> {
-                            showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
+                            showDialog(requireContext(),"접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
                             // Go back login activity?
                         }
                         is NoSuchFieldException -> Toast.makeText(context, "검색어를 입력해주시기 바랍니다.", Toast.LENGTH_SHORT).show()
@@ -71,28 +71,5 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
                 })
         }
     }
-    private fun showDialog(title:String, message: String){
-        val builder: android.app.AlertDialog.Builder? = this.let{
-            android.app.AlertDialog.Builder(requireContext())
-        }
-        builder?.setMessage(message)
-            ?.setTitle(title)
-            ?.setPositiveButton("확인"){
-                    _, _ ->
-            }
 
-        val dialog: android.app.AlertDialog?= builder?.create()
-        dialog?.show()
-    }
-    private fun _onFailure(t:Throwable):Unit{
-        when(t){
-            is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-            is RuntimeException -> {
-                showDialog("접속이 끊어졌습니다.", "로그인 페이지로 이동합니다.")
-                // Go back login activity?
-            }
-            else -> Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${t.message}", Toast.LENGTH_SHORT).show()
-
-        }
-    }
 }
