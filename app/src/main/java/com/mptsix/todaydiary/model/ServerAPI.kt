@@ -2,6 +2,7 @@ package com.mptsix.todaydiary.model
 
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
+import com.mptsix.todaydiary.data.request.AuxiliaryPasswordRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.*
@@ -42,6 +43,13 @@ interface ServerAPI {
 
     @GET("/api/v1/user/follow")
     fun getFollowingUser(@HeaderMap header: HashMap<String, Any?>): Call<List<UserFiltered>>
+
     @GET("/api/v1/user/sealed/{userId}")
     fun getSealedUserByUserId(@HeaderMap header: HashMap<String, Any?>, @Path("userId") userId: String): Call<UserSealed>
+
+    @POST("/api/v1/user/aux/password")
+    fun registerAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, auxiliaryPasswordRequest: AuxiliaryPasswordRequest): Call<ResponseBody>
+
+    @POST("/api/v1/user/aux/password/check")
+    fun checkAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, auxiliaryPasswordRequest: AuxiliaryPasswordRequest):Call<ResponseBody>
 }

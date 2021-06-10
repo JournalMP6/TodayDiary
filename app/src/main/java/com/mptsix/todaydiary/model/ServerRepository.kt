@@ -3,6 +3,7 @@ package com.mptsix.todaydiary.model
 import android.util.Log
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
+import com.mptsix.todaydiary.data.request.AuxiliaryPasswordRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.*
@@ -10,6 +11,8 @@ import com.mptsix.todaydiary.model.ServerRepositoryHelper.executeServer
 import com.mptsix.todaydiary.model.ServerRepositoryHelper.handle204
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -18,7 +21,7 @@ object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.0.46:8080"
+    private const val URL = "http://192.168.0.14:8080"
 
     init {
         getInstance()
@@ -101,12 +104,28 @@ object ServerRepository: ServerRepositoryInterface {
         apiFunction = serverApi.getFollowingUser(getTokenHeader())
     )
 
-    override fun registerAuxiliaryPassword(userPassword: String) {
-        TODO("Not yet implemented")
+    override fun registerAuxiliaryPassword(userPassword: String) = handle204 {
+        executeServer(
+            apiFunction = serverApi.registerAuxiliaryPassword(getTokenHeader(), AuxiliaryPasswordRequest(userPassword))
+        )
     }
 
     override fun checkAuxiliaryPassword(userPassword: String) {
-        TODO("Not yet implemented")
+        val checkAuxiliaryPasswordApi = serverApi.checkAuxiliaryPassword(getTokenHeader(), AuxiliaryPasswordRequest(userPassword))
+        val response = kotlin.runCatching {
+            checkAuxiliaryPasswordApi.execute()
+        }.getOrElse {
+            Log.e(this::class.java.simpleName, "Error when getting root token from server.")
+            Log.e(this::class.java.simpleName, it.stackTraceToString())
+            throw it
+        }
+
+        if(!response.isSuccessful) { // 403 forbidden
+
+        }
+        else {
+            response.body()!!
+        }
     }
 
     fun getSealedUserByUserId(userId: String): UserSealed = executeServer(
