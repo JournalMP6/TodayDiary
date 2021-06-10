@@ -30,6 +30,8 @@ class UserListViewModel: ViewModelHelper() {
         )
     }
 
+
+
     fun followUser(userId: String, _onFailure:(t:Throwable) -> Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.followUser(userId)},

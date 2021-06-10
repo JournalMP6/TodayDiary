@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".view.activity.FollowerActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/FollowerName"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:fontFamily="@font/fontstyle"
+                android:textColor="@color/black"
+                android:textSize="30dp" />
+
+            <TextView
+                android:id="@+id/FollowerEmail"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:gravity="center"
+                android:textSize="20dp"
+                android:fontFamily="@font/fontstyle"
+                android:textColor="@color/black"
+                android:layout_weight="2" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+
+            </LinearLayout>
+        </LinearLayout>
+        <org.eazegraph.lib.charts.PieChart
+            android:id="@+id/FollowerPieChart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:padding="6dp" />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1.5">
+
+        <TextView
+            android:id="@+id/FollowerfollowNum"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textSize="18dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/fontstyle"
+            android:layout_height="match_parent"
+            android:layout_weight="1"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="80dp"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical">
+
+                <!--View to display the yellow color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#FFA726" />
+
+                <!--Text view to display R -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fontstyle"
+                    android:textColor="@color/black"
+                    android:paddingLeft="10dp"
+                    android:text="THANKS_JOURNAL" />
+
+            </LinearLayout>
+
+            <!--Linear layout to display Python-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the green color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#66BB6A"/>
+
+                <!--Text view to display python text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ACHIEVEMENT_JOURNAL"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fontstyle"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <!--Linear layout to display C++-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the red color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#EF5350"/>
+
+                <!--Text view to display C++ text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/fontstyle"
+                    android:textColor="@color/black"
+                    android:text="EMOTIONAL_JOURNAL"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+            <!--Linear layout to display Java-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="18dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginTop="5dp">
+
+                <!--View to display the blue color icon-->
+                <View
+                    android:layout_width="15dp"
+                    android:layout_height="match_parent"
+                    android:background="#29B6F6"/>
+
+                <!--Text view to display Java text -->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:fontFamily="@font/fontstyle"
+                    android:text="Category4"
+                    android:paddingLeft="10dp"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/FollowerjournalRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:layout_weight="6">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+</LinearLayout>

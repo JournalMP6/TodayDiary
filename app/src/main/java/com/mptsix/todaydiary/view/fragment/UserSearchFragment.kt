@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -13,6 +14,8 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.observe
 import com.mptsix.todaydiary.view.adapter.UserRVAdapter
 import com.mptsix.todaydiary.databinding.FragmentUserSearchBinding
+import com.mptsix.todaydiary.view.activity.FollowerActivity
+import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import com.mptsix.todaydiary.viewmodel.UserListViewModel
 import java.lang.RuntimeException
 import java.net.ConnectException
@@ -20,6 +23,7 @@ import java.net.SocketTimeoutException
 
 class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
     private val userListViewModel : UserListViewModel by viewModels()
+    private val profileViewModel : ProfileViewModel by viewModels()
     private var userRVAdapter: UserRVAdapter?= null
 
     inner class getUserId{
@@ -36,6 +40,12 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
                 _onFailure(it)
             })
         }
+        fun setFollowerProfile(userId: String){
+            profileViewModel.getSealedUserByUserId(userId,
+            _onFailure = {
+                _onFailure(it)
+            })
+        }
     }
 
     override fun getViewBinding(
@@ -46,8 +56,16 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
     }
 
     override fun initView() {
-        userRVAdapter =  UserRVAdapter(getUserId())
+        userRVAdapter =  UserRVAdapter(UserSearchFragment.getUserId())
         binding.userRecyclerView.adapter = userRVAdapter
+
+        userRVAdapter?.itemClickListener = object:UserRVAdapter.OnItemClickListener{
+            override fun OnItemClick(holder: UserRVAdapter.ViewHolder, view: View, position: Int) {
+                val followerPageIntent = Intent(context, FollowerActivity::class.java)
+                followerPageIntent.putExtra("userId",userRVAdapter!!.userList[position].userId)
+                startActivity(followerPageIntent)
+            }
+        }
 
         userListViewModel.userFilteredList.observe(viewLifecycleOwner){
             userRVAdapter?.userList = it

@@ -12,6 +12,7 @@ class ProfileViewModel : ViewModelHelper() {
     var isPasswordChangeSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var followingUserList: MutableLiveData<List<UserFiltered>> = MutableLiveData()
+    var sealedData2 : MutableLiveData<UserSealed> = MutableLiveData()
 
     private val loginSessionRepository: LoginSessionRepository = LoginSessionRepository.getRepository()
 
@@ -37,6 +38,14 @@ class ProfileViewModel : ViewModelHelper() {
             onFailure = {
                 _onFailure(it)
             }
+        )
+    }
+
+    fun getSealedUserByUserId(userId:String){
+        executeServerAndElse(
+            serverCallCore = {ServerRepository.getSealedUserByUserId(userId)},
+            onSuccess = {sealedData2.value=it},
+            onFailure = {}
         )
     }
 

@@ -42,4 +42,6 @@ interface ServerAPI {
 
     @GET("/api/v1/user/follow")
     fun getFollowingUser(@HeaderMap header: HashMap<String, Any?>): Call<List<UserFiltered>>
+    @GET("/api/v1/user/sealed/{userId}")
+    fun getSealedUserByUserId(@HeaderMap header: HashMap<String, Any?>, @Path("userId") userId: String): Call<UserSealed>
 }
