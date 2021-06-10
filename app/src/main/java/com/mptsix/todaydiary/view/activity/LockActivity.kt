@@ -4,6 +4,7 @@ import android.content.Intent
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.observe
 import com.mptsix.todaydiary.databinding.ActivityLockBinding
 import com.mptsix.todaydiary.viewmodel.LockViewModel
 
@@ -29,6 +30,9 @@ class LockActivity : SuperActivity<ActivityLockBinding>() {
                 finish()
             }else{
                 Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+                // when password not match password erase
+                password = ""
+                binding.secondaryPwd.text = null
             }
         }
     }
