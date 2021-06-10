@@ -1,11 +1,13 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
@@ -44,16 +46,7 @@ class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
         initObserver()
         // Check Journal Exists
         journalViewModel.isJournalExists(journalTimeStamp!!,
-            _onFailure = {
-                when (it) {
-                    is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                    is RuntimeException -> {
-                        Toast.makeText(context, "이미 등록된 아이디 입니다. \n다른 아이디를 입력해주세요.", Toast.LENGTH_SHORT).show()
-                        // Go back login activity?
-                    }
-                    else -> Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
-                }
-            }
+            _onFailure = {_onFailure(requireContext(), it)}
         )
         init()
     }
@@ -111,7 +104,7 @@ class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
             journalViewModel.getLocationFromGeo(it.journalLocation,
              _onFailure = {
                 when(it){
-                    is ConnectException, is SocketTimeoutException -> showDialog("Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                    is ConnectException, is SocketTimeoutException -> showDialog(requireContext(),"Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
                     else -> Toast.makeText(requireContext(), "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
                 }
             })
@@ -126,18 +119,6 @@ class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
             }
         }
     }
-    private fun showDialog(title:String, message: String){
-        val builder: AlertDialog.Builder? = this.let{
-            AlertDialog.Builder(requireContext())
-        }
-        builder?.setMessage(message)
-            ?.setTitle(title)
-            ?.setPositiveButton("확인"){
-                    _, _ ->
-            }
 
-        val dialog: AlertDialog?= builder?.create()
-        dialog?.show()
-    }
 
 }

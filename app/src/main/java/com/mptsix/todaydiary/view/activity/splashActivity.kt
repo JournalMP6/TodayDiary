@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.databinding.ActivitySplashBinding
 import com.mptsix.todaydiary.viewmodel.SplashViewModel
