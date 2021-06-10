@@ -2,7 +2,9 @@ package com.mptsix.todaydiary.view.activity
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
@@ -32,6 +34,14 @@ abstract class SuperActivity<T: ViewBinding>: AppCompatActivity(){
         setContentView(binding.root)
         initView()
     }
+
+    override fun onRestart() {
+        Log.d(this::class.java.simpleName, "Restart Called")
+        super.onRestart()
+        val intent: Intent = Intent(this, LockActivity::class.java)
+        startActivity(intent)
+    }
+
     fun showDialog(context: Context, title:String, message: String){
         val builder: AlertDialog.Builder? = context.let{
             AlertDialog.Builder(it)

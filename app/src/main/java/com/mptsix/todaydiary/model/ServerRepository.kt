@@ -100,6 +100,15 @@ object ServerRepository: ServerRepositoryInterface {
     override fun getFollowingUser(): List<UserFiltered> = executeServer(
         apiFunction = serverApi.getFollowingUser(getTokenHeader())
     )
+
+    override fun registerAuxiliaryPassword(userPassword: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun checkAuxiliaryPassword(userPassword: String) {
+        TODO("Not yet implemented")
+    }
+
     fun getSealedUserByUserId(userId: String): UserSealed = executeServer(
         apiFunction = serverApi.getSealedUserByUserId(getTokenHeader(), userId)
     )

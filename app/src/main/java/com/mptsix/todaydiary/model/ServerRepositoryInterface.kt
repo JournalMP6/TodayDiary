@@ -8,4 +8,6 @@ interface ServerRepositoryInterface {
     fun followUser(userId: String)
     fun unfollowUser(userId: String)
     fun getFollowingUser(): List<UserFiltered>
+    fun registerAuxiliaryPassword(userPassword: String)
+    fun checkAuxiliaryPassword(userPassword: String)
 }
