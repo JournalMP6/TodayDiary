@@ -1,40 +1,49 @@
 package com.mptsix.todaydiary.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
+import android.content.Intent
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.viewModels
 import com.mptsix.todaydiary.databinding.ActivityLockBinding
+import com.mptsix.todaydiary.viewmodel.LockViewModel
 
-class LockActivity : AppCompatActivity() {
-    lateinit var binding : ActivityLockBinding
+class LockActivity : SuperActivity<ActivityLockBinding>() {
+    private val lockViewModel: LockViewModel by viewModels()
+
     var password:String = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityLockBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityLockBinding = ActivityLockBinding.inflate(layoutInflater)
+    override fun initView() {
         btnClicked()
         submitPwd()
+        observePwd()
     }
 
     override fun onBackPressed() {
     }
 
     private fun observePwd(){
-
+        lockViewModel.isCheckSucceeds.observe(this){
+            if(it){
+                intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }else{
+                Toast.makeText(this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun starTextInit(){
         var star4TextView : String = ""
         for(times in 1..password.length){
-            star4TextView += "*"
+            star4TextView += "* "
         }
         binding.secondaryPwd.text = star4TextView
     }
 
     private fun submitPwd(){
         binding.submitBtn.setOnClickListener {
-
+            lockViewModel.checkAuxiliaryPassword(password)
         } // 서버로 비밀번호 전송
     }
 

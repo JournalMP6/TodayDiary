@@ -1,18 +1,16 @@
 package com.mptsix.todaydiary.view.activity
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
+import androidx.activity.viewModels
 import com.mptsix.todaydiary.databinding.ActivityPrimaryLockBinding
+import com.mptsix.todaydiary.viewmodel.LockViewModel
 
-class PrimaryLockActivity : AppCompatActivity() {
-    lateinit var binding : ActivityPrimaryLockBinding
+class PrimaryLockActivity : SuperActivity<ActivityPrimaryLockBinding>() {
+    private val lockViewModel: LockViewModel by viewModels()
+    override fun getViewBinding(): ActivityPrimaryLockBinding = ActivityPrimaryLockBinding.inflate(layoutInflater)
     var password:String = ""
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityPrimaryLockBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun initView() {
         btnClicked()
         submitPwd()
     }
@@ -20,14 +18,17 @@ class PrimaryLockActivity : AppCompatActivity() {
     private fun starTextInit(){
         var star4TextView : String = ""
         for(times in 1..password.length){
-            star4TextView += "*"
+            star4TextView += "* "
         }
         binding.secondaryPwd.text = star4TextView
     }
 
     private fun submitPwd(){
+        val error:(t : Throwable) ->Unit = {
+            Toast.makeText(this, "비밀번호 입력에 실패하였습니다.", Toast.LENGTH_SHORT).show()
+        }
         binding.submitBtn.setOnClickListener {
-
+            lockViewModel.registerAuxiliaryPassword(password, error)
         } // 서버로 비밀번호 전송
     }
 
