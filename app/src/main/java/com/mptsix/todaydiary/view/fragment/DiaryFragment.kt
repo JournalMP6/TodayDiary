@@ -46,7 +46,13 @@ class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
         initObserver()
         // Check Journal Exists
         journalViewModel.isJournalExists(journalTimeStamp!!,
-            _onFailure = {_onFailure(requireContext(), it)}
+            _onFailure = {
+                when(it){
+                is ConnectException, is SocketTimeoutException -> showDialog(requireContext(), "Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                is RuntimeException ->Toast.makeText(context, "일기가 존재하지 않습니다.", Toast.LENGTH_SHORT).show()
+                else -> Toast.makeText(context, "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+            }
         )
         init()
     }
@@ -105,7 +111,10 @@ class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
              _onFailure = {
                 when(it){
                     is ConnectException, is SocketTimeoutException -> showDialog(requireContext(),"Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                    else -> Toast.makeText(requireContext(), "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                    else -> {
+                        Log.i("TEST", it.stackTraceToString())
+                        Toast.makeText(requireContext(), "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                    }
                 }
             })
             binding.diaryCategoryView.text = it.journalCategory.name
