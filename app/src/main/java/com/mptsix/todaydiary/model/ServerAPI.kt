@@ -48,8 +48,8 @@ interface ServerAPI {
     fun getSealedUserByUserId(@HeaderMap header: HashMap<String, Any?>, @Path("userId") userId: String): Call<UserSealed>
 
     @POST("/api/v1/user/aux/password")
-    fun registerAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, auxiliaryPasswordRequest: AuxiliaryPasswordRequest): Call<ResponseBody>
+    fun registerAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, @Body auxiliaryPasswordRequest: AuxiliaryPasswordRequest): Call<ResponseBody>
 
     @POST("/api/v1/user/aux/password/check")
-    fun checkAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, auxiliaryPasswordRequest: AuxiliaryPasswordRequest):Call<ResponseBody>
+    fun checkAuxiliaryPassword(@HeaderMap header:HashMap<String, Any?>, @Body auxiliaryPasswordRequest: AuxiliaryPasswordRequest):Call<ResponseBody>
 }

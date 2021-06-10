@@ -15,13 +15,14 @@ import retrofit2.Call
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
 object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.25.40:8080"
+    private const val URL = "http://192.168.0.14:8080"
 
     init {
         getInstance()
@@ -112,19 +113,15 @@ object ServerRepository: ServerRepositoryInterface {
 
     override fun checkAuxiliaryPassword(userPassword: String) {
         val checkAuxiliaryPasswordApi = serverApi.checkAuxiliaryPassword(getTokenHeader(), AuxiliaryPasswordRequest(userPassword))
-        val response = kotlin.runCatching {
+        val response:Response<ResponseBody> = kotlin.runCatching {
             checkAuxiliaryPasswordApi.execute()
         }.getOrElse {
-            Log.e(this::class.java.simpleName, "Error when getting root token from server.")
-            Log.e(this::class.java.simpleName, it.stackTraceToString())
+            Log.e("TEST", "Error when getting root token from server.")
+            Log.e("TEST", it.stackTraceToString())
             throw it
         }
-
-        if(!response.isSuccessful) { // 403 forbidden
-
-        }
-        else {
-            response.body()!!
+        if(!response.isSuccessful){
+            throw Exception("Password does not match")
         }
     }
 
