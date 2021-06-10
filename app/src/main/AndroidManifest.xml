@@ -22,8 +22,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MP6"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.activity.PwdChangeActivity"></activity>
 
+        <activity android:name=".view.activity.PwdChangeActivity"></activity>
+        <activity android:name=".view.activity.PrimaryLockActivity"></activity>
+        <activity android:name=".view.activity.LockActivity" />
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
