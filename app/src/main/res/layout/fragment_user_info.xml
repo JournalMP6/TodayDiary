@@ -64,6 +64,16 @@
                     android:textColor="@color/black"
                     android:gravity="center"
                     android:layout_weight="1" />
+                <TextView
+                    android:id="@+id/addAuxiliaryPwd"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/fontstyle"
+                    android:text="화면 잠금"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_weight="1" />
 
             </LinearLayout>
         </LinearLayout>

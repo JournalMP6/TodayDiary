@@ -1,6 +1,5 @@
 package com.mptsix.todaydiary.view.fragment
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -14,12 +13,11 @@ import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.data.response.JournalCategoryResponse
 import com.mptsix.todaydiary.databinding.FragmentUserInfoBinding
 import com.mptsix.todaydiary.view.activity.LoginActivity
+import com.mptsix.todaydiary.view.activity.PrimaryLockActivity
 import com.mptsix.todaydiary.view.activity.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import org.eazegraph.lib.models.PieModel
-import java.lang.RuntimeException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
+
 
 class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
     private val profileViewModel: ProfileViewModel by activityViewModels()
@@ -37,6 +35,7 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
         changeUserPwd()
         deleteUser()
         followUser()
+        addAuxiliaryPwd()
 
         // RecyclerView
         binding.journalRecycler.adapter = journalRVAdapter
@@ -78,6 +77,14 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
             })
         }
     }// 버튼 클릭 시, 서버에서 유저 삭제
+
+    private fun addAuxiliaryPwd(){
+        lateinit var intent:Intent
+        binding.addAuxiliaryPwd.setOnClickListener {
+            intent = Intent(activity, PrimaryLockActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
     private fun changeUserPwd(){
         lateinit var intent: Intent
