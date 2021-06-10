@@ -4,6 +4,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,16 +15,12 @@ import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import org.eazegraph.lib.models.PieModel
 
-class FollowerActivity : AppCompatActivity() {
-    lateinit var binding : ActivityFollowerBinding
+class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val journalRVAdapter: JournalRVAdapter = JournalRVAdapter()
 
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        binding = ActivityFollowerBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun getViewBinding(): ActivityFollowerBinding = ActivityFollowerBinding.inflate(layoutInflater)
+    override fun initView() {
         initActivity()
     }
 
@@ -42,11 +39,17 @@ class FollowerActivity : AppCompatActivity() {
             }
         }
         val userId = intent.getStringExtra("userId")
-        profileViewModel.getSealedUserByUserId(userId!!)
+        profileViewModel.getSealedUserByUserId(userId!!) {
+            Toast.makeText(this, "Cannot get user information ${userId} from server!", Toast.LENGTH_SHORT)
+                .show()
+        }
     }
 
     private fun followUser(){
-        profileViewModel.getFollowingUser()
+        profileViewModel.getFollowingUser {
+            Toast.makeText(this, "Cannot fetch user information from server! Try again later.", Toast.LENGTH_SHORT)
+                .show()
+        }
 
         profileViewModel.followingUserList.observe(this){
             binding.FollowerfollowNum.text = "Follower: " + it.size.toString()

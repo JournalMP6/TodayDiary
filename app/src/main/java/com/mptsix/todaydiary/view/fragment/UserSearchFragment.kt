@@ -43,7 +43,7 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
         fun setFollowerProfile(userId: String){
             profileViewModel.getSealedUserByUserId(userId,
             _onFailure = {
-                _onFailure(it)
+                _onFailure(requireContext(), it)
             })
         }
     }
@@ -56,7 +56,7 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
     }
 
     override fun initView() {
-        userRVAdapter =  UserRVAdapter(UserSearchFragment.getUserId())
+        userRVAdapter =  UserRVAdapter(getUserId())
         binding.userRecyclerView.adapter = userRVAdapter
 
         userRVAdapter?.itemClickListener = object:UserRVAdapter.OnItemClickListener{

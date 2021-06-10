@@ -41,11 +41,11 @@ class ProfileViewModel : ViewModelHelper() {
         )
     }
 
-    fun getSealedUserByUserId(userId:String){
+    fun getSealedUserByUserId(userId:String, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
             serverCallCore = {ServerRepository.getSealedUserByUserId(userId)},
             onSuccess = {sealedData2.value=it},
-            onFailure = {}
+            onFailure = {_onFailure(it)}
         )
     }
 
