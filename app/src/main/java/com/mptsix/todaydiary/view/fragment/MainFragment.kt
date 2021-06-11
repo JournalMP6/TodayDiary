@@ -27,11 +27,11 @@ class MainFragment: SuperFragment<FragmentMainBinding>() {
             journalViewModel.requestDiaryPage(currentTimeStamp)
         }
 
-        binding.userInfoBtn.setOnClickListener {
+        /*binding.userInfoBtn.setOnClickListener {
             journalViewModel.requestUserInfoPage()
         }
         binding.userSearchBtn.setOnClickListener {
             journalViewModel.requestUserSearchPage()
-        }
+        }*/
     }
 }

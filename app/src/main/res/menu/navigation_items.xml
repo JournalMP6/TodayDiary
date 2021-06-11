@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/mainPage"
+        android:title="@string/calender"
+        android:icon="@drawable/ic_baseline_calendar_today_24"
+        android:enabled="true"/>
+    <item android:id="@+id/searchPage"
+        android:title="@string/search"
+        android:icon="@drawable/ic_baseline_search_24"
+        android:enabled="true"/>
+    <item android:id="@+id/userInfoPage"
+        android:title="@string/user"
+        android:icon="@drawable/ic_baseline_person_pin_24"
+        android:enabled="true"/>
+</menu>

@@ -20,6 +20,7 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
         initObserver()
 
         // Start with Main Fragment
+        setupBottomNavigationView()
         commitFragment(MainFragment())
     }
 
@@ -31,7 +32,7 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
                     val diaryFragment: DiaryFragment = DiaryFragment().apply {
                         arguments = bundle
                     }
-                    commitFragment(diaryFragment)
+                    commitFragment(diaryFragment, true)
                 }
 
                 DisplayTransition.REQUEST_EDIT -> {
@@ -57,20 +58,44 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
         }
     }
 
+    private fun setupBottomNavigationView() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.mainPage -> {
+                    commitFragment(MainFragment())
+                    true
+                }
+                R.id.searchPage -> {
+                    commitFragment(UserSearchFragment(), false)
+                    true
+                }
+                R.id.userInfoPage -> {
+                    commitFragment(UserInfoFragment(), false)
+                    true
+                }
+                else -> {
+                    false
+                }
+            }
+        }
+    }
+
     private fun commitFragment(targetFragment: Fragment, replace: Boolean = false) {
         supportFragmentManager.beginTransaction().apply {
             //if (replace) addToBackStack(null)
-            replace(R.id.mainViewContainer, targetFragment)
+            replace(R.id.eachPageView, targetFragment)
             if(targetFragment != MainFragment()){
                 Log.d("checkBack", supportFragmentManager.backStackEntryCount.toString())
-                addToBackStack(null)
+                if(replace){
+                    addToBackStack(null)
+                }
             }
             commit()
         }
     }
 
     override fun onBackPressed() {
-        if(supportFragmentManager.backStackEntryCount  > 1){
+        if(supportFragmentManager.backStackEntryCount  > 0){
             supportFragmentManager.popBackStack()
             return
         }else{
