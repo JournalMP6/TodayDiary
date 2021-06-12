@@ -111,16 +111,18 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
 
     private fun showDiary() {
         journal?.let {
-            journalViewModel.getLocationFromGeo(it.journalLocation,
-             _onFailure = {
-                when(it){
-                    is ConnectException, is SocketTimeoutException -> showDialog(requireContext(),"Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
-                    else -> {
-                        Log.i("TEST", it.stackTraceToString())
-                        Toast.makeText(requireContext(), "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            })
+            if (it.journalLocation != "") {
+                journalViewModel.getLocationFromGeo(it.journalLocation,
+                    _onFailure = {
+                        when(it){
+                            is ConnectException, is SocketTimeoutException -> showDialog(requireContext(),"Server Error", "서버 상태가 불안정합니다. \n잠시 후에 다시 시도해주세요.")
+                            else -> {
+                                Log.i("TEST", it.stackTraceToString())
+                                Toast.makeText(requireContext(), "알 수 없는 에러가 발생했습니다. 메시지: ${it.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    })
+            }
             binding.diaryCategoryView.text = it.journalCategory.name
             binding.weatherView.text = it.journalWeather
             binding.locationView.text = ""
