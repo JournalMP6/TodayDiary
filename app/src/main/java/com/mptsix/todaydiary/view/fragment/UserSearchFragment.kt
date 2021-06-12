@@ -18,11 +18,14 @@ import com.mptsix.todaydiary.databinding.FragmentUserSearchBinding
 import com.mptsix.todaydiary.view.activity.FollowerActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import com.mptsix.todaydiary.viewmodel.UserListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
+@AndroidEntryPoint
+class UserSearchFragment @Inject constructor() : SuperFragment<FragmentUserSearchBinding>() {
     private val userListViewModel : UserListViewModel by viewModels()
     private val profileViewModel : ProfileViewModel by viewModels()
     private var userRVAdapter: UserRVAdapter?= null

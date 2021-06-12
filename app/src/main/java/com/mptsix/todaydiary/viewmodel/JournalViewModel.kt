@@ -14,14 +14,19 @@ import com.mptsix.todaydiary.model.map.MapLocationResponse
 import com.mptsix.todaydiary.model.map.MapRepository
 import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.transition.Transition
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.InputStream
+import javax.inject.Inject
 
-class JournalViewModel: ViewModelHelper() {
+@HiltViewModel
+class JournalViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+): ViewModelHelper() {
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
@@ -44,7 +49,7 @@ class JournalViewModel: ViewModelHelper() {
 
     fun registerJournal(journal: Journal, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.registerJournal(journal)},
+            serverCallCore = {serverRepository.registerJournal(journal)},
             onSuccess = {isJournalSubmit.value = true},
             onFailure = {
                 _onFailure(it)
@@ -55,7 +60,7 @@ class JournalViewModel: ViewModelHelper() {
 
     fun isJournalExists(timeStamp: Long, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.getJournal(timeStamp)},
+            serverCallCore = {serverRepository.getJournal(timeStamp)},
             onSuccess = {isJournalExistsByTimeStamp.value = it},
             onFailure = {
                 isJournalExistsByTimeStamp.value = null

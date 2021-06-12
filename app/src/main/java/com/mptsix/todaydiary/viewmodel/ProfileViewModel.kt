@@ -6,8 +6,13 @@ import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.response.UserFiltered
 import com.mptsix.todaydiary.model.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ProfileViewModel : ViewModelHelper() {
+@HiltViewModel
+class ProfileViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+) : ViewModelHelper() {
     var sealedData : MutableLiveData<UserSealed> = MutableLiveData()
     var isPasswordChangeSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
@@ -18,7 +23,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     fun removeUser(_onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
-            serverCallCore = {ServerRepository.removeUser()},
+            serverCallCore = {serverRepository.removeUser()},
             onSuccess = {
                 // Clear out all session data first
                 loginSessionRepository.removeAllEntries()
@@ -33,7 +38,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     fun getSealedData(_onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
-            serverCallCore = {ServerRepository.getSealedUser()},
+            serverCallCore = {serverRepository.getSealedUser()},
             onSuccess = {sealedData.value = it},
             onFailure = {
                 _onFailure(it)
@@ -43,7 +48,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     fun getSealedUserByUserId(userId:String, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.getSealedUserByUserId(userId)},
+            serverCallCore = {serverRepository.getSealedUserByUserId(userId)},
             onSuccess = {sealedData2.value=it},
             onFailure = {_onFailure(it)}
         )
@@ -51,7 +56,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     fun changePassword(changePasswordRequest: PasswordChangeRequest, _onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
-            serverCallCore = {ServerRepository.changePassword(changePasswordRequest)},
+            serverCallCore = {serverRepository.changePassword(changePasswordRequest)},
             onSuccess = {
                 // Clear out all session data first
                 loginSessionRepository.removeAllEntries()
@@ -66,7 +71,7 @@ class ProfileViewModel : ViewModelHelper() {
 
     fun getFollowingUser(_onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.getFollowingUser()},
+            serverCallCore = {serverRepository.getFollowingUser()},
             onSuccess = {followingUserList.value = it},
             onFailure = { _onFailure(it)}
         )

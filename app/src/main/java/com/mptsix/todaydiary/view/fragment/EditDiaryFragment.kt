@@ -20,13 +20,16 @@ import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import com.mptsix.todaydiary.viewmodel.LockViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
 import javax.xml.bind.DatatypeConverter
 
-class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
+@AndroidEntryPoint
+class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryBinding>() {
     // Diary Target Date
     private var journalTimeStamp: Long? = null
     private var journalWriteMode: Boolean = false // true for write, false for edit

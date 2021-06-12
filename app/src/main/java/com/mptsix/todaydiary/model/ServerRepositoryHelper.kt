@@ -8,9 +8,11 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
 
-object ServerRepositoryHelper {
+class ServerRepositoryHelper(
+    private val objectMapper: ObjectMapper
+) {
     private val logTag: String = this::class.java.simpleName
-    private val objectMapper: ObjectMapper = jacksonObjectMapper()
+
 
     fun <T> executeServer(apiFunction: Call<T>): T {
         val response: Response<T> = exchangeDataWithServer(apiFunction)

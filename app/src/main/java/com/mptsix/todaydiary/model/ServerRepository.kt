@@ -7,8 +7,6 @@ import com.mptsix.todaydiary.data.request.AuxiliaryPasswordRequest
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.data.response.*
-import com.mptsix.todaydiary.model.ServerRepositoryHelper.executeServer
-import com.mptsix.todaydiary.model.ServerRepositoryHelper.handle204
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -18,12 +16,13 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.lang.Exception
 import java.util.concurrent.TimeUnit
 
-object ServerRepository: ServerRepositoryInterface {
+class ServerRepository(
+    private val serverRepositoryHelper: ServerRepositoryHelper
+): ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    //private const val URL = "http://192.168.0.14:8080"
-    private const val URL = "http://172.30.1.1:8080"
+    private val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()
@@ -48,66 +47,66 @@ object ServerRepository: ServerRepositoryInterface {
         put("X-AUTH-TOKEN", userToken)
     }
 
-    fun loginRequest(loginRequest: LoginRequest): LoginResponse = executeServer(
+    fun loginRequest(loginRequest: LoginRequest): LoginResponse = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.login(loginRequest)
     ).also {
         userToken = it.userToken
     }
 
-    fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse = executeServer(
+    fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.registerUser(userRegisterRequest)
     )
 
-    fun registerJournal(journal: Journal): JournalResponse = executeServer(
+    fun registerJournal(journal: Journal): JournalResponse = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.registerJournal(getTokenHeader(), journal)
     )
 
-    fun getJournal(journalDate: Long) : Journal = executeServer(
+    fun getJournal(journalDate: Long) : Journal = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.getJournal(getTokenHeader(), journalDate)
     )
 
-    fun getSealedUser():UserSealed = executeServer(
+    fun getSealedUser():UserSealed = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.getSealedUser(getTokenHeader())
     )
 
-    fun changePassword(passwordChangeRequest: PasswordChangeRequest) = handle204 {
-        executeServer(
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest) = serverRepositoryHelper.handle204 {
+        serverRepositoryHelper.executeServer(
             apiFunction = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
         )
     }.apply {
         userToken = null
     }
 
-    fun removeUser() = handle204 {
-        executeServer(
+    fun removeUser() = serverRepositoryHelper.handle204 {
+        serverRepositoryHelper.executeServer(
             apiFunction = serverApi.removeUser(getTokenHeader())
         )
     }.also {
         userToken = null
     }
 
-    override fun findUserByUserName(userName: String): List<UserFiltered> = executeServer(
+    override fun findUserByUserName(userName: String): List<UserFiltered> = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.findUserByName(getTokenHeader(), userName)
     )
 
-    override fun followUser(userId: String) = handle204 {
-        executeServer(
+    override fun followUser(userId: String) = serverRepositoryHelper.handle204 {
+        serverRepositoryHelper.executeServer(
             apiFunction = serverApi.followUser(getTokenHeader(), userId)
         )
     }
 
-    override fun unfollowUser(userId: String) = handle204 {
-        executeServer(
+    override fun unfollowUser(userId: String) = serverRepositoryHelper.handle204 {
+        serverRepositoryHelper.executeServer(
             apiFunction = serverApi.unfollowUser(getTokenHeader(), userId)
         )
     }
 
-    override fun getFollowingUser(): List<UserFiltered> = executeServer(
+    override fun getFollowingUser(): List<UserFiltered> = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.getFollowingUser(getTokenHeader())
     )
 
-    override fun registerAuxiliaryPassword(userPassword: String) = handle204 {
-        executeServer(
+    override fun registerAuxiliaryPassword(userPassword: String) = serverRepositoryHelper.handle204 {
+        serverRepositoryHelper.executeServer(
             apiFunction = serverApi.registerAuxiliaryPassword(getTokenHeader(), AuxiliaryPasswordRequest(userPassword))
         )
     }
@@ -126,7 +125,7 @@ object ServerRepository: ServerRepositoryInterface {
         }
     }
 
-    fun getSealedUserByUserId(userId: String): UserSealed = executeServer(
+    fun getSealedUserByUserId(userId: String): UserSealed = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.getSealedUserByUserId(getTokenHeader(), userId)
     )
 }

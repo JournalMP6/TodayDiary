@@ -2,14 +2,19 @@ package com.mptsix.todaydiary.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import com.mptsix.todaydiary.model.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class LockViewModel: ViewModelHelper() {
+@HiltViewModel
+class LockViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+): ViewModelHelper() {
     var isCheckSucceeds: MutableLiveData<Boolean> = MutableLiveData()
     var auxPwRegisterSucceeds: MutableLiveData<Boolean> = MutableLiveData()
 
     fun registerAuxiliaryPassword(userPassword: String, _onFailure: (t: Throwable) -> Unit) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.registerAuxiliaryPassword(userPassword)},
+            serverCallCore = {serverRepository.registerAuxiliaryPassword(userPassword)},
             onSuccess = {auxPwRegisterSucceeds.value = true},
             onFailure = {
                 _onFailure(it)
@@ -20,7 +25,7 @@ class LockViewModel: ViewModelHelper() {
 
     fun checkAuxiliaryPassword(userPassword: String) {
         executeServerAndElse(
-            serverCallCore = {ServerRepository.checkAuxiliaryPassword(userPassword)},
+            serverCallCore = {serverRepository.checkAuxiliaryPassword(userPassword)},
             onSuccess = {isCheckSucceeds.value = true},
             onFailure = {isCheckSucceeds.value = false}
         )

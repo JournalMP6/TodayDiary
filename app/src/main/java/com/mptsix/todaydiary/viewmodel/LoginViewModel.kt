@@ -8,12 +8,17 @@ import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.model.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
 import java.lang.RuntimeException
 import java.net.ConnectException
+import javax.inject.Inject
 
-class LogInViewModel: ViewModelHelper() {
+@HiltViewModel
+class LogInViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+): ViewModelHelper() {
     var loginSuccess = MutableLiveData<Boolean>()
     var registerSuccess = MutableLiveData<Boolean>()
 
@@ -22,7 +27,7 @@ class LogInViewModel: ViewModelHelper() {
     //login과 그 결과에 따른 LiveData에 정보 입력
     fun login(userLoginRequest: LoginRequest, _onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
-            serverCallCore = {ServerRepository.loginRequest(userLoginRequest)},
+            serverCallCore = {serverRepository.loginRequest(userLoginRequest)},
             onSuccess = {loginSuccess.value = (it.userToken != "")},
             onFailure = {
                 _onFailure(it)
@@ -50,7 +55,7 @@ class LogInViewModel: ViewModelHelper() {
 
         // Execute/Exchange with server.
         executeServerAndElse(
-            serverCallCore = {ServerRepository.registerUser(userRegisterRequest)},
+            serverCallCore = {serverRepository.registerUser(userRegisterRequest)},
             onSuccess = {registerSuccess.value = (it.registeredId == userRegisterRequest.userId)},
             onFailure = {
                 _onFailure(it)

@@ -11,9 +11,21 @@ import com.mptsix.todaydiary.databinding.ActivityMainBinding
 import com.mptsix.todaydiary.transition.DisplayTransition
 import com.mptsix.todaydiary.view.fragment.*
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class MainActivity : SuperActivity<ActivityMainBinding>(){
+@AndroidEntryPoint
+class MainActivity @Inject constructor() : SuperActivity<ActivityMainBinding>(){
     private val journalViewModel: JournalViewModel by viewModels()
+
+    @Inject
+    lateinit var mainFragment: MainFragment
+
+    @Inject
+    lateinit var userSearchFragment: UserSearchFragment
+
+    @Inject
+    lateinit var userInfoFragment: UserInfoFragment
 
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
     override fun initView() {
@@ -21,7 +33,7 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
 
         // Start with Main Fragment
         setupBottomNavigationView()
-        commitFragment(MainFragment())
+        commitFragment(mainFragment)
     }
 
     private fun initObserver() {
@@ -48,11 +60,11 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
                 }
 
                 DisplayTransition.REQUEST_USERINFO->{
-                    commitFragment(UserInfoFragment(), true)
+                    commitFragment(userInfoFragment, true)
                 }
 
                 DisplayTransition.REQUEST_SEARCH->{
-                    commitFragment(UserSearchFragment(), true)
+                    commitFragment(userSearchFragment, true)
                 }
             }
         }
@@ -62,15 +74,15 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
         binding.bottomNavigationView.setOnNavigationItemSelectedListener {
             when (it.itemId) {
                 R.id.mainPage -> {
-                    commitFragment(MainFragment())
+                    commitFragment(mainFragment)
                     true
                 }
                 R.id.searchPage -> {
-                    commitFragment(UserSearchFragment(), false)
+                    commitFragment(userSearchFragment, false)
                     true
                 }
                 R.id.userInfoPage -> {
-                    commitFragment(UserInfoFragment(), false)
+                    commitFragment(userInfoFragment, false)
                     true
                 }
                 else -> {

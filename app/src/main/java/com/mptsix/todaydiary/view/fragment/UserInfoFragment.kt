@@ -17,10 +17,12 @@ import com.mptsix.todaydiary.view.activity.LoginActivity
 import com.mptsix.todaydiary.view.activity.PrimaryLockActivity
 import com.mptsix.todaydiary.view.activity.PwdChangeActivity
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.eazegraph.lib.models.PieModel
+import javax.inject.Inject
 
-
-class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
+@AndroidEntryPoint
+class UserInfoFragment @Inject constructor() : SuperFragment<FragmentUserInfoBinding>() {
     private val profileViewModel: ProfileViewModel by activityViewModels()
 
     private val journalRVAdapter: JournalRVAdapter = JournalRVAdapter()

@@ -19,9 +19,12 @@ import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
 import com.mptsix.todaydiary.view.adapter.UserRVAdapter
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import com.mptsix.todaydiary.viewmodel.UserListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import org.eazegraph.lib.models.PieModel
+import javax.inject.Inject
 
-class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
+@AndroidEntryPoint
+class FollowerActivity @Inject constructor() : SuperActivity<ActivityFollowerBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val journalRVAdapter: JournalRVAdapter = JournalRVAdapter()
     private val userListViewModel: UserListViewModel = UserListViewModel()

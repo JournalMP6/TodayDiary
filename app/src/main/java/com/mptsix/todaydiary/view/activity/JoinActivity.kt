@@ -13,11 +13,14 @@ import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.request.UserRegisterRequest
 import com.mptsix.todaydiary.databinding.ActivityJoinBinding
 import com.mptsix.todaydiary.viewmodel.LogInViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class JoinActivity : SuperActivity<ActivityJoinBinding>() {
+@AndroidEntryPoint
+class JoinActivity @Inject constructor() : SuperActivity<ActivityJoinBinding>() {
     private val logInViewModel: LogInViewModel by viewModels()
 
     override fun getViewBinding(): ActivityJoinBinding = ActivityJoinBinding.inflate(layoutInflater)

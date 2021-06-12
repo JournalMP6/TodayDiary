@@ -7,9 +7,12 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.databinding.FragmentMainBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.text.SimpleDateFormat
+import javax.inject.Inject
 
-class MainFragment: SuperFragment<FragmentMainBinding>() {
+@AndroidEntryPoint
+class MainFragment @Inject constructor(): SuperFragment<FragmentMainBinding>() {
     // Simple Date Formatter
     private val simpleDateFormat: SimpleDateFormat = SimpleDateFormat("yyyy-MM-dd")
 

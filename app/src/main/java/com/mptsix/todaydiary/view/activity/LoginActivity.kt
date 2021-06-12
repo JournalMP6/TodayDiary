@@ -10,11 +10,14 @@ import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.databinding.ActivityLoginBinding
 import com.mptsix.todaydiary.viewmodel.LogInViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class LoginActivity : SuperActivity<ActivityLoginBinding>() {
+@AndroidEntryPoint
+class LoginActivity @Inject constructor() : SuperActivity<ActivityLoginBinding>() {
     private val logInViewModel: LogInViewModel by viewModels()
 
     override fun getViewBinding(): ActivityLoginBinding = ActivityLoginBinding.inflate(layoutInflater)

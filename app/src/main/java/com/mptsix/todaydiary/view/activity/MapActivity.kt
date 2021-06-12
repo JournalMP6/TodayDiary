@@ -12,8 +12,11 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.databinding.ActivityMapBinding
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class MapActivity : SuperActivity<ActivityMapBinding>() {
+@AndroidEntryPoint
+class MapActivity @Inject constructor() : SuperActivity<ActivityMapBinding>() {
     lateinit var googleMap: GoogleMap
     var loc = LatLng(37.5642135, 127.0016985)
 

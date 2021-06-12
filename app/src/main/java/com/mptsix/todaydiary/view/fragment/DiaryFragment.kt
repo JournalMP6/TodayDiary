@@ -14,12 +14,15 @@ import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 import javax.xml.bind.DatatypeConverter
 
-class DiaryFragment : SuperFragment<FragmentDiaryBinding>() {
+@AndroidEntryPoint
+class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>() {
     // Passed
     private var journalTimeStamp: Long? = null
 

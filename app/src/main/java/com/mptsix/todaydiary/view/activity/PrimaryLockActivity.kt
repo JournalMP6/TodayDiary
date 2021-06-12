@@ -7,8 +7,11 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import com.mptsix.todaydiary.databinding.ActivityPrimaryLockBinding
 import com.mptsix.todaydiary.viewmodel.LockViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class PrimaryLockActivity : SuperActivity<ActivityPrimaryLockBinding>() {
+@AndroidEntryPoint
+class PrimaryLockActivity @Inject constructor() : SuperActivity<ActivityPrimaryLockBinding>() {
     private val lockViewModel: LockViewModel by viewModels()
     override fun getViewBinding(): ActivityPrimaryLockBinding = ActivityPrimaryLockBinding.inflate(layoutInflater)
     var password:String = ""

@@ -7,8 +7,11 @@ import androidx.activity.viewModels
 import androidx.lifecycle.observe
 import com.mptsix.todaydiary.databinding.ActivityLockBinding
 import com.mptsix.todaydiary.viewmodel.LockViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-class LockActivity : SuperActivity<ActivityLockBinding>() {
+@AndroidEntryPoint
+class LockActivity @Inject constructor() : SuperActivity<ActivityLockBinding>() {
     private val lockViewModel: LockViewModel by viewModels()
 
     var password:String = ""

@@ -7,9 +7,14 @@ import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.data.request.LoginRequest
 import com.mptsix.todaydiary.model.ServerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class SplashViewModel: ViewModel() {
+@HiltViewModel
+class SplashViewModel @Inject constructor(
+    private val serverRepository: ServerRepository
+): ViewModel() {
     var isDirectedToLogin: MutableLiveData<Boolean> = MutableLiveData()
     private val loginSessionRepository: LoginSessionRepository by lazy {
         LoginSessionRepository.getRepository()
@@ -26,7 +31,7 @@ class SplashViewModel: ViewModel() {
             }.onSuccess {
                 withContext(Dispatchers.IO) {
                     runCatching {
-                        ServerRepository.loginRequest(
+                        serverRepository.loginRequest(
                             LoginRequest(
                                 userId = it.userId,
                                 userPassword = it.userPassword

@@ -10,11 +10,14 @@ import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.databinding.ActivityPwdChangeBinding
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class PwdChangeActivity : SuperActivity<ActivityPwdChangeBinding>() {
+@AndroidEntryPoint
+class PwdChangeActivity @Inject constructor() : SuperActivity<ActivityPwdChangeBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
 
     override fun getViewBinding(): ActivityPwdChangeBinding = ActivityPwdChangeBinding.inflate(layoutInflater)

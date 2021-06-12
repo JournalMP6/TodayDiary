@@ -9,11 +9,14 @@ import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.databinding.ActivitySplashBinding
 import com.mptsix.todaydiary.viewmodel.SplashViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import javax.inject.Inject
 
-class splashActivity : SuperActivity<ActivitySplashBinding>() {
+@AndroidEntryPoint
+class splashActivity @Inject constructor() : SuperActivity<ActivitySplashBinding>() {
     private val splashViewModel: SplashViewModel by viewModels()
 
     override fun getViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
