@@ -30,6 +30,9 @@ class MainActivity @Inject constructor() : SuperActivity<ActivityMainBinding>(){
     @Inject
     lateinit var diaryFragment: DiaryFragment
 
+    @Inject
+    lateinit var editDiaryFragment: EditDiaryFragment
+
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
     override fun initView() {
         initObserver()
@@ -49,13 +52,9 @@ class MainActivity @Inject constructor() : SuperActivity<ActivityMainBinding>(){
 
                 DisplayTransition.REQUEST_EDIT -> {
                     val diaryMode: DiaryWriteMode = it.data as DiaryWriteMode
-                    val bundle: Bundle = Bundle().apply {
-                        putLong("timeStamp", diaryMode.timeStamp)
-                        putBoolean("modeType", diaryMode.modeType)
-                    }
-                    val editDiaryFragment: EditDiaryFragment = EditDiaryFragment().apply {
-                        arguments = bundle
-                    }
+                    editDiaryFragment.journalTimeStamp = diaryMode.timeStamp
+                    editDiaryFragment.journalWriteMode = diaryMode.modeType
+
                     commitFragment(editDiaryFragment, true)
                 }
 

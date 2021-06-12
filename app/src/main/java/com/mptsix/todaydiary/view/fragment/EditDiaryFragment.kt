@@ -31,8 +31,16 @@ import javax.xml.bind.DatatypeConverter
 @AndroidEntryPoint
 class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryBinding>() {
     // Diary Target Date
-    private var journalTimeStamp: Long? = null
-    private var journalWriteMode: Boolean = false // true for write, false for edit
+    var journalTimeStamp: Long? = null
+        set(value) {
+            Log.d(this::class.java.simpleName, "Setting Journal Time Stamp as: $value")
+            field = value
+        }
+    var journalWriteMode: Boolean = false // true for write, false for edit
+        set(value) {
+            Log.d(this::class.java.simpleName, "Setting Journal Write mode as $value")
+            field = value
+        }
 
     private val journalViewModel: JournalViewModel by activityViewModels()
     private val lockViewModel: LockViewModel by activityViewModels()
@@ -46,8 +54,6 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentEditDiaryBinding {
-        journalTimeStamp = arguments?.getLong("timeStamp")
-        journalWriteMode = arguments?.getBoolean("modeType") ?: false
         Log.d(this::class.java.simpleName, "Target Time Stamp: $journalTimeStamp")
         Log.d(this::class.java.simpleName, "Target Mode: $journalWriteMode")
 
