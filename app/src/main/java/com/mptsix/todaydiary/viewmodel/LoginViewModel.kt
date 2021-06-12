@@ -17,12 +17,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LogInViewModel @Inject constructor(
-    private val serverRepository: ServerRepository
+    private val serverRepository: ServerRepository,
+    private val loginSession: LoginSessionRepository
 ): ViewModelHelper() {
     var loginSuccess = MutableLiveData<Boolean>()
     var registerSuccess = MutableLiveData<Boolean>()
-
-    private var loginSession: LoginSessionRepository = LoginSessionRepository.getRepository()
 
     //login과 그 결과에 따른 LiveData에 정보 입력
     fun login(userLoginRequest: LoginRequest, _onFailure:(t:Throwable)->Unit){

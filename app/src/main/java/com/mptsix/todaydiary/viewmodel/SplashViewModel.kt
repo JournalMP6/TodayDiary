@@ -13,12 +13,10 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val serverRepository: ServerRepository
+    private val serverRepository: ServerRepository,
+    private val loginSessionRepository: LoginSessionRepository
 ): ViewModel() {
     var isDirectedToLogin: MutableLiveData<Boolean> = MutableLiveData()
-    private val loginSessionRepository: LoginSessionRepository by lazy {
-        LoginSessionRepository.getRepository()
-    }
 
     fun isLoginRedirectionNeeded(onCommunicationFailure: (t: Throwable) -> Unit) {
         val referenceStartTime: Long = System.currentTimeMillis()

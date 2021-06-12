@@ -1,45 +1,13 @@
 package com.mptsix.todaydiary.data.login
 
-import android.content.Context
 import android.util.Log
-import androidx.room.Room
+import javax.inject.Inject
+import javax.inject.Singleton
 
-class LoginSessionRepository(
+@Singleton
+class LoginSessionRepository @Inject constructor(
     private val loginSessionDao: LoginSessionDao
 ) {
-    // For Creating Singleton Pattern
-    companion object {
-        private var loginSessionRepository: LoginSessionRepository? = null
-        private var loginSessionDatabase: LoginSessionDatabase? = null
-
-        fun initiateRepository(context: Context) {
-            if (loginSessionDatabase == null) {
-                Log.d(this::class.java.simpleName, "Creating ROOM Repository")
-                loginSessionDatabase = Room.databaseBuilder(
-                    context,
-                    LoginSessionDatabase::class.java,
-                    "login_session.db"
-                ).build()
-            } else {
-                Log.d(this::class.java.simpleName, "Login Session Database instance is already exists.. skipping creating it.")
-            }
-
-            if (loginSessionRepository == null) {
-                Log.d(this::class.java.simpleName, "Creating Session Repository")
-                loginSessionRepository = LoginSessionRepository(loginSessionDatabase!!.getLoginSessionDao())
-            } else {
-                Log.d(this::class.java.simpleName, "Login Session Repository instance is already exists.. skipping creating it.")
-            }
-        }
-
-        fun getRepository(): LoginSessionRepository {
-            if (loginSessionDatabase == null || loginSessionRepository == null) {
-                throw IllegalStateException("Either Login Session db or Login Session repository is null! Perhaps you did not called initiateRepository?")
-            }
-
-            return loginSessionRepository!!
-        }
-    }
 
     suspend fun addLoginSession(userId: String, userPassword: String) {
         loginSessionDao.addLoginSession(

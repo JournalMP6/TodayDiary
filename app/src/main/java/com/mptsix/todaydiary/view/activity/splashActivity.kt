@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.observe
-import com.mptsix.todaydiary.data.login.LoginSessionRepository
 import com.mptsix.todaydiary.databinding.ActivitySplashBinding
 import com.mptsix.todaydiary.viewmodel.SplashViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,6 +16,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class splashActivity @Inject constructor() : SuperActivity<ActivitySplashBinding>() {
+
     private val splashViewModel: SplashViewModel by viewModels()
 
     override fun getViewBinding(): ActivitySplashBinding = ActivitySplashBinding.inflate(layoutInflater)
@@ -24,7 +24,6 @@ class splashActivity @Inject constructor() : SuperActivity<ActivitySplashBinding
         init()
 
         // Splash Activity is the first activity shown to user.
-        LoginSessionRepository.initiateRepository(applicationContext)
         splashViewModel.isLoginRedirectionNeeded {
             when (it) {
                 is ConnectException, is SocketTimeoutException -> Toast.makeText(this, "서버와 연결을 하지 못했습니다. 인터넷 연결을 확인하고 재로그인 해주세요.", Toast.LENGTH_SHORT).show()

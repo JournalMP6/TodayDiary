@@ -11,15 +11,14 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ProfileViewModel @Inject constructor(
-    private val serverRepository: ServerRepository
+    private val serverRepository: ServerRepository,
+    private val loginSessionRepository: LoginSessionRepository
 ) : ViewModelHelper() {
     var sealedData : MutableLiveData<UserSealed> = MutableLiveData()
     var isPasswordChangeSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var userRemoveSucceed : MutableLiveData<Boolean> = MutableLiveData()
     var followingUserList: MutableLiveData<List<UserFiltered>> = MutableLiveData()
     var sealedData2 : MutableLiveData<UserSealed> = MutableLiveData()
-
-    private val loginSessionRepository: LoginSessionRepository = LoginSessionRepository.getRepository()
 
     fun removeUser(_onFailure:(t:Throwable)->Unit){
         executeServerAndElse(
