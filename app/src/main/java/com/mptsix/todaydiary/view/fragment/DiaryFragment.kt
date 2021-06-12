@@ -24,7 +24,11 @@ import javax.xml.bind.DatatypeConverter
 @AndroidEntryPoint
 class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>() {
     // Passed
-    private var journalTimeStamp: Long? = null
+    var journalTimeStamp: Long? = null
+        set(value) {
+            Log.d(this::class.java.simpleName, "Setting journalTimeStamp as: $value")
+            field = value
+        }
 
     // Is Diary Exists?
     private var journal: Journal? = null
@@ -37,9 +41,6 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
         inflater: LayoutInflater,
         container: ViewGroup?
     ): FragmentDiaryBinding {
-        // Get Argument
-        journalTimeStamp = arguments?.getLong("timeStamp")
-
         return FragmentDiaryBinding.inflate(inflater, container, false)
     }
 

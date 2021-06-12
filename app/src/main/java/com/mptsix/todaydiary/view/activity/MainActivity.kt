@@ -27,6 +27,9 @@ class MainActivity @Inject constructor() : SuperActivity<ActivityMainBinding>(){
     @Inject
     lateinit var userInfoFragment: UserInfoFragment
 
+    @Inject
+    lateinit var diaryFragment: DiaryFragment
+
     override fun getViewBinding(): ActivityMainBinding = ActivityMainBinding.inflate(layoutInflater)
     override fun initView() {
         initObserver()
@@ -40,10 +43,7 @@ class MainActivity @Inject constructor() : SuperActivity<ActivityMainBinding>(){
         journalViewModel.displayTransition.observe(this) {
             when (it.displayTransition) {
                 DisplayTransition.REQUEST_DIARY -> {
-                    val bundle: Bundle = Bundle().apply {putLong("timeStamp", it.data as Long)}
-                    val diaryFragment: DiaryFragment = DiaryFragment().apply {
-                        arguments = bundle
-                    }
+                    diaryFragment.journalTimeStamp = it.data as Long
                     commitFragment(diaryFragment, true)
                 }
 
