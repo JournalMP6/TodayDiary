@@ -25,7 +25,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class JournalViewModel @Inject constructor(
-    private val serverRepository: ServerRepository
+    private val serverRepository: ServerRepository,
+    private val mapRepository: MapRepository
 ): ViewModelHelper() {
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
@@ -71,7 +72,7 @@ class JournalViewModel @Inject constructor(
 
     fun getLocationFromGeo(geoLocation: String, _onFailure:(t:Throwable)->Unit) {
         executeServerAndElse(
-            serverCallCore = {MapRepository.getLocation(geoLocation)},
+            serverCallCore = {mapRepository.getLocation(geoLocation)},
             onSuccess = {journalLocation.value = it},
             onFailure = {_onFailure(it)}
         )

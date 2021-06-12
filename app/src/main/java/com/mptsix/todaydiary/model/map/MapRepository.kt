@@ -4,11 +4,14 @@ import com.mptsix.todaydiary.BuildConfig
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Inject
+import javax.inject.Singleton
 
-object MapRepository {
+@Singleton
+class MapRepository @Inject constructor() {
     private var instance: MapAPI? = null
     private val mapAPI: MapAPI get() = instance!!
-    private const val URL = "https://maps.googleapis.com"
+    private val URL = "https://maps.googleapis.com"
     private val API_KEY = BuildConfig.MAP_GEO_KEY
 
     init {
