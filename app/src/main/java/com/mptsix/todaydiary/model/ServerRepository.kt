@@ -22,7 +22,8 @@ object ServerRepository: ServerRepositoryInterface {
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
-    private const val URL = "http://192.168.0.14:8080"
+    //private const val URL = "http://192.168.0.14:8080"
+    private const val URL = "http://172.30.1.1:8080"
 
     init {
         getInstance()

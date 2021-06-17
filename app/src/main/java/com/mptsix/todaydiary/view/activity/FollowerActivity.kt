@@ -6,8 +6,10 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.view.isVisible
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.mptsix.todaydiary.R
@@ -40,10 +42,16 @@ class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
                 journalRVAdapter.journalList = it.journalList
             }
         }
+        val showByFollowing :Boolean = intent!!.getBooleanExtra("isFollowing",false)
         val userId = intent.getStringExtra("userId")
         profileViewModel.getSealedUserByUserId(userId!!) {
             Toast.makeText(this, "Cannot get user information ${userId} from server!", Toast.LENGTH_SHORT)
                 .show()
+        }
+        if(showByFollowing == false){
+            binding.FollowerjournalRecycler.visibility = View.INVISIBLE
+        }else{
+            binding.FollowerjournalRecycler.visibility = View.VISIBLE
         }
     }
 

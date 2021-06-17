@@ -64,6 +64,7 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
             override fun OnItemClick(holder: UserRVAdapter.ViewHolder, view: View, position: Int) {
                 val followerPageIntent = Intent(context, FollowerActivity::class.java)
                 followerPageIntent.putExtra("userId",userRVAdapter!!.userList[position].userId)
+                followerPageIntent.putExtra("isFollowing", userRVAdapter!!.userList[position].isUserFollowedTargetUser)
                 startActivityForResult(followerPageIntent, 100)
             }
         }
