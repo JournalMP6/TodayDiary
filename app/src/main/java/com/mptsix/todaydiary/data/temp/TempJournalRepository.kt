@@ -20,6 +20,16 @@ class TempJournalRepository @Inject constructor(
         }
     }
 
+    suspend fun findByJournalDateAndUserId(date: Long, id: String): TempJournal {
+        val result: List<TempJournal> =
+            tempJournalDao.findByJournalDateAndUserId(date, id)
+
+        if (result.size != 1) {
+            throw IllegalStateException("Error: Find result is not exactly 1! Found ${result.size}")
+        }
+        return result[0]
+    }
+
     suspend fun addTempJournal(inputJournal: TempJournal) {
         Log.d(logTag, "Inserting Journal ID: ${inputJournal.journalDate}")
         tempJournalDao.addTempJournal(inputJournal)

@@ -62,9 +62,13 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
 
     override fun initView() {
         initObserver()
+        journalViewModel.getUserSealed()
+
         attachAdapter()
         init()
         applyMode()
+
+        checkTempData()
     }
 
     private fun initObserver() {
@@ -74,12 +78,29 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         journalViewModel.userSealed.observe(viewLifecycleOwner) {
             if (it != null) {
                 userSealed = it
-                tempSave()
             } else {
                 Toast.makeText(requireContext(), "Cannot get user data from server.", Toast.LENGTH_SHORT)
                     .show()
             }
         }
+
+        journalViewModel.tempJournal.observe(viewLifecycleOwner) {
+            if (it != null) {
+                binding.diaryBody.setText(it.mainJournalContent)
+                binding.editText4.setText("")
+
+                // TODO: Spinner Initiation
+            }
+        }
+    }
+
+    private fun checkTempData() {
+        if (userSealed == null) return
+        val targetDate: Long = journalTimeStamp ?: run {
+            Log.w(this::class.java.simpleName, "Cannot get Journal timestamp")
+            return
+        }
+        journalViewModel.getTempDataIfExists(targetDate, userSealed!!.userId)
     }
 
     private fun applyMode() {
@@ -140,12 +161,13 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         }
 
         binding.tempSave.setOnClickListener {
-            journalViewModel.getUserSealed()
+            tempSave()
         }
 
     }
 
     private fun tempSave() {
+        if (userSealed == null) return
         val tempObject: TempJournal = TempJournal(
             id = null,
             userId = userSealed!!.userId,

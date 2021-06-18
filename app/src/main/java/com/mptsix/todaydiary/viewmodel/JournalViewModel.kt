@@ -37,6 +37,7 @@ class JournalViewModel @Inject constructor(
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
     var journalLocation: MutableLiveData<MapLocationResponse> = MutableLiveData()
     var userSealed: MutableLiveData<UserSealed> = MutableLiveData()
+    var tempJournal: MutableLiveData<TempJournal> = MutableLiveData()
 
     // Journal Cache
     var journalCache: Journal? = null
@@ -101,6 +102,18 @@ class JournalViewModel @Inject constructor(
             onSuccess = {userSealed.value = it},
             onFailure = {userSealed.value = null}
         )
+    }
+
+    fun getTempDataIfExists(journalDate: Long, userId: String) {
+        viewModelScope.launch {
+            runCatching {
+                tempJournalRepository.findByJournalDateAndUserId(journalDate, userId)
+            }.onSuccess {
+                tempJournal.value = it
+            }.onFailure {
+                tempJournal.value = null
+            }
+        }
     }
 
     fun requestDiaryPage(timeStamp: Long) {
