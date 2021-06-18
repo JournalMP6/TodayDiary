@@ -1,7 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.util.Log
@@ -11,7 +10,6 @@ import android.widget.ArrayAdapter
 import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.observe
 import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.response.Journal
@@ -23,9 +21,6 @@ import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import com.mptsix.todaydiary.viewmodel.LockViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import java.lang.RuntimeException
-import java.net.ConnectException
-import java.net.SocketTimeoutException
 import javax.inject.Inject
 
 import javax.xml.bind.DatatypeConverter
@@ -66,13 +61,16 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     }
 
     override fun initView() {
+        initObserver()
         attachAdapter()
         init()
+        applyMode()
+    }
+
+    private fun initObserver() {
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
             if(it) Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
-        applyMode()
-
         journalViewModel.userSealed.observe(viewLifecycleOwner) {
             if (it != null) {
                 userSealed = it
