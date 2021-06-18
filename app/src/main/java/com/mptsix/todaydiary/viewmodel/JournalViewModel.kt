@@ -9,6 +9,8 @@ import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
+import com.mptsix.todaydiary.data.temp.TempJournal
+import com.mptsix.todaydiary.data.temp.TempJournalRepository
 import com.mptsix.todaydiary.model.ServerRepository
 import com.mptsix.todaydiary.model.map.MapLocationResponse
 import com.mptsix.todaydiary.model.map.MapRepository
@@ -26,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class JournalViewModel @Inject constructor(
     private val serverRepository: ServerRepository,
-    private val mapRepository: MapRepository
+    private val mapRepository: MapRepository,
+    private val tempJournalRepository: TempJournalRepository
 ): ViewModelHelper() {
     var isJournalSubmit : MutableLiveData<Boolean> = MutableLiveData()
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
@@ -76,6 +79,18 @@ class JournalViewModel @Inject constructor(
             onSuccess = {journalLocation.value = it},
             onFailure = {_onFailure(it)}
         )
+    }
+
+    fun tempSaveJournal(tempJournal: TempJournal, onSuccess: () -> Unit, onFailure: (t: Throwable) -> Unit) {
+        viewModelScope.launch {
+            runCatching {
+                tempJournalRepository.addTempJournal(tempJournal)
+            }.onSuccess {
+                onSuccess()
+            }.onFailure {
+                onFailure(it)
+            }
+        }
     }
 
     fun requestDiaryPage(timeStamp: Long) {

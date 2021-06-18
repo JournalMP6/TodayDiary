@@ -16,6 +16,7 @@ import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalCategory
 import com.mptsix.todaydiary.data.response.JournalImage
+import com.mptsix.todaydiary.data.temp.TempJournal
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
@@ -123,6 +124,24 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
             }
             journalViewModel.registerJournal(journal,
                 _onFailure = {_onFailure(requireContext(), it)}
+            )
+        }
+
+        binding.tempSave.setOnClickListener {
+            val tempObject: TempJournal = TempJournal(
+                id = null,
+                mainJournalContent = binding.diaryBody.text.toString(),
+                journalLocation = journalLocation,
+                journalCategory = binding.categorySpinner.selectedItem.toString(),
+                journalWeather = binding.weatherSpinner.selectedItem.toString(),
+                journalDate = journalTimeStamp!!,
+                journalImage = journalImage?.imageFile
+            )
+
+            journalViewModel.tempSaveJournal(
+                tempJournal = tempObject,
+                onSuccess = {Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show()},
+                onFailure = {Toast.makeText(requireContext(), "Saving failed!", Toast.LENGTH_SHORT).show()}
             )
         }
 
