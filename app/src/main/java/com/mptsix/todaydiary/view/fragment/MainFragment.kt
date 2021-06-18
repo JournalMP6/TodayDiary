@@ -1,7 +1,9 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import com.mptsix.todaydiary.databinding.FragmentMainBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
@@ -23,8 +25,13 @@ class MainFragment: SuperFragment<FragmentMainBinding>() {
 
     override fun initView() {
         binding.calendarView.setOnDateChangeListener { _, year, month, dayOfMonth ->
+            var now = System.currentTimeMillis()
             val currentTimeStamp: Long = simpleDateFormat.parse("${year}-${month+1}-$dayOfMonth").time
-            journalViewModel.requestDiaryPage(currentTimeStamp)
+            if (now < currentTimeStamp){
+                Toast.makeText(activity, "금일 이후의 일기는 작성할 수 없습니다.", Toast.LENGTH_SHORT).show()
+            }else{
+                journalViewModel.requestDiaryPage(currentTimeStamp)
+            }
         }
 
         /*binding.userInfoBtn.setOnClickListener {
