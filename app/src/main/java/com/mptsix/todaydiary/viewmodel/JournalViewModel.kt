@@ -84,7 +84,7 @@ class JournalViewModel @Inject constructor(
     fun tempSaveJournal(tempJournal: TempJournal, onSuccess: () -> Unit, onFailure: (t: Throwable) -> Unit) {
         viewModelScope.launch {
             runCatching {
-                tempJournalRepository.addTempJournal(tempJournal)
+                tempJournalRepository.saveOrUpdate(tempJournal)
             }.onSuccess {
                 onSuccess()
             }.onFailure {

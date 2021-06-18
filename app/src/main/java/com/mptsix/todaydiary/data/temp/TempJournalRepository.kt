@@ -8,6 +8,18 @@ class TempJournalRepository @Inject constructor(
 ) {
     private val logTag: String = this::class.java.simpleName
 
+    suspend fun saveOrUpdate(inputJournal: TempJournal) {
+        val result: List<TempJournal> =
+            tempJournalDao.findSavedJournalByJournalDate(inputJournal.journalDate)
+        if (result.isEmpty()) {
+            // Result is empty. Probably we need to insert
+            addTempJournal(inputJournal)
+        } else {
+            // Result is non-empty. Update it
+            updateSavedJournal(inputJournal)
+        }
+    }
+
     suspend fun addTempJournal(inputJournal: TempJournal) {
         Log.d(logTag, "Inserting Journal ID: ${inputJournal.journalDate}")
         tempJournalDao.addTempJournal(inputJournal)
