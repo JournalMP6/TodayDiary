@@ -47,6 +47,26 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     // Location
     private var journalLocation: String = ""
 
+    private val category: ArrayAdapter<CharSequence> by lazy {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.category,
+            R.layout.spinner_layout
+        ).apply {
+            setDropDownViewResource(R.layout.spinner_layout)
+        }
+    }
+
+    private val weather: ArrayAdapter<CharSequence> by lazy {
+        ArrayAdapter.createFromResource(
+            requireContext(),
+            R.array.weather,
+            R.layout.spinner_layout
+        ).apply {
+            setDropDownViewResource(R.layout.spinner_layout)
+        }
+    }
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -83,6 +103,11 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
                 )
 
                 // TODO: Spinner Initiation
+                val categoryPosition: Int = category.getPosition(it.journalCategory)
+                binding.categorySpinner.setSelection(categoryPosition)
+
+                val weatherPosition: Int = weather.getPosition(it.journalWeather)
+                binding.categorySpinner.setSelection(weatherPosition)
             }
         }
     }
@@ -181,21 +206,7 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
 
     private fun attachAdapter() {
         val categorySpinner: Spinner = binding.categorySpinner
-        val category = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.category,
-            R.layout.spinner_layout
-        ).apply {
-            setDropDownViewResource(R.layout.spinner_layout)
-        }
         val weatherSpinner: Spinner = binding.weatherSpinner
-        val weather = ArrayAdapter.createFromResource(
-            requireContext(),
-            R.array.weather,
-            R.layout.spinner_layout
-        ).apply {
-            setDropDownViewResource(R.layout.spinner_layout)
-        }
         categorySpinner.adapter = category
         weatherSpinner.adapter = weather
     }
