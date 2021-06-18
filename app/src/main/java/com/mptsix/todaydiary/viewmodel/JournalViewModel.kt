@@ -109,6 +109,12 @@ class JournalViewModel @Inject constructor(
         }
     }
 
+    fun clearRow(userId: String, date: Long) {
+        viewModelScope.launch {
+            tempJournalRepository.removeByDateAndId(date, userId)
+        }
+    }
+
     fun requestDiaryPage(timeStamp: Long) {
         displayTransition.value = Transition(
             DisplayTransition.REQUEST_DIARY,

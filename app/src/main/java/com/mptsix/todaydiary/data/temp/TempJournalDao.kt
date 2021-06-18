@@ -13,8 +13,8 @@ interface TempJournalDao {
     @Query("SELECT * FROM saved_journal WHERE journalDate=:inputJournalDate AND userId=:userId")
     suspend fun findByJournalDateAndUserId(inputJournalDate: Long, userId: String): List<TempJournal>
 
-    @Query("DELETE FROM saved_journal WHERE journalDate=:inputJournalDate")
-    suspend fun removeSavedJournalByJournalDate(inputJournalDate: Long)
+    @Query("DELETE FROM saved_journal WHERE journalDate=:inputJournalDate AND userId=:userId")
+    suspend fun removeSavedJournalByJournalDate(inputJournalDate: Long, userId: String)
 
     @Query("SELECT * FROM saved_journal")
     suspend fun getAllSavedJournal(): List<TempJournal>

@@ -149,6 +149,9 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
             startActivityForResult(Intent.createChooser(intent, "Select Picture"), 1)
         }// 버튼 클릭 시 ImageActivity 호출
         binding.submitBtn.setOnClickListener {
+            val userSealed: UserSealed = journalViewModel.getUserSealed()!!
+            journalViewModel.clearRow(userSealed.userId, journalTimeStamp!!)
+
             val journal: Journal = if (!journalWriteMode) {
                 journalViewModel.journalCache!!.mainJournalContent = binding.diaryBody.text.toString()
                 journalViewModel.journalCache!!

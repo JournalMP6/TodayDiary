@@ -36,9 +36,9 @@ class TempJournalRepository @Inject constructor(
         tempJournalDao.addTempJournal(inputJournal)
     }
 
-    suspend fun removeSavedJournalByJournalDate(inputJournalDate: Long) {
+    suspend fun removeByDateAndId(inputJournalDate: Long, id: String) {
         Log.d(logTag, "Removing Journal ID: $inputJournalDate")
-        tempJournalDao.removeSavedJournalByJournalDate(inputJournalDate)
+        tempJournalDao.removeSavedJournalByJournalDate(inputJournalDate, id)
     }
 
     suspend fun getAllSavedJournal(): List<TempJournal> {
