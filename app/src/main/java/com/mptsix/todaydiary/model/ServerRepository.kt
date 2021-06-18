@@ -22,6 +22,7 @@ class ServerRepository(
     private var instance: ServerAPI? = null
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
+    var userSealed: UserSealed? = null
     private val URL = "http://192.168.0.46:8080"
 
     init {
@@ -51,6 +52,7 @@ class ServerRepository(
         apiFunction = serverApi.login(loginRequest)
     ).also {
         userToken = it.userToken
+        userSealed = getSealedUser()
     }
 
     fun registerUser(userRegisterRequest: UserRegisterRequest): UserRegisterResponse = serverRepositoryHelper.executeServer(
@@ -75,6 +77,7 @@ class ServerRepository(
         )
     }.apply {
         userToken = null
+        userSealed = null
     }
 
     fun removeUser() = serverRepositoryHelper.handle204 {
@@ -83,6 +86,7 @@ class ServerRepository(
         )
     }.also {
         userToken = null
+        userSealed = null
     }
 
     override fun findUserByUserName(userName: String): List<UserFiltered> = serverRepositoryHelper.executeServer(

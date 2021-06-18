@@ -47,9 +47,6 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     // Location
     private var journalLocation: String = ""
 
-    // User Data
-    private var userSealed: UserSealed? = null
-
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -75,19 +72,15 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
             if(it) Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
-        journalViewModel.userSealed.observe(viewLifecycleOwner) {
-            if (it != null) {
-                userSealed = it
-            } else {
-                Toast.makeText(requireContext(), "Cannot get user data from server.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
 
         journalViewModel.tempJournal.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.diaryBody.setText(it.mainJournalContent)
                 binding.editText4.setText("")
+                journalLocation = it.journalLocation
+                journalImage = JournalImage(
+                    imageFile = it.journalImage
+                )
 
                 // TODO: Spinner Initiation
             }
@@ -95,12 +88,12 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     }
 
     private fun checkTempData() {
-        if (userSealed == null) return
+        val userSealed: UserSealed = journalViewModel.getUserSealed() ?: return
         val targetDate: Long = journalTimeStamp ?: run {
             Log.w(this::class.java.simpleName, "Cannot get Journal timestamp")
             return
         }
-        journalViewModel.getTempDataIfExists(targetDate, userSealed!!.userId)
+        journalViewModel.getTempDataIfExists(targetDate, userSealed.userId)
     }
 
     private fun applyMode() {
@@ -167,10 +160,10 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     }
 
     private fun tempSave() {
-        if (userSealed == null) return
+        val userSealed: UserSealed = journalViewModel.getUserSealed() ?: return
         val tempObject: TempJournal = TempJournal(
             id = null,
-            userId = userSealed!!.userId,
+            userId = userSealed.userId,
             mainJournalContent = binding.diaryBody.text.toString(),
             journalLocation = journalLocation,
             journalCategory = binding.categorySpinner.selectedItem.toString(),

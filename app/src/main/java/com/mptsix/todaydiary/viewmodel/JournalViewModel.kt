@@ -36,7 +36,6 @@ class JournalViewModel @Inject constructor(
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
     var journalLocation: MutableLiveData<MapLocationResponse> = MutableLiveData()
-    var userSealed: MutableLiveData<UserSealed> = MutableLiveData()
     var tempJournal: MutableLiveData<TempJournal> = MutableLiveData()
 
     // Journal Cache
@@ -96,13 +95,7 @@ class JournalViewModel @Inject constructor(
         }
     }
 
-    fun getUserSealed() {
-        executeServerAndElse(
-            serverCallCore = {serverRepository.getSealedUser()},
-            onSuccess = {userSealed.value = it},
-            onFailure = {userSealed.value = null}
-        )
-    }
+    fun getUserSealed(): UserSealed? = serverRepository.userSealed
 
     fun getTempDataIfExists(journalDate: Long, userId: String) {
         viewModelScope.launch {
