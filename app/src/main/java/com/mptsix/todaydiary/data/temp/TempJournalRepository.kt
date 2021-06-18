@@ -16,6 +16,7 @@ class TempJournalRepository @Inject constructor(
             addTempJournal(inputJournal)
         } else {
             // Result is non-empty. Update it
+            inputJournal.id = result[0].id
             updateSavedJournal(inputJournal)
         }
     }
