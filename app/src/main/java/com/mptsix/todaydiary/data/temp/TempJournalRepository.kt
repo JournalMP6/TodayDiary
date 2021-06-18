@@ -10,7 +10,7 @@ class TempJournalRepository @Inject constructor(
 
     suspend fun saveOrUpdate(inputJournal: TempJournal) {
         val result: List<TempJournal> =
-            tempJournalDao.findSavedJournalByJournalDate(inputJournal.journalDate)
+            tempJournalDao.findByJournalDateAndUserId(inputJournal.journalDate, inputJournal.userId)
         if (result.isEmpty()) {
             // Result is empty. Probably we need to insert
             addTempJournal(inputJournal)

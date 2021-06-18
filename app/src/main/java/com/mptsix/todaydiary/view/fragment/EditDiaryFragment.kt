@@ -13,6 +13,7 @@ import android.widget.Toast
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.mptsix.todaydiary.R
+import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalCategory
 import com.mptsix.todaydiary.data.response.JournalImage
@@ -51,6 +52,9 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     // Location
     private var journalLocation: String = ""
 
+    // User Data
+    private var userSealed: UserSealed? = null
+
     override fun getViewBinding(
         inflater: LayoutInflater,
         container: ViewGroup?
@@ -68,6 +72,16 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
             if(it) Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
         }
         applyMode()
+
+        journalViewModel.userSealed.observe(viewLifecycleOwner) {
+            if (it != null) {
+                userSealed = it
+                tempSave()
+            } else {
+                Toast.makeText(requireContext(), "Cannot get user data from server.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
     }
 
     private fun applyMode() {
@@ -128,23 +142,28 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         }
 
         binding.tempSave.setOnClickListener {
-            val tempObject: TempJournal = TempJournal(
-                id = null,
-                mainJournalContent = binding.diaryBody.text.toString(),
-                journalLocation = journalLocation,
-                journalCategory = binding.categorySpinner.selectedItem.toString(),
-                journalWeather = binding.weatherSpinner.selectedItem.toString(),
-                journalDate = journalTimeStamp!!,
-                journalImage = journalImage?.imageFile
-            )
-
-            journalViewModel.tempSaveJournal(
-                tempJournal = tempObject,
-                onSuccess = {Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show()},
-                onFailure = {Toast.makeText(requireContext(), "Saving failed!", Toast.LENGTH_SHORT).show()}
-            )
+            journalViewModel.getUserSealed()
         }
 
+    }
+
+    private fun tempSave() {
+        val tempObject: TempJournal = TempJournal(
+            id = null,
+            userId = userSealed!!.userId,
+            mainJournalContent = binding.diaryBody.text.toString(),
+            journalLocation = journalLocation,
+            journalCategory = binding.categorySpinner.selectedItem.toString(),
+            journalWeather = binding.weatherSpinner.selectedItem.toString(),
+            journalDate = journalTimeStamp!!,
+            journalImage = journalImage?.imageFile
+        )
+
+        journalViewModel.tempSaveJournal(
+            tempJournal = tempObject,
+            onSuccess = {Toast.makeText(requireContext(), "Saved!", Toast.LENGTH_SHORT).show()},
+            onFailure = {Toast.makeText(requireContext(), "Saving failed!", Toast.LENGTH_SHORT).show()}
+        )
     }
 
     private fun attachAdapter() {

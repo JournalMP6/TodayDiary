@@ -7,6 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
+import com.mptsix.todaydiary.data.internal.UserSealed
 import com.mptsix.todaydiary.data.response.Journal
 import com.mptsix.todaydiary.data.response.JournalResponse
 import com.mptsix.todaydiary.data.temp.TempJournal
@@ -35,6 +36,7 @@ class JournalViewModel @Inject constructor(
     var isJournalEdited : MutableLiveData<Boolean> = MutableLiveData()
     var displayTransition: MutableLiveData<Transition> = MutableLiveData()
     var journalLocation: MutableLiveData<MapLocationResponse> = MutableLiveData()
+    var userSealed: MutableLiveData<UserSealed> = MutableLiveData()
 
     // Journal Cache
     var journalCache: Journal? = null
@@ -91,6 +93,14 @@ class JournalViewModel @Inject constructor(
                 onFailure(it)
             }
         }
+    }
+
+    fun getUserSealed() {
+        executeServerAndElse(
+            serverCallCore = {serverRepository.getSealedUser()},
+            onSuccess = {userSealed.value = it},
+            onFailure = {userSealed.value = null}
+        )
     }
 
     fun requestDiaryPage(timeStamp: Long) {
