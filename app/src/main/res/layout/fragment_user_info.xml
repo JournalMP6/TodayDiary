@@ -50,7 +50,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:text="비밀번호 변경"
-                    android:textSize="15dp"
+                    android:textSize="12sp"
                     android:textColor="@color/black"
                     android:fontFamily="@font/fontstyle"
                     android:gravity="center" />
@@ -70,6 +70,17 @@
                     android:layout_height="match_parent"
                     android:fontFamily="@font/fontstyle"
                     android:text="화면 잠금"
+                    android:textSize="15dp"
+                    android:textColor="@color/black"
+                    android:gravity="center"
+                    android:layout_weight="1" />
+
+                <TextView
+                    android:id="@+id/logOut"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/fontstyle"
+                    android:text="로그아웃"
                     android:textSize="15dp"
                     android:textColor="@color/black"
                     android:gravity="center"

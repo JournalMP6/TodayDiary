@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.mptsix.todaydiary.data.internal.PasswordChangeRequest
 import com.mptsix.todaydiary.data.internal.UserSealed
@@ -73,6 +74,16 @@ class ProfileViewModel @Inject constructor(
             serverCallCore = {serverRepository.getFollowingUser()},
             onSuccess = {followingUserList.value = it},
             onFailure = { _onFailure(it)}
+        )
+    }
+
+    fun logOut() {
+        executeServerAndElse(
+            serverCallCore = {serverRepository.logOut()},
+            onSuccess = {loginSessionRepository.removeAllEntries()},
+            onFailure = {
+                Log.e("UserInfoFragment", "Cannot log out!")
+            }
         )
     }
 }

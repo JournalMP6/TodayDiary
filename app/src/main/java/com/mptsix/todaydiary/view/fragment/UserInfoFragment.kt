@@ -39,6 +39,7 @@ class UserInfoFragment @Inject constructor() : SuperFragment<FragmentUserInfoBin
         deleteUser()
         followUser()
         addAuxiliaryPwd()
+        initLogOut()
 
         // RecyclerView
         binding.journalRecycler.adapter = journalRVAdapter
@@ -71,6 +72,19 @@ class UserInfoFragment @Inject constructor() : SuperFragment<FragmentUserInfoBin
             _onFailure = {
                 _onFailure(requireContext(), it)
             }) // error handling
+    }
+
+    private fun initLogOut() {
+        binding.logOut.setOnClickListener {
+            profileViewModel.logOut()
+
+            activity?.finishAffinity()
+            var intent = Intent(activity, LoginActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+            startActivity(intent)
+        }
     }
 
     private fun deleteUser(){

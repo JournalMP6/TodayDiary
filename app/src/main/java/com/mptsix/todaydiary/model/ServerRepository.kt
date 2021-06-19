@@ -132,4 +132,9 @@ class ServerRepository(
     fun getSealedUserByUserId(userId: String): UserSealed = serverRepositoryHelper.executeServer(
         apiFunction = serverApi.getSealedUserByUserId(getTokenHeader(), userId)
     )
+
+    fun logOut() {
+        userToken = null
+        userSealed = null
+    }
 }
