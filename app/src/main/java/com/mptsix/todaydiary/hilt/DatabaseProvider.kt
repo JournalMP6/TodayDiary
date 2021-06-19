@@ -2,6 +2,7 @@ package com.mptsix.todaydiary.hilt
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Base64
 import android.util.Log
 import androidx.room.Room
 import com.mptsix.todaydiary.data.login.LoginSessionDao
@@ -26,7 +27,9 @@ class DatabaseProvider {
     private fun generateRandomPassword(): String {
         val availableString: String =
             "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^&*0123456789"
-        return (0..512).map { availableString.random() }.joinToString("")
+        val randomString: String = (0..512).map { availableString.random() }.joinToString("")
+
+        return Base64.encodeToString(randomString.toByteArray(), Base64.DEFAULT)
     }
 
     private fun getPassword(context: Context): String {
@@ -42,7 +45,7 @@ class DatabaseProvider {
             keyExists = genPassword
         }
 
-        return keyExists
+        return String(Base64.decode(keyExists, Base64.DEFAULT))
     }
 
     @Singleton
