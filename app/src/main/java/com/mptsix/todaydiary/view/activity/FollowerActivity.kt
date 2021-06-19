@@ -16,12 +16,15 @@ import com.mptsix.todaydiary.R
 import com.mptsix.todaydiary.data.response.JournalCategoryResponse
 import com.mptsix.todaydiary.databinding.ActivityFollowerBinding
 import com.mptsix.todaydiary.view.adapter.JournalRVAdapter
+import com.mptsix.todaydiary.view.adapter.UserRVAdapter
 import com.mptsix.todaydiary.viewmodel.ProfileViewModel
+import com.mptsix.todaydiary.viewmodel.UserListViewModel
 import org.eazegraph.lib.models.PieModel
 
 class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val journalRVAdapter: JournalRVAdapter = JournalRVAdapter()
+    private val userListViewModel: UserListViewModel = UserListViewModel()
 
     override fun getViewBinding(): ActivityFollowerBinding = ActivityFollowerBinding.inflate(layoutInflater)
     override fun initView() {
@@ -32,7 +35,12 @@ class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
         binding.FollowerjournalRecycler.adapter = journalRVAdapter
         binding.FollowerjournalRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         followUser()
-
+        val showByFollowing :Boolean = intent!!.getBooleanExtra("isFollowing",false)
+        if(showByFollowing == false){
+            binding.FollowerjournalRecycler.visibility = View.INVISIBLE
+        }else{
+            binding.FollowerjournalRecycler.visibility = View.VISIBLE
+        }
         profileViewModel.sealedData2.observe(this) {
             if (it != null) {
                 // 가져온 유저 정보를 각각에 넣음
@@ -42,16 +50,10 @@ class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
                 journalRVAdapter.journalList = it.journalList
             }
         }
-        val showByFollowing :Boolean = intent!!.getBooleanExtra("isFollowing",false)
         val userId = intent.getStringExtra("userId")
         profileViewModel.getSealedUserByUserId(userId!!) {
             Toast.makeText(this, "Cannot get user information ${userId} from server!", Toast.LENGTH_SHORT)
                 .show()
-        }
-        if(showByFollowing == false){
-            binding.FollowerjournalRecycler.visibility = View.INVISIBLE
-        }else{
-            binding.FollowerjournalRecycler.visibility = View.VISIBLE
         }
     }
 

@@ -59,12 +59,11 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
     override fun initView() {
         userRVAdapter =  UserRVAdapter(getUserId())
         binding.userRecyclerView.adapter = userRVAdapter
-
         userRVAdapter?.itemClickListener = object:UserRVAdapter.OnItemClickListener{
             override fun OnItemClick(holder: UserRVAdapter.ViewHolder, view: View, position: Int) {
                 val followerPageIntent = Intent(context, FollowerActivity::class.java)
                 followerPageIntent.putExtra("userId",userRVAdapter!!.userList[position].userId)
-                followerPageIntent.putExtra("isFollowing", userRVAdapter!!.userList[position].isUserFollowedTargetUser)
+                followerPageIntent.putExtra("isFollowing",userRVAdapter!!.userList[position].isUserFollowedTargetUser)
                 startActivityForResult(followerPageIntent, 100)
             }
         }

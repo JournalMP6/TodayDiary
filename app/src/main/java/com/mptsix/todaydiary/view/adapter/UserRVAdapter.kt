@@ -1,5 +1,7 @@
 package com.mptsix.todaydiary.view.adapter
 
+import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +9,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.mptsix.todaydiary.data.response.UserFiltered
 import com.mptsix.todaydiary.databinding.UserRowBinding
+import com.mptsix.todaydiary.view.activity.FollowerActivity
 import com.mptsix.todaydiary.view.fragment.UserSearchFragment
+import kotlinx.coroutines.withContext
 
 class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapter<UserRVAdapter.ViewHolder>() {
     interface OnItemClickListener{
