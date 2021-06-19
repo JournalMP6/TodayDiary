@@ -108,6 +108,15 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
 
                 val weatherPosition: Int = weather.getPosition(it.journalWeather)
                 binding.weatherSpinner.setSelection(weatherPosition)
+            } else {
+                binding.diaryBody.setText("")
+                binding.editText4.setText("")
+                journalLocation = ""
+                journalImage = null
+
+                // TODO: Spinner Initiation
+                binding.categorySpinner.setSelection(0)
+                binding.weatherSpinner.setSelection(0)
             }
         }
     }

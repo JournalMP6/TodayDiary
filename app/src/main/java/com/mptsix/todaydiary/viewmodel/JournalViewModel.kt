@@ -98,6 +98,7 @@ class JournalViewModel @Inject constructor(
     fun getUserSealed(): UserSealed? = serverRepository.userSealed
 
     fun getTempDataIfExists(journalDate: Long, userId: String) {
+        Log.d(this::class.java.simpleName, "ID: $userId, Date: $journalDate")
         viewModelScope.launch {
             runCatching {
                 tempJournalRepository.findByJournalDateAndUserId(journalDate, userId)
