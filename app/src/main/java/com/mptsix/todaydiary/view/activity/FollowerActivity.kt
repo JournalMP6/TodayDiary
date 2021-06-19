@@ -38,18 +38,16 @@ class FollowerActivity @Inject constructor() : SuperActivity<ActivityFollowerBin
         binding.FollowerjournalRecycler.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         followUser()
         val showByFollowing :Boolean = intent!!.getBooleanExtra("isFollowing",false)
-        if(showByFollowing == false){
-            binding.FollowerjournalRecycler.visibility = View.INVISIBLE
-        }else{
-            binding.FollowerjournalRecycler.visibility = View.VISIBLE
-        }
+        
         profileViewModel.sealedData2.observe(this) {
             if (it != null) {
                 // 가져온 유저 정보를 각각에 넣음
                 binding.FollowerName.text = it.userName
                 binding.FollowerEmail.text = it.userId
                 initPieChart(it.journalCategoryList)
-                journalRVAdapter.journalList = it.journalList
+                if(showByFollowing!=false){
+                    journalRVAdapter.journalList = it.journalList
+                }
             }
         }
         val userId = intent.getStringExtra("userId")
