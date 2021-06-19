@@ -1,5 +1,7 @@
 package com.mptsix.todaydiary.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -72,5 +74,14 @@ class FollowerActivity : SuperActivity<ActivityFollowerBinding>() {
                 )
             }
         }
+    }
+
+    override fun onBackPressed() {
+
+        val intent = Intent()
+        intent.putExtra("IN", "IN")
+        setResult(Activity.RESULT_OK, intent)
+        Log.i("TEST", "Follower backpressed")
+        super.onBackPressed()
     }
 }

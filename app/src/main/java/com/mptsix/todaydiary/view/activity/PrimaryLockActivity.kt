@@ -1,5 +1,7 @@
 package com.mptsix.todaydiary.view.activity
 
+import android.app.Activity
+import android.content.Intent
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -29,6 +31,7 @@ class PrimaryLockActivity : SuperActivity<ActivityPrimaryLockBinding>() {
         }
         binding.submitBtn.setOnClickListener {
             lockViewModel.registerAuxiliaryPassword(password, error)
+            setResult(Activity.RESULT_OK)
             finish()
         } // 서버로 비밀번호 전송
     }

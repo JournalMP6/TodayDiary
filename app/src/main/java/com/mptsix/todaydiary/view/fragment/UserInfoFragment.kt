@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
 import android.util.Log
@@ -82,10 +83,18 @@ class UserInfoFragment : SuperFragment<FragmentUserInfoBinding>() {
         lateinit var intent:Intent
         binding.addAuxiliaryPwd.setOnClickListener {
             intent = Intent(activity, PrimaryLockActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, 100)
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 100){
+            if(resultCode == Activity.RESULT_OK){
+                requireActivity().intent.putExtra("IN", "IN")
+            }
+        }
+    }
     private fun changeUserPwd(){
         lateinit var intent: Intent
         binding.changePwd.setOnClickListener {

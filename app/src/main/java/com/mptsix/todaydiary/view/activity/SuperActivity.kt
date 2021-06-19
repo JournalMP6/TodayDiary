@@ -6,8 +6,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.activityViewModels
 import androidx.viewbinding.ViewBinding
+import com.mptsix.todaydiary.viewmodel.LockViewModel
+import com.mptsix.todaydiary.viewmodel.ProfileViewModel
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -15,6 +19,11 @@ import java.net.SocketTimeoutException
 abstract class SuperActivity<T: ViewBinding>: AppCompatActivity(){
     private var _binding: T? = null
     protected val binding: T get() = _binding!!
+    private val lockViewModel: LockViewModel by viewModels()
+
+    companion object{
+        var isLock:Boolean ?= null
+    }
 
     /**
      * getViewBinding: Get ViewBinding object
@@ -33,13 +42,27 @@ abstract class SuperActivity<T: ViewBinding>: AppCompatActivity(){
         _binding = getViewBinding()
         setContentView(binding.root)
         initView()
+        initObserve()
+    }
+
+    fun initObserve(){
+        lockViewModel.auxPwRegisterSucceeds.observe(this){
+            isLock = it
+        }
     }
 
     override fun onRestart() {
         Log.d(this::class.java.simpleName, "Restart Called")
         super.onRestart()
-        val intent: Intent = Intent(this, LockActivity::class.java)
-        startActivity(intent)
+
+        if(isLock!=null && isLock == true){
+            val intentStr = intent.getStringExtra("IN")
+            intent.removeExtra("IN")
+            if(intentStr == null){
+                val intent = Intent(this, LockActivity::class.java)
+                startActivity(intent)
+            }
+        }
     }
 
     fun showDialog(context: Context, title:String, message: String){

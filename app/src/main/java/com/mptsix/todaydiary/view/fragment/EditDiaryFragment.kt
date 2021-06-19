@@ -19,6 +19,7 @@ import com.mptsix.todaydiary.data.response.JournalImage
 import com.mptsix.todaydiary.databinding.FragmentEditDiaryBinding
 import com.mptsix.todaydiary.view.activity.MapActivity
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
+import com.mptsix.todaydiary.viewmodel.LockViewModel
 import java.lang.RuntimeException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
@@ -31,7 +32,7 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
     private var journalWriteMode: Boolean = false // true for write, false for edit
 
     private val journalViewModel: JournalViewModel by activityViewModels()
-
+    private val lockViewModel: LockViewModel by activityViewModels()
     // Data
     private var journalImage: JournalImage? = null
 
@@ -154,6 +155,7 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
         if(requestCode == 0){
             if(resultCode == Activity.RESULT_OK){
                 journalLocation = data!!.action!!
+                requireActivity().intent.putExtra("IN", "IN")
             }else{
                 Toast.makeText(requireContext(), "fail",Toast.LENGTH_SHORT).show()
             }
@@ -166,4 +168,5 @@ class EditDiaryFragment : SuperFragment<FragmentEditDiaryBinding>() {
             }
         }
     }
+
 }

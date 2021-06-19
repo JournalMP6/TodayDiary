@@ -1,5 +1,6 @@
 package com.mptsix.todaydiary.view.fragment
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -63,7 +64,7 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
             override fun OnItemClick(holder: UserRVAdapter.ViewHolder, view: View, position: Int) {
                 val followerPageIntent = Intent(context, FollowerActivity::class.java)
                 followerPageIntent.putExtra("userId",userRVAdapter!!.userList[position].userId)
-                startActivity(followerPageIntent)
+                startActivityForResult(followerPageIntent, 100)
             }
         }
 
@@ -87,6 +88,15 @@ class UserSearchFragment : SuperFragment<FragmentUserSearchBinding>() {
 
                     }
                 })
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode == 100){
+            if(resultCode == Activity.RESULT_OK){
+                requireActivity().intent.putExtra("IN", "IN")
+            }
         }
     }
 

@@ -55,6 +55,10 @@ class LoginActivity : SuperActivity<ActivityLoginBinding>() {
         }// 로그인 버튼 클릭 시, 담겨져 있는 정보를 가져옴
     }
 
+    override fun onRestart() {
+        super.onRestart()
+    }
+
     private fun initObserver() {
         logInViewModel.loginSuccess.observe(this) {
             if(it) {
