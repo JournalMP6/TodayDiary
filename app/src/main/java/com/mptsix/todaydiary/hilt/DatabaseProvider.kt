@@ -29,9 +29,7 @@ class DatabaseProvider {
         return (0..512).map { availableString.random() }.joinToString("")
     }
 
-    @Singleton
-    @Provides
-    fun provideLoginSessionDatabase(@ApplicationContext context: Context): LoginSessionDatabase {
+    private fun getPassword(context: Context): String {
         val genPassword: String = generateRandomPassword()
 
         val sharedPreferences: SharedPreferences = context.getSharedPreferences("com.mptsix.todaydiary", Context.MODE_PRIVATE)
@@ -44,7 +42,15 @@ class DatabaseProvider {
             keyExists = genPassword
         }
 
-        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes(keyExists.toCharArray()))
+        return keyExists
+    }
+
+    @Singleton
+    @Provides
+    fun provideLoginSessionDatabase(@ApplicationContext context: Context): LoginSessionDatabase {
+        val passwordObject: String = getPassword(context)
+
+        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes(passwordObject.toCharArray()))
         return Room.databaseBuilder(
             context,
             LoginSessionDatabase::class.java,
@@ -69,11 +75,15 @@ class DatabaseProvider {
     @Singleton
     @Provides
     fun provideTempJournalDatabase(@ApplicationContext context: Context): TempJournalDatabase {
+        val passwordObject: String = getPassword(context)
+        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes(passwordObject.toCharArray()))
         return Room.databaseBuilder(
             context,
             TempJournalDatabase::class.java,
             "temp_journal.db"
-        ).build()
+        )
+        .openHelperFactory(cipherFactory)
+        .build()
     }
 
     @Singleton
