@@ -13,6 +13,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.sqlcipher.database.SQLiteDatabase
+import net.sqlcipher.database.SupportFactory
 import javax.inject.Singleton
 
 @Module
@@ -21,11 +23,14 @@ class DatabaseProvider {
     @Singleton
     @Provides
     fun provideLoginSessionDatabase(@ApplicationContext context: Context): LoginSessionDatabase {
+        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes("testKey".toCharArray()))
         return Room.databaseBuilder(
             context,
             LoginSessionDatabase::class.java,
             "login_session.db"
-        ).build()
+        )
+        .openHelperFactory(cipherFactory)
+        .build()
     }
 
     @Singleton
