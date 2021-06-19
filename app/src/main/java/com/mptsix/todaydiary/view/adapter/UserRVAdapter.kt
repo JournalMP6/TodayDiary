@@ -14,6 +14,7 @@ import com.mptsix.todaydiary.view.fragment.UserSearchFragment
 import kotlinx.coroutines.withContext
 
 class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapter<UserRVAdapter.ViewHolder>() {
+    var followBoolean : Boolean = false
     interface OnItemClickListener{
         fun OnItemClick(holder: ViewHolder, view: View, position: Int)
     }
@@ -41,9 +42,11 @@ class UserRVAdapter(var link : UserSearchFragment.getUserId): RecyclerView.Adapt
                 if(rowBinding.followBtn.text == "follow"){
                     rowBinding.followBtn.text = "following"
                     link.getFollowUserId(rowBinding.userEmail.text.toString())
+                    followBoolean = true
                 }else{
                     rowBinding.followBtn.text = "follow"
                     link.getUnfollowUserId(rowBinding.userEmail.text.toString())
+                    followBoolean = false
                 }
             }
         }
