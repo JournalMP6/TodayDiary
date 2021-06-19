@@ -27,7 +27,6 @@ import javax.inject.Inject
 class FollowerActivity @Inject constructor() : SuperActivity<ActivityFollowerBinding>() {
     private val profileViewModel: ProfileViewModel by viewModels()
     private val journalRVAdapter: JournalRVAdapter = JournalRVAdapter()
-    private val userListViewModel: UserListViewModel = UserListViewModel()
 
     override fun getViewBinding(): ActivityFollowerBinding = ActivityFollowerBinding.inflate(layoutInflater)
     override fun initView() {
