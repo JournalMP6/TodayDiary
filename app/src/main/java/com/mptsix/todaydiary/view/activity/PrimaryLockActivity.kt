@@ -31,7 +31,6 @@ class PrimaryLockActivity : SuperActivity<ActivityPrimaryLockBinding>() {
         }
         binding.submitBtn.setOnClickListener {
             lockViewModel.registerAuxiliaryPassword(password, error)
-            setResult(Activity.RESULT_OK)
             finish()
         } // 서버로 비밀번호 전송
     }

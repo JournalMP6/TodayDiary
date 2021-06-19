@@ -99,7 +99,8 @@ class MainActivity : SuperActivity<ActivityMainBinding>(){
             supportFragmentManager.popBackStack()
             return
         }else{
-            finish()
+            moveTaskToBack(true);
+            finishAndRemoveTask()
         }
         super.onBackPressed()
     }
