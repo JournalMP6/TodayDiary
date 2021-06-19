@@ -66,7 +66,7 @@ class UserSearchFragment @Inject constructor() : SuperFragment<FragmentUserSearc
             override fun OnItemClick(holder: UserRVAdapter.ViewHolder, view: View, position: Int) {
                 val followerPageIntent = Intent(context, FollowerActivity::class.java)
                 followerPageIntent.putExtra("userId",userRVAdapter!!.userList[position].userId)
-                followerPageIntent.putExtra("isFollowing",userRVAdapter!!.userList[position].isUserFollowedTargetUser)
+                followerPageIntent.putExtra("isFollowing",userRVAdapter!!.followBoolean)
                 startActivityForResult(followerPageIntent, 100)
             }
         }
