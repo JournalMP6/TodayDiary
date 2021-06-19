@@ -1,6 +1,8 @@
 package com.mptsix.todaydiary.hilt
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.room.Room
 import com.mptsix.todaydiary.data.login.LoginSessionDao
 import com.mptsix.todaydiary.data.login.LoginSessionDatabase
@@ -20,10 +22,29 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 class DatabaseProvider {
+
+    private fun generateRandomPassword(): String {
+        val availableString: String =
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#%^&*0123456789"
+        return (0..512).map { availableString.random() }.joinToString("")
+    }
+
     @Singleton
     @Provides
     fun provideLoginSessionDatabase(@ApplicationContext context: Context): LoginSessionDatabase {
-        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes("testKey".toCharArray()))
+        val genPassword: String = generateRandomPassword()
+
+        val sharedPreferences: SharedPreferences = context.getSharedPreferences("com.mptsix.todaydiary", Context.MODE_PRIVATE)
+        var keyExists: String = sharedPreferences.getString("com.mptsix.todaydiary.MAIN_KEY", "NON_EXISTS") ?: "NON_EXISTS"
+        if (keyExists == "NON_EXISTS") {
+            with (sharedPreferences.edit()) {
+                putString("com.mptsix.todaydiary.MAIN_KEY", genPassword)
+                commit()
+            }
+            keyExists = genPassword
+        }
+
+        val cipherFactory: SupportFactory = SupportFactory(SQLiteDatabase.getBytes(keyExists.toCharArray()))
         return Room.databaseBuilder(
             context,
             LoginSessionDatabase::class.java,
