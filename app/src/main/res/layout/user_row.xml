@@ -39,5 +39,6 @@
         android:fontFamily="@font/fontstyle"
         android:text="follow"
         android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
         android:layout_weight="1"/>
 </LinearLayout>

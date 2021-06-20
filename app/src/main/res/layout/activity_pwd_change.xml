@@ -113,10 +113,11 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"/>
-        <Button
+        <TextView
+            android:padding="15dp"
             android:id="@+id/submitBtn"
             android:layout_width="0dp"
-            android:background="#00FF0000"
+            android:background="?attr/selectableItemBackground"
             android:layout_height="match_parent"
             android:text="Submit"
             android:textColor="@color/black"

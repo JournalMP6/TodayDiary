@@ -18,7 +18,7 @@
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_weight="1"/>
-            <Button
+            <TextView
                 android:id="@+id/submitBtn"
                 android:layout_width="110dp"
                 android:gravity="center"
@@ -27,7 +27,8 @@
                 android:text="SUBMIT"
                 android:textStyle="bold"
                 android:textSize="20dp"
-                android:background="#00FF0000"
+                android:background="?attr/selectableItemBackground"
+                android:padding="15dp"
                 android:fontFamily="@font/fontstyle"
                 android:layout_height="60dp"/>
         </LinearLayout>

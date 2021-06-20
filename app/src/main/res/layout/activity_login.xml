@@ -19,11 +19,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/main_icon" />
 
-    <Button
+    <TextView
         android:id="@+id/loginBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#00FF0000"
+        android:background="?attr/selectableItemBackground"
+        android:padding="15dp"
         android:fontFamily="@font/fontstyle"
         android:text="LOGIN"
         android:textColor="@color/black"
@@ -67,13 +68,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.54" />
 
-    <Button
+    <TextView
         android:id="@+id/joinBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="13dp"
         android:layout_marginEnd="1dp"
-        android:background="#00FF0000"
+        android:background="?attr/selectableItemBackground"
+        android:padding="15dp"
         android:fontFamily="@font/fontstyle"
         android:text="JOIN"
         android:textColor="@color/black"

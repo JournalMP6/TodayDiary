@@ -176,22 +176,24 @@
         android:gravity="right"
         android:orientation="horizontal">
 
-        <Button
+        <TextView
             android:id="@+id/tempSave"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00FF0000"
+            android:background="?attr/selectableItemBackground"
+            android:padding="15dp"
             android:fontFamily="@font/fontstyle"
             android:text="Temporally Save"
             android:textColor="@android:color/secondary_text_light"
             android:textSize="14sp"
             android:textStyle="italic" />
 
-        <Button
+        <TextView
             android:id="@+id/submitBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="#00FF0000"
+            android:background="?attr/selectableItemBackground"
+            android:padding="15dp"
             android:fontFamily="@font/fontstyle"
             android:text="SUBMIT"
             android:textColor="@android:color/secondary_text_light"
