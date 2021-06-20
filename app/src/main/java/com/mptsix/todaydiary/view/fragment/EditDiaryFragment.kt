@@ -96,7 +96,7 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
         journalViewModel.tempJournal.observe(viewLifecycleOwner) {
             if (it != null) {
                 binding.diaryBody.setText(it.mainJournalContent)
-                binding.editText4.setText("")
+                binding.editText4.setText(it.mainTitle)
                 journalLocation = it.journalLocation
                 journalImage = JournalImage(
                     imageFile = it.journalImage
@@ -175,6 +175,7 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
                     binding.weatherSpinner.selectedItem.toString()
 
                 Journal(
+                    mainTitle = binding.editText4.text.toString(),
                     mainJournalContent = binding.diaryBody.text.toString(),
                     journalLocation = journalLocation, // TODO: For now, just set to test
                     journalCategory = journalCategory,
@@ -206,7 +207,8 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
             journalCategory = binding.categorySpinner.selectedItem.toString(),
             journalWeather = binding.weatherSpinner.selectedItem.toString(),
             journalDate = journalTimeStamp!!,
-            journalImage = journalImage?.imageFile
+            journalImage = journalImage?.imageFile,
+            mainTitle = binding.editText4.text.toString()
         )
 
         journalViewModel.tempSaveJournal(

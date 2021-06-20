@@ -123,6 +123,7 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
                         }
                     })
             }
+            binding.diaryTitleView.text = it.mainTitle
             binding.diaryCategoryView.text = it.journalCategory.name
             binding.weatherView.text = it.journalWeather
             binding.locationView.text = ""

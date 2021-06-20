@@ -8,6 +8,7 @@ import androidx.room.PrimaryKey
 class TempJournal(
     @PrimaryKey(autoGenerate = true) var id: Long?,
     @ColumnInfo(name = "userId") var userId: String,
+    @ColumnInfo(name = "mainJournalTitle") var mainTitle: String,
     @ColumnInfo(name = "mainJournalContent") var mainJournalContent: String,
     @ColumnInfo(name = "journalLocation") var journalLocation: String,
     @ColumnInfo(name = "journalCategory") var journalCategory: String,
