@@ -3,6 +3,7 @@ package com.mptsix.todaydiary.view.activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
@@ -33,6 +34,9 @@ class PwdChangeActivity @Inject constructor() : SuperActivity<ActivityPwdChangeB
                 intent.flags = Intent.FLAG_ACTIVITY_SINGLE_TOP
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
                 startActivity(intent)// need to check
+            } else {
+                Toast.makeText(this, "현재 비밀번호가 다릅니다. 다시 확인해 주세요.", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
     }
@@ -40,11 +44,12 @@ class PwdChangeActivity @Inject constructor() : SuperActivity<ActivityPwdChangeB
     private fun pwdChcek(){
         //if (binding.presentPwd ==) -> 현재 비밀번호와 서버에서 받아온 비밀번호가 일치하는지 확인
 
-        if(binding.changePwd.text.toString() != binding.checkPwd.text.toString()){// 변경할 비밀번호와 비밀번호 확인이 같은지 확인
+        if(binding.toChangePassword.editText?.text.toString() != binding.checkPassword.editText?.text.toString()){// 변경할 비밀번호와 비밀번호 확인이 같은지 확인
             Toast.makeText(this, "비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show()
         }
     }
     private fun checkTextBlank(presentPwd:String, changePwd:String):Boolean{
+        Log.e("Check", "$presentPwd, ${presentPwd.isEmpty()}, $changePwd, ${changePwd.isEmpty()}")
         if(presentPwd.isEmpty() || changePwd.isEmpty()){
             return false
         }
@@ -52,15 +57,15 @@ class PwdChangeActivity @Inject constructor() : SuperActivity<ActivityPwdChangeB
     }
 
     private fun submit(){
-        var presentPwd:String = binding.presentPwd.text.toString()
-        var changePwd:String = binding.changePwd.text.toString()
         binding.submitBtn.setOnClickListener {// error handling
+            val presentPwd:String = binding.presentPassword.editText?.text.toString()
+            val changePwd:String = binding.toChangePassword.editText?.text.toString()
+            Log.e(this::class.java.simpleName, "Present Passsword: $presentPwd, Change: $changePwd")
             pwdChcek() // 버튼을 누르면 비밀번호가 올바르게 입력되었는지 확인
             if(checkTextBlank(presentPwd,changePwd)){
                 profileViewModel.changePassword(
-                    PasswordChangeRequest(changePwd),
+                    PasswordChangeRequest(presentPwd, changePwd),
                     _onFailure = {
-                        _onFailure(this, it)
                     }
                 )
             }else{

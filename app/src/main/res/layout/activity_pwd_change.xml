@@ -23,6 +23,7 @@
             android:layout_weight="3"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/presentPassword"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -30,7 +31,6 @@
             android:gravity="center"
             app:passwordToggleEnabled="true">
             <EditText
-                android:id="@+id/presentPwd"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/fontstyle"
@@ -54,6 +54,7 @@
             android:textColor="@color/black"
             android:layout_weight="3"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/toChangePassword"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -61,7 +62,6 @@
             app:boxBackgroundColor="#00FF0000"
             app:passwordToggleEnabled="true">
             <EditText
-                android:id="@+id/changePwd"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:fontFamily="@font/fontstyle"
@@ -87,6 +87,7 @@
             android:textColor="@color/black"
             android:layout_weight="3"/>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/checkPassword"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="5"
@@ -94,7 +95,6 @@
             app:boxBackgroundColor="#00FF0000"
             app:passwordToggleEnabled="true">
             <EditText
-                android:id="@+id/checkPwd"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:textSize="20dp"

@@ -25,6 +25,14 @@ class ServerRepositoryHelper(
             ?: throw NoSuchFieldException("Response was OK, but wrong response body received!")
     }
 
+    fun <T> passwordChange(apiFunction: Call<T>) {
+        val response: Response<T> = exchangeDataWithServer(apiFunction)
+
+        if (!response.isSuccessful) {
+            handleDataError(response)
+        }
+    }
+
     fun handle204(toExecute: () -> ResponseBody) {
         runCatching {
             toExecute()

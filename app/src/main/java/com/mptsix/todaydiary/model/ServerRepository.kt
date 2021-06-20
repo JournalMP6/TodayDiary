@@ -71,11 +71,9 @@ class ServerRepository(
         apiFunction = serverApi.getSealedUser(getTokenHeader())
     )
 
-    fun changePassword(passwordChangeRequest: PasswordChangeRequest) = serverRepositoryHelper.handle204 {
-        serverRepositoryHelper.executeServer(
-            apiFunction = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
-        )
-    }.apply {
+    fun changePassword(passwordChangeRequest: PasswordChangeRequest) = serverRepositoryHelper.passwordChange (
+        apiFunction = serverApi.changePassword(getTokenHeader(), passwordChangeRequest)
+    ).apply {
         userToken = null
         userSealed = null
     }
