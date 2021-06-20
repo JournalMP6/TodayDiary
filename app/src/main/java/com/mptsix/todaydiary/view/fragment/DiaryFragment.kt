@@ -131,6 +131,8 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
                 val decodedArray: ByteArray = DatatypeConverter.parseBase64Binary(it.journalImage.imageFile)
                 val bitmapTmp: Bitmap = BitmapFactory.decodeByteArray(decodedArray, 0, decodedArray.size)
                 binding.diaryPicture.setImageBitmap(bitmapTmp)
+            } else {
+                binding.diaryPicture.setImageBitmap(null)
             }
         }
     }
