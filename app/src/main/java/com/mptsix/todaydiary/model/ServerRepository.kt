@@ -23,7 +23,7 @@ class ServerRepository(
     private val serverApi: ServerAPI get() = instance!!
     private var userToken: String? = null
     var userSealed: UserSealed? = null
-    private val URL = "http://kuspace.mynetgear.com:567"
+    private val URL = "http://192.168.0.46:8080"
 
     init {
         getInstance()

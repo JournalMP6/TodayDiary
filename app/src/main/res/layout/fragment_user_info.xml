@@ -135,9 +135,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fontstyle"
-                    android:textColor="@color/black"
                     android:paddingLeft="10dp"
-                    android:text="THANKS_JOURNAL" />
+                    android:text="감사일기"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -158,10 +158,10 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="ACHIEVEMENT_JOURNAL"
-                    android:textColor="@color/black"
                     android:fontFamily="@font/fontstyle"
-                    android:paddingLeft="10dp"/>
+                    android:paddingLeft="10dp"
+                    android:text="목표달성일기"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
@@ -183,35 +183,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/fontstyle"
-                    android:textColor="@color/black"
-                    android:text="EMOTIONAL_JOURNAL"
-                    android:paddingLeft="10dp"/>
+                    android:paddingLeft="10dp"
+                    android:text="감성일기"
+                    android:textColor="@color/black" />
 
             </LinearLayout>
 
             <!--Linear layout to display Java-->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginTop="5dp">
-
-                <!--View to display the blue color icon-->
-                <View
-                    android:layout_width="15dp"
-                    android:layout_height="match_parent"
-                    android:background="#29B6F6"/>
-
-                <!--Text view to display Java text -->
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/black"
-                    android:fontFamily="@font/fontstyle"
-                    android:text="Category4"
-                    android:paddingLeft="10dp"/>
-
-            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>

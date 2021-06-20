@@ -12,6 +12,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.observe
 import com.mptsix.todaydiary.data.internal.DiaryWriteMode
 import com.mptsix.todaydiary.data.response.Journal
+import com.mptsix.todaydiary.data.response.JournalCategory
 import com.mptsix.todaydiary.databinding.FragmentDiaryBinding
 import com.mptsix.todaydiary.viewmodel.JournalViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -124,7 +125,7 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
                     })
             }
             binding.diaryTitleView.text = it.mainTitle
-            binding.diaryCategoryView.text = it.journalCategory.name
+            binding.diaryCategoryView.text = categoryToString(it.journalCategory)
             binding.weatherView.text = it.journalWeather
             binding.locationView.text = ""
             binding.diaryMainContent.text = it.mainJournalContent
@@ -138,5 +139,12 @@ class DiaryFragment @Inject constructor(): SuperFragment<FragmentDiaryBinding>()
         }
     }
 
-
+    private fun categoryToString(journalCategory: JournalCategory): String {
+        return when (journalCategory) {
+            JournalCategory.EMOTIONAL_JOURNAL -> "감정일기"
+            JournalCategory.ACHIEVEMENT_JOURNAL -> "목표달성일기"
+            JournalCategory.THANKS_JOURNAL -> "감사일기"
+            else -> "감정일기"
+        }
+    }
 }

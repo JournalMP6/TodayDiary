@@ -228,9 +228,9 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
 
     private fun categorySelectionToEnum(selection: String): JournalCategory {
         return when (selection) {
-            JournalCategory.ACHIEVEMENT_JOURNAL.name -> JournalCategory.ACHIEVEMENT_JOURNAL
-            JournalCategory.THANKS_JOURNAL.name -> JournalCategory.THANKS_JOURNAL
-            JournalCategory.EMOTIONAL_JOURNAL.name -> JournalCategory.EMOTIONAL_JOURNAL
+            "감사일기" -> JournalCategory.THANKS_JOURNAL
+            "목표달성일기" -> JournalCategory.ACHIEVEMENT_JOURNAL
+            "감성일기" -> JournalCategory.EMOTIONAL_JOURNAL
             else -> JournalCategory.EMOTIONAL_JOURNAL
         }
     }
