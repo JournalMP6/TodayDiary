@@ -91,6 +91,7 @@ class EditDiaryFragment @Inject constructor() : SuperFragment<FragmentEditDiaryB
     private fun initObserver() {
         journalViewModel.isJournalSubmit.observe(viewLifecycleOwner) {
             if(it) Toast.makeText(requireContext(), "Submit: $it", Toast.LENGTH_LONG).show()
+            activity?.onBackPressed()
         }
 
         journalViewModel.tempJournal.observe(viewLifecycleOwner) {
